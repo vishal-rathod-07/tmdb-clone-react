@@ -1,0 +1,169 @@
+.card-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  align-content: flex-start;
+  width: 100%;
+  box-sizing: border-box;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+
+  .card-section__column_wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    align-content: flex-start;
+
+    .card-section__content_wrapper {
+      width: 100%;
+      display: flex;
+      align-items: flex-start;
+      align-content: flex-start;
+      padding-top: 30px;
+      flex-wrap: wrap;
+
+      .card-section__column {
+        width: 100%;
+
+        .card-section__column_header {
+          padding: 0 40px;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+        }
+        .card-section__column_scroller {
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          flex-wrap: wrap;
+          align-items: flex-start;
+          align-content: flex-start;
+          position: relative;
+          top: 0;
+          left: 0;
+
+          .scroller_inner {
+            width: 100%;
+            min-height: 355px;
+            overflow-x: scroll;
+            overflow-y: hidden;
+            transition: height 0.5s linear;
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            align-content: flex-start;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            white-space: nowrap;
+
+            &::-webkit-scrollbar-track {
+              background-color: transparent;
+            }
+
+            &::-webkit-scrollbar {
+              height: 10px;
+              border: none;
+              background-color: transparent;
+            }
+
+            &::-webkit-scrollbar-thumb {
+              background-color: #dbdbdb;
+              border-radius: 10px;
+            }
+
+            .spacer {
+              min-width: 20px !important;
+              width: 20px !important;
+            }
+
+            & > div:first-child {
+              margin-left: 40px;
+            }
+
+            &::after {
+              transition: linear 0.3s;
+              content: '';
+              width: 60px;
+              height: 100%;
+              position: absolute;
+              top: 0;
+              right: 0;
+              background-image: linear-gradient(
+                to right,
+                rgba(255, 255, 255, 0) 0%,
+                #fff 100%
+              );
+              will-change: opacity;
+              pointer-events: none;
+            }
+          }
+
+          .loaded {
+            min-height: 0;
+            height: auto;
+          }
+        }
+      }
+    }
+  }
+}
+
+.trending {
+  background-image: url(https://www.themoviedb.org/assets/2/v4/misc/trending-bg-39afc2a5f77e31d469b25c187814c0a2efef225494c038098d62317d923f8415.svg);
+  background-position: 50% 200px;
+  background-size: 1400px;
+  background-repeat: no-repeat;
+}
+
+.card-section__content_wrapper {
+  padding-top: 30px;
+
+  .card-section__column_header {
+    padding-left: 40px;
+    padding-right: 40px;
+
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    .card-section__column_title {
+      margin-right: 20px;
+      white-space: nowrap;
+      font-size: 1.5em;
+      font-weight: 600;
+    }
+  }
+
+  .scroller_wrap {
+    position: relative;
+    top: 0;
+    left: 0;
+  }
+
+  .media {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    align-content: flex-start;
+  }
+
+  .card-content {
+    padding: 26px 10px 12px 10px;
+
+    h2 {
+      font-size: 1em;
+      overflow-wrap: break-word;
+    }
+
+    a {
+      &:hover {
+        color: rgb(1, 180, 228);
+      }
+    }
+  }
+}
