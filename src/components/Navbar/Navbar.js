@@ -1,8 +1,14 @@
 import './navbar.scss';
 
-const Navbar = () => {
+const Navbar = ({ isNavbarFixed }) => {
   return (
-    <header className='container-fluid navbar-main d-flex align-items-center'>
+    <header
+      className={
+        isNavbarFixed
+          ? 'navbar autohide container-fluid navbar-main d-flex align-items-center scrolled-up sticky-top'
+          : 'navbar autohide container-fluid navbar-main d-flex align-items-center scrolled-down sticky-top'
+      }
+    >
       <nav className='container navbar navbar-expand-lg navbar-light'>
         <div className='container-fluid navbar-inner'>
           <a className='navbar-brand' href='#'>
