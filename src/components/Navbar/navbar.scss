@@ -1,0 +1,31 @@
+.navbar-main {
+  background-color: rgb(3, 37, 65);
+  color: #fff;
+  height: 64px;
+
+  .navbar-inner {
+    padding: 0 40px;
+  }
+}
+
+.nav-link {
+  font-weight: 600;
+  color: #fff !important;
+}
+
+.notification-icon {
+  color: #fff;
+  height: 22px;
+  width: 22px;
+  img {
+    filter: invert(1);
+  }
+}
+
+.user-avatar {
+  padding-left: 30px;
+  img {
+    height: 32px;
+    width: 32px;
+  }
+}
