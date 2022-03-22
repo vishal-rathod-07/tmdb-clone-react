@@ -11,7 +11,7 @@ const Navbar = () => {
     };
   }, []);
 
-  const [isNavbarFixed, setIsNavbarFixed] = useState(false);
+  const [isNavbarFixed, setIsNavbarFixed] = useState(true);
   let lastScrollTop = 0;
   const handleScroll = () => {
     const scrollTop = window.scrollY || document.documentElement.scrollTop;
