@@ -1,0 +1,136 @@
+.card {
+  border: none !important;
+  min-width: 150px !important;
+  margin-left: 20px;
+
+  .card-image__wrapper {
+    box-shadow: 0 2px 8px rgb(0 0 0 / 10%);
+    border-radius: 8px;
+    width: 100%;
+    min-height: calc(150px * 1.5);
+    height: calc(150px * 1.5);
+    background: #dbdbdb;
+    overflow: hidden;
+    max-height: 243px;
+
+    .card__image {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      top: 0;
+      left: 0;
+      display: inline-block;
+
+      .image-link {
+        display: inline-block;
+        width: 100%;
+        height: 100%;
+        color: #000;
+        text-decoration: none;
+
+        img {
+          display: inline-block;
+          width: 100%;
+          height: 100%;
+        }
+
+        .no-image {
+          background-image: url(https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg);
+          width: 100%;
+          height: 100%;
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: 50%;
+        }
+      }
+    }
+  }
+
+  .card-content {
+    padding-bottom: 0;
+    width: 100%;
+    padding: 26px 10px 0px 10px;
+    white-space: normal;
+    align-content: flex-start;
+    flex-wrap: wrap;
+
+    .card-content_rankings {
+      position: absolute;
+      top: 205px;
+      left: 10px;
+      width: 38px;
+      height: 38px;
+      display: inline-block;
+      transition: transform 0.2s;
+      transform: scale(1);
+
+      .ring {
+        width: 38px;
+        height: 38px;
+        padding: 2px;
+        display: inline-block;
+        border-radius: 50%;
+        background-color: #081c22;
+        margin-right: 0;
+
+        .ring-inner {
+          position: relative;
+          display: inline-block;
+          width: 100%;
+          height: 100%;
+          text-align: center;
+
+          .percent {
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .icon-per {
+              padding-top: 1px;
+              padding-left: 1px;
+              font-size: 0.8em;
+              color: #fff;
+              line-height: 1;
+            }
+          }
+        }
+      }
+    }
+
+    h2 {
+      font-size: 1em;
+      margin: 0;
+      width: 100%;
+      overflow-wrap: break-word;
+
+      a {
+        font-weight: 700;
+        color: #000;
+        text-decoration: none;
+      }
+    }
+
+    p {
+      font-size: 1em;
+      margin: 0;
+      padding: 0;
+      color: rgba(0, 0, 0, 0.6);
+    }
+  }
+}
+
+.style_1 {
+  width: 150px;
+  background: transparent;
+  position: relative;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  border-radius: 8px;
+  max-width: 162px;
+}
