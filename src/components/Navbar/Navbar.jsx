@@ -1,6 +1,28 @@
 import './navbar.scss';
 
-const Navbar = ({ isNavbarFixed }) => {
+import { useEffect, useState } from 'react';
+
+const Navbar = () => {
+  useEffect(() => {
+    document.addEventListener('scroll', () => handleScroll());
+
+    return () => {
+      document.removeEventListener('scroll', () => handleScroll());
+    };
+  }, []);
+
+  const [isNavbarFixed, setIsNavbarFixed] = useState(false);
+  let lastScrollTop = 0;
+  const handleScroll = () => {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    if (scrollTop < lastScrollTop) {
+      setIsNavbarFixed(true);
+    } else {
+      setIsNavbarFixed(false);
+    }
+    lastScrollTop = scrollTop;
+  };
+
   return (
     <header
       className={
