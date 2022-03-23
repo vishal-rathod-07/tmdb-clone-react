@@ -1,11 +1,40 @@
+import { Link } from 'react-router-dom';
 import './moviecard.scss';
 
-const MovieCard = ({ id, poster, title, date, rating, onMovieClick }) => {
+const MovieCard = ({
+  id,
+  poster,
+  title,
+  date,
+  rating,
+  onMovieClick,
+  activeTab,
+}) => {
+  console.log(activeTab);
+  let detailsPath;
+  switch (activeTab) {
+    case 'On_TV':
+      detailsPath = `/tv/${id}`;
+      break;
+    case 'In_Theaters':
+      detailsPath = `/movie/${id}`;
+      break;
+    case 'Today':
+      detailsPath = `/movie/${id}`;
+      break;
+    case 'This_Week':
+      detailsPath = `/movie/${id}`;
+      break;
+    default:
+      detailsPath = `/movie/${id}`;
+      break;
+  }
+
   return (
     <div className='card style_1'>
       <div className='card-image__wrapper' onClick={() => onMovieClick(id)}>
         <div className='card__image'>
-          <a className='image-link'>
+          <Link className='image-link' to={detailsPath}>
             {poster ? (
               <img
                 loading='lazy'
@@ -15,7 +44,7 @@ const MovieCard = ({ id, poster, title, date, rating, onMovieClick }) => {
             ) : (
               <div className='no-image'></div>
             )}
-          </a>
+          </Link>
         </div>
         <div className='card-options'></div>
       </div>
@@ -30,9 +59,7 @@ const MovieCard = ({ id, poster, title, date, rating, onMovieClick }) => {
           </div>
         </div>
         <h2 className='m-0'>
-          <a href={`/movie/${id}`} title={title}>
-            {title}
-          </a>
+          <Link to={detailsPath}>{title}</Link>
         </h2>
         <p>
           {new Date(date).toLocaleString('en-US', {
