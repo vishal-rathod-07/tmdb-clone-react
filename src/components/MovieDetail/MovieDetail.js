@@ -20,7 +20,7 @@ const MovieDetail = () => {
   console.log(error);
   console.log(social);
   //   console.log(provider.results.IN.flatrate[0].logo_path);
-  console.log(cast);
+  console.log(cast.cast);
 
   //   const providerLogo = provider.results.IN.flatrate[0].logo_path;
   useEffect(() => {
@@ -99,7 +99,7 @@ const MovieDetail = () => {
       <section className='movie-detail container-fluid p-0'>
         <SortcutBar />
         <Header movie={movie} />
-        <Media movie={movie} />
+        <Media movie={movie} cast={cast.cast} />
       </section>
     )
   );
