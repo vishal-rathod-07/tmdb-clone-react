@@ -23,14 +23,22 @@ const Main = () => {
     activeTrendingTab === 'Today' ? url.TRENDING_TODAY : url.TRENDING_THIS_WEEK;
 
   const getPopularMovies = async () => {
-    const response = await fetch(POPULAR_URL);
-    const data = await response.json();
-    setPopularMovies(data.results);
+    try {
+      const response = await fetch(POPULAR_URL);
+      const data = await response.json();
+      setPopularMovies(data.results);
+    } catch (error) {
+      console.error(error);
+    }
   };
   const getTrendingMovies = async () => {
-    const response = await fetch(TRENDING_URL);
-    const data = await response.json();
-    setTrendingMovies(data.results);
+    try {
+      const response = await fetch(TRENDING_URL);
+      const data = await response.json();
+      setTrendingMovies(data.results);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
@@ -41,22 +49,26 @@ const Main = () => {
   return (
     <div className='container main p-0 d-flex flex-column'>
       <Banner />
-      <CardSection
-        sectionType={'popular'}
-        tabs={popularTabs}
-        activeTab={activePopularTab}
-        setActiveTab={setActivePopularTab}
-        url={url.POPULAR_ON_TV}
-        movies={popularMovies}
-      />
-      <CardSection
-        sectionType={'trending'}
-        tabs={trendingTabs}
-        activeTab={activeTrendingTab}
-        setActiveTab={setActiveTrendingTab}
-        url={url.TRENDING_DAY}
-        movies={trendingMovies}
-      />
+      {popularMovies && (
+        <CardSection
+          sectionType={'popular'}
+          tabs={popularTabs}
+          activeTab={activePopularTab}
+          setActiveTab={setActivePopularTab}
+          url={url.POPULAR_ON_TV}
+          movies={popularMovies}
+        />
+      )}
+      {trendingMovies && (
+        <CardSection
+          sectionType={'trending'}
+          tabs={trendingTabs}
+          activeTab={activeTrendingTab}
+          setActiveTab={setActiveTrendingTab}
+          url={url.TRENDING_TODAY}
+          movies={trendingMovies}
+        />
+      )}
     </div>
   );
 };
