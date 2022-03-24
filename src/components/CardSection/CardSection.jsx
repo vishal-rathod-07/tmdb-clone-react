@@ -49,6 +49,7 @@ const CardSection = ({
                     rating={movie.vote_average * 10}
                     onMovieClick={onMovieClick}
                     activeTab={activeTab}
+                    movie={movie}
                   />
                 ))}
                 <div className='card spacer'></div>
