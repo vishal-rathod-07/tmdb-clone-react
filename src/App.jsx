@@ -14,7 +14,8 @@ const App = () => {
       <Navbar />
       <Routes>
         <Route path='/' element={<Main />} />
-        <Route path='/movie/:id' element={<MovieDetail />} />
+        <Route path='/movie/:id' element={<MovieDetail type={'movie'} />} />
+        <Route path='/tv/:id' element={<MovieDetail type={'tv'} />} />
       </Routes>
       <Footer />
     </Router>
