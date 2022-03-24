@@ -1,27 +1,40 @@
 import { Link } from 'react-router-dom';
 
-const Header = ({ movie, providerLogo }) => {
+const Header = ({ movie, provider, type }) => {
   console.log(movie);
-  let totalMinutes = movie.runtime;
+  console.log(provider.results);
+  // provider.results.IN.buy && console.log(provider.results.IN.buy[0].logo_path);
+
+  console.log(movie);
+  let totalMinutes = movie.runtime || movie.episode_run_time[0];
   let hours = Math.floor(totalMinutes / 60);
   let minutes = totalMinutes % 60;
   let hoursString = hours > 0 ? hours + 'h ' : '';
   let minutesString = minutes > 0 ? minutes + 'm' : '';
   let runtime = hoursString + minutesString;
 
-  let release_date = movie.release_date;
-  let year = release_date.split('-')[0];
+  let year;
+  year = movie.release_date || movie.first_air_date.split('-')[0];
+  let formattedyear;
+  let release_date;
+  let formattedmonth;
+  let dt;
 
-  let date = new Date(release_date);
-  let formattedyear = date.getFullYear();
-  let formattedmonth = date.getMonth() + 1;
-  let dt = date.getDate();
+  if (type === 'movie') {
+    release_date = movie.release_date;
+    year = release_date.split('-')[0];
 
-  if (dt < 10) {
-    dt = '0' + dt;
-  }
-  if (formattedmonth < 10) {
-    formattedmonth = '0' + formattedmonth;
+    let date = new Date(release_date);
+    formattedyear = date.getFullYear();
+    formattedmonth = date.getMonth() + 1;
+    dt = date.getDate();
+
+    if (dt < 10) {
+      dt = '0' + dt;
+    }
+    if (formattedmonth < 10) {
+      formattedmonth = '0' + formattedmonth;
+    }
   }
 
   console.log(formattedyear + '/' + formattedmonth + '/' + dt);
@@ -52,39 +65,51 @@ const Header = ({ movie, providerLogo }) => {
                     />
                   </div>
                 </div>
-                <div className='ott d-flex justify-content-center align-items-center'>
-                  <div className='ott-wrapper d-flex align-items-stretch flex-wrap w-100'>
-                    <div className='button d-flex justify-content-center w-100'>
-                      <div className='provider d-flex align-content-center align-items-center'>
-                        <img
-                          src='https://www.themoviedb.org/t/p/original//peURlLlr8jggOwK53fJ5wdQl05y.jpg'
-                          alt=''
-                        />
-                      </div>
-                      <div className='text d-flex flex-wrap align-items-center align-content-center'>
-                        <span>
-                          <h4>Now Streaming</h4>
-                          <h3>Watch Now</h3>
-                        </span>
+                {(provider.results.IN || provider.results.US) && (
+                  <div className='ott d-flex justify-content-center align-items-center'>
+                    <div className='ott-wrapper d-flex align-items-stretch flex-wrap w-100'>
+                      <div className='button d-flex justify-content-center w-100'>
+                        <div className='provider d-flex align-content-center align-items-center'>
+                          <img
+                            src={
+                              provider && provider.results.IN
+                                ? provider.results.IN.flatrate
+                                  ? `https://www.themoviedb.org/t/p/original/${provider.results.IN.flatrate[0].logo_path}`
+                                  : `https://www.themoviedb.org/t/p/original/${provider.results.IN.buy[0].logo_path}`
+                                : `https://www.themoviedb.org/t/p/original/${provider.results.US.flatrate[0].logo_path}`
+                            }
+                            alt=''
+                          />
+                        </div>
+                        <div className='text d-flex flex-wrap align-items-center align-content-center'>
+                          <span>
+                            <h4>Now Streaming</h4>
+                            <h3>Watch Now</h3>
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                )}
               </div>
               <div className='details-wrapper d-flex'>
                 <section className='details d-flex flex-wrap align-content-center align-items-start'>
                   <div className='title-wrapper w-100 d-flex flex-wrap'>
                     <h2 className='title m-0 p-0 w-100'>
-                      <Link to='/movie/12'>{movie.original_title + ' '}</Link>
+                      <Link to='/movie/12'>
+                        {movie.original_title || movie.original_name + ' '}
+                      </Link>
                       <span className='release-date'>{'(' + year + ')'}</span>
                     </h2>
                     <div className='facts d-flex'>
                       <span className='certifications align-items-center align-content-center'>
                         16
                       </span>
-                      <span className='release-date'>
-                        {formattedmonth + '/' + dt + '/' + formattedyear}
-                      </span>
+                      {type === 'movie' && (
+                        <span className='release-date'>
+                          {formattedmonth + '/' + dt + '/' + formattedyear}
+                        </span>
+                      )}
                       <span className='genres'>
                         {movie.genres.map((genre, index) => {
                           return <span key={index}>{genre.name}</span>;
@@ -101,18 +126,6 @@ const Header = ({ movie, providerLogo }) => {
                         Rating
                       </div>
                     </li>
-                    <li className='movietooltip'>
-                      <div className='info'>List Icon</div>
-                    </li>
-                    <li className='movietooltip'>
-                      <div className='info'>Favourite Icon</div>
-                    </li>
-                    <li className='movietooltip'>
-                      <div className='info'>Bookmark Icon</div>
-                    </li>
-                    <li className='movietooltip'>
-                      <div className='info'>Star Icon</div>
-                    </li>
                   </ul>
                   <div className='description'>
                     <h3 className='tagline'>
@@ -123,30 +136,18 @@ const Header = ({ movie, providerLogo }) => {
                       <p>{movie.overview}</p>
                     </div>
 
-                    <ol className='people no_image'>
-                      <li className='profile'>
-                        <p>
-                          <a href='/person/2009739-domee-shi'>Domee Shi</a>
-                        </p>
-                        <p className='character'>Director, Screenplay, Story</p>
-                      </li>
-
-                      <li className='profile'>
-                        <p>
-                          <a href='/person/1226604-julia-cho'>Julia Cho</a>
-                        </p>
-                        <p className='character'>Screenplay, Story</p>
-                      </li>
-
-                      <li className='profile'>
-                        <p>
-                          <a href='/person/2862027-sarah-streicher'>
-                            Sarah Streicher
-                          </a>
-                        </p>
-                        <p className='character'>Story</p>
-                      </li>
-                    </ol>
+                    {movie.created_by && movie.created_by.length > 0 && (
+                      <ol className='people no_image'>
+                        <li className='profile'>
+                          <p>
+                            <a href='/person/2009739-domee-shi'>
+                              {movie.created_by[0].name}
+                            </a>
+                          </p>
+                          <p className='character'>Creator</p>
+                        </li>
+                      </ol>
+                    )}
                   </div>
                 </section>
               </div>

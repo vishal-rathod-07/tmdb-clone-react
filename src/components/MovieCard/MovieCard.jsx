@@ -9,7 +9,10 @@ const MovieCard = ({
   rating,
   onMovieClick,
   activeTab,
+  movie,
 }) => {
+  movie.media_type && (movie.media_type = movie.media_type.toLowerCase());
+  // console.log(movie.media_type);
   console.log(activeTab);
   let detailsPath;
   switch (activeTab) {
@@ -20,10 +23,14 @@ const MovieCard = ({
       detailsPath = `/movie/${id}`;
       break;
     case 'Today':
-      detailsPath = `/movie/${id}`;
+      movie.media_type === 'tv'
+        ? (detailsPath = `/tv/${id}`)
+        : (detailsPath = `/movie/${id}`);
       break;
     case 'This_Week':
-      detailsPath = `/movie/${id}`;
+      movie.media_type === 'tv'
+        ? (detailsPath = `/tv/${id}`)
+        : (detailsPath = `/movie/${id}`);
       break;
     default:
       detailsPath = `/movie/${id}`;
