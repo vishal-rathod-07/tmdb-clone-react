@@ -38,7 +38,17 @@ const CardSection = ({
               <Tabs tabs={tabs} activeTab={activeTab} onTabClick={onTabClick} />
             </div>
             <div className='card-section__column_scroller'>
-              <div className='scroller_inner loaded'>
+              <div
+                className='scroller_inner loaded'
+                onScroll={(e) => {
+                  const element = e.target;
+                  if (element.scrollLeft > 25) {
+                    element.style.setProperty('--opacity', 0);
+                  } else {
+                    element.style.setProperty('--opacity', 1);
+                  }
+                }}
+              >
                 {movies.map((movie, index) => (
                   <MovieCard
                     key={index}
