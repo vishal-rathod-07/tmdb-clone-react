@@ -50,6 +50,7 @@
       .column {
         padding: 30px 40px;
         z-index: 0;
+        max-width: 1400px;
         .header-inner {
           color: #fff;
 
@@ -69,6 +70,24 @@
               position: relative;
               top: 0;
               left: 0;
+
+              .no-image {
+                display: block;
+                min-width: 300px;
+                width: 300px;
+                height: 450px;
+                position: relative;
+                top: 0;
+                left: 0;
+                background-image: url(https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg);
+                background-color: #dbdbdb;
+                background-size: 50%;
+                box-sizing: border-box;
+                border-radius: 8px;
+                border: 1px solid #d7d7d7;
+                background-repeat: no-repeat;
+                background-position: center center;
+              }
             }
 
             .ott {
@@ -153,10 +172,52 @@
                   }
                   .genres {
                     padding-left: 20px;
-                    padding-right: 20px;
+                    position: relative;
+                    top: 0;
+                    left: 0;
+
+                    &::before {
+                      font-size: 1.1em;
+                      line-height: 1;
+                      content: '•';
+                      width: 100%;
+                      height: 100%;
+                      position: absolute;
+                      top: 0;
+                      left: 7px;
+                      display: inline-flex;
+                      align-content: center;
+                      align-items: center;
+                      z-index: -1;
+                    }
 
                     span {
-                      padding: 0 3px;
+                      a {
+                        color: #fff;
+                        text-decoration: none;
+                      }
+                      padding: 0px;
+                    }
+                  }
+
+                  .runtime {
+                    padding-left: 20px;
+                    position: relative;
+                    top: 0;
+                    left: 0;
+                    &::before {
+                      font-size: 1.1em;
+                      line-height: 1;
+                      content: '•';
+                      width: 100%;
+                      height: 100%;
+                      position: absolute;
+                      top: 0;
+                      left: 7px;
+                      display: inline-flex;
+                      align-content: center;
+                      align-items: center;
+                      z-index: -1;
                     }
                   }
                 }
@@ -267,6 +328,13 @@
 
             .top-billed-cast {
               padding: 30px 0;
+              padding-top: 0;
+
+              h3 {
+                font-weight: 600;
+                font-size: 1.4em;
+                margin-bottom: 20px;
+              }
 
               .auto {
                 font-weight: 600;
@@ -283,9 +351,41 @@
                 .cast-list {
                   overflow-y: hidden;
                   overflow-x: scroll;
-                  margin-left: -10px;
-                  margin-top: -10px;
-                  padding-bottom: 10px;
+                  margin: -10px 0 0 -10px;
+                  padding: 0 0 10px 0;
+
+                  &::-webkit-scrollbar-track {
+                    background-color: transparent;
+                  }
+
+                  &::-webkit-scrollbar {
+                    height: 7px;
+                    border: none;
+                    background-color: transparent;
+                  }
+
+                  &::-webkit-scrollbar-thumb {
+                    background-color: #dbdbdb;
+                    border-radius: 10px;
+                  }
+
+                  &::after {
+                    transition: linear 0.3s;
+                    content: '';
+                    width: 60px;
+                    height: 100%;
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    background-image: linear-gradient(
+                      to right,
+                      rgba(255, 255, 255, 0) 0%,
+                      #fff 100%
+                    );
+                    will-change: opacity;
+                    pointer-events: none;
+                    opacity: var(--opacity);
+                  }
 
                   .cast-item {
                     margin: 10px 4px 10px 10px;
@@ -326,6 +426,95 @@
                       }
                     }
                   }
+                }
+              }
+            }
+
+            .season {
+              padding: 30px 0;
+              border-top: 1px solid #d7d7d7;
+
+              .heading {
+                display: flex;
+
+                h3 {
+                  font-weight: 600;
+                  font-size: 1.4em;
+                  margin-bottom: 20px;
+                }
+              }
+              .card {
+                border: 1px solid rgba(227, 227, 227, 1) !important;
+                box-shadow: 0 2px 8px rgb(0 0 0 / 10%);
+                background-color: #fff;
+                margin: 0;
+
+                .poster {
+                  display: block;
+                  min-width: 130px;
+                  width: 130px;
+                  height: 195px;
+                }
+
+                .no-image {
+                  background-image: url(https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-38-picture-grey-c2ebdbb057f2a7614185931650f8cee23fa137b93812ccb132b9df511df1cfac.svg);
+                  width: 100%;
+                  height: 100%;
+                  background-color: #dbdbdb;
+                  background-size: 50%;
+                  box-sizing: border-box;
+                  border: 1px solid #d7d7d7;
+                  background-repeat: no-repeat;
+                  background-position: center center;
+                }
+
+                .content {
+                  width: 100%;
+                  padding: 20px;
+                  box-sizing: border-box;
+                  display: flex;
+                  flex-wrap: wrap;
+                  align-items: center;
+
+                  h2 {
+                    font-size: 1.5em;
+                    margin: 0 0 4px 0;
+                    font-weight: 600;
+                    padding: 0;
+                    margin-bottom: 0;
+
+                    a {
+                      color: #000;
+                      text-decoration: none;
+                    }
+                  }
+                  h4 {
+                    margin-top: 0;
+                    margin-bottom: 8px;
+                    font-size: 1em !important;
+                    font-weight: 600;
+                  }
+                  .season_overview {
+                    padding-top: 20px;
+
+                    p {
+                      line-height: 1.4;
+                      font-size: 1em;
+                      margin: 0;
+                      padding: 0;
+                    }
+                  }
+                }
+              }
+              .button {
+                margin: 20px 0 0 0;
+                font-size: 1em;
+
+                a {
+                  color: #000;
+                  font-weight: 600;
+                  font-size: 1.1em;
+                  text-decoration: none;
                 }
               }
             }
@@ -371,6 +560,7 @@
                   border-radius: 8px;
                   box-shadow: 0 2px 8px rgb(0 0 0 / 10%);
                   background-color: #fff;
+                  margin: 0;
 
                   .user-img {
                     width: 64px;
@@ -463,6 +653,40 @@
                     overflow-x: scroll;
                     white-space: nowrap;
                     padding-bottom: 10px;
+
+                    &::-webkit-scrollbar-track {
+                      background-color: transparent;
+                    }
+
+                    &::-webkit-scrollbar {
+                      height: 7px;
+                      border: none;
+                      background-color: transparent;
+                    }
+
+                    &::-webkit-scrollbar-thumb {
+                      background-color: #dbdbdb;
+                      border-radius: 10px;
+                    }
+
+                    &::after {
+                      transition: linear 0.3s;
+                      content: '';
+                      width: 60px;
+                      height: 100%;
+                      position: absolute;
+                      top: 0;
+                      right: 0;
+                      background-image: linear-gradient(
+                        to right,
+                        rgba(255, 255, 255, 0) 0%,
+                        #fff 100%
+                      );
+                      opacity: var(--opacity);
+
+                      will-change: opacity;
+                      pointer-events: none;
+                    }
 
                     .recommandation-item {
                       width: 250px;
