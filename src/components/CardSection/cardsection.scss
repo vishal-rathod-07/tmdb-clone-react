@@ -1,3 +1,7 @@
+:root {
+  --opacity: 1;
+}
+
 .card-section {
   display: flex;
   flex-wrap: wrap;
@@ -64,7 +68,7 @@
             }
 
             &::-webkit-scrollbar {
-              height: 10px;
+              height: 7px;
               border: none;
               background-color: transparent;
             }
@@ -98,6 +102,7 @@
               );
               will-change: opacity;
               pointer-events: none;
+              opacity: var(--opacity);
             }
           }
 
