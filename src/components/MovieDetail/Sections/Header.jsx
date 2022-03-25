@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 const Header = ({ movie, provider, type }) => {
   console.log(movie);
-  console.log(provider.results);
+  console.log(provider);
   // provider.results.IN.buy && console.log(provider.results.IN.buy[0].logo_path);
 
   console.log(movie);
@@ -50,7 +50,7 @@ const Header = ({ movie, provider, type }) => {
         <div
           className='background-effect d-flex justify-content-center flex-wrap'
           style={{
-            background: `linear-gradient(to bottom right, rgba(52.5, 31.5, 31.5, 1), rgba(52.5, 31.5, 31.5, 0.84))`,
+            background: `linear-gradient(to right, rgb(53, 32, 32) 150px, rgba(53, 32, 32, 0.84) 100%)`,
           }}
         >
           <div className='column w-100'>
@@ -58,64 +58,88 @@ const Header = ({ movie, provider, type }) => {
               <div className='poster-wrapper h-auto overflow-hidden'>
                 <div className='poster'>
                   <div className='image-container w-100 h-100'>
-                    <img
-                      className='w-100 h-100'
-                      src={`https://www.themoviedb.org/t/p/w300_and_h450_bestv2/${movie.poster_path}`}
-                      alt=''
-                    />
+                    {movie.poster_path ? (
+                      <img
+                        className='w-100 h-100'
+                        src={`https://www.themoviedb.org/t/p/w300_and_h450_bestv2/${movie.poster_path}`}
+                        alt=''
+                      />
+                    ) : (
+                      <div className='no-image'></div>
+                    )}
                   </div>
                 </div>
-                {(provider.results.IN || provider.results.US) && (
-                  <div className='ott d-flex justify-content-center align-items-center'>
-                    <div className='ott-wrapper d-flex align-items-stretch flex-wrap w-100'>
-                      <div className='button d-flex justify-content-center w-100'>
-                        <div className='provider d-flex align-content-center align-items-center'>
-                          <img
-                            src={
-                              provider && provider.results.IN
-                                ? provider.results.IN.flatrate
+                {Object.keys(provider).length > 0 &&
+                  Object.keys(provider.results).length > 0 &&
+                  provider.results.IN && (
+                    <div className='ott d-flex justify-content-center align-items-center'>
+                      <div className='ott-wrapper d-flex align-items-stretch flex-wrap w-100'>
+                        <div className='button d-flex justify-content-center w-100'>
+                          <div className='provider d-flex align-content-center align-items-center'>
+                            <img
+                              src={
+                                provider.results.IN.flatrate
                                   ? `https://www.themoviedb.org/t/p/original/${provider.results.IN.flatrate[0].logo_path}`
                                   : `https://www.themoviedb.org/t/p/original/${provider.results.IN.buy[0].logo_path}`
-                                : `https://www.themoviedb.org/t/p/original/${provider.results.US.flatrate[0].logo_path}`
-                            }
-                            alt=''
-                          />
-                        </div>
-                        <div className='text d-flex flex-wrap align-items-center align-content-center'>
-                          <span>
-                            <h4>Now Streaming</h4>
-                            <h3>Watch Now</h3>
-                          </span>
+                              }
+                              alt=''
+                            />
+                          </div>
+                          <div className='text d-flex flex-wrap align-items-center align-content-center'>
+                            <span>
+                              <h4>
+                                {provider.results.IN.flatrate
+                                  ? 'Now Streaming'
+                                  : 'Available to Rent or Buy'}
+                              </h4>
+                              <h3>Watch Now</h3>
+                            </span>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                )}
+                  )}
               </div>
               <div className='details-wrapper d-flex'>
                 <section className='details d-flex flex-wrap align-content-center align-items-start'>
                   <div className='title-wrapper w-100 d-flex flex-wrap'>
                     <h2 className='title m-0 p-0 w-100'>
                       <Link to='/movie/12'>
-                        {movie.original_title || movie.original_name + ' '}
+                        {movie.title || movie.name + ' '}
                       </Link>
                       <span className='release-date'>{'(' + year + ')'}</span>
                     </h2>
                     <div className='facts d-flex'>
-                      <span className='certifications align-items-center align-content-center'>
+                      {/* <span className='certifications align-items-center align-content-center'>
                         16
-                      </span>
+                      </span> */}
                       {type === 'movie' && (
                         <span className='release-date'>
                           {formattedmonth + '/' + dt + '/' + formattedyear}
+                          {'('}
+                          {
+                            movie.production_countries[
+                              movie.production_countries.length - 1
+                            ].iso_3166_1
+                          }
+                          {')'}
                         </span>
                       )}
-                      <span className='genres'>
-                        {movie.genres.map((genre, index) => {
-                          return <span key={index}>{genre.name}</span>;
-                        })}
-                      </span>
-                      <span className='runtime'>{runtime}</span>
+                      {movie.genres.length > 0 && (
+                        <span className='genres'>
+                          {movie.genres.map((genre, index) => {
+                            return (
+                              <span key={index}>
+                                <Link to={'/genre/' + genre.id}>
+                                  {genre.name}
+                                </Link>
+                                {index === movie.genres.length - 1 ? '' : ', '}
+                              </span>
+                            );
+                          })}
+                        </span>
+                      )}
+                      {runtime && <span className='runtime'>{runtime}</span>}
                     </div>
                   </div>
                   <ul className='action-list d-flex align-items-center justify-align-content-start list-unstyled'>
@@ -138,14 +162,18 @@ const Header = ({ movie, provider, type }) => {
 
                     {movie.created_by && movie.created_by.length > 0 && (
                       <ol className='people no_image'>
-                        <li className='profile'>
-                          <p>
-                            <a href='/person/2009739-domee-shi'>
-                              {movie.created_by[0].name}
-                            </a>
-                          </p>
-                          <p className='character'>Creator</p>
-                        </li>
+                        {movie.created_by.map((person, index) => {
+                          return (
+                            <li key={index} className='profile'>
+                              <p>
+                                <a href='/person/2009739-domee-shi'>
+                                  {person.name}
+                                </a>
+                              </p>
+                              <p className='character'>Creator</p>
+                            </li>
+                          );
+                        })}
                       </ol>
                     )}
                   </div>
