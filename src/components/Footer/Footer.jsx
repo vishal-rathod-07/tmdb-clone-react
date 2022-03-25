@@ -10,7 +10,7 @@ const Footer = () => {
               <h2>Join Today</h2>
             </div>
             <div className='row content p-0'>
-              <div className='col-7'>
+              <div className='col-12 col-xl-7'>
                 <p>
                   Get access to maintain your own <em>custom personal lists</em>
                   , <em>track what you've seen</em> and search and filter for{' '}
@@ -27,8 +27,8 @@ const Footer = () => {
                   </a>
                 </p>
               </div>
-              <div className='col-5'>
-                <ul>
+              <div className='col-12 col-xl-5'>
+                <ul className='p-0'>
                   <li>Enjoy TMDB ad free</li>
                   <li>Maintain a personal watchlist</li>
                   <li>
