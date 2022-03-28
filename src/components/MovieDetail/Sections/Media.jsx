@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import FormatDate from '../../FormatDate';
 
 const Media = ({ movie, cast, keywords, reviews, recommandations, type }) => {
   console.log(reviews);
@@ -49,7 +50,7 @@ const Media = ({ movie, cast, keywords, reviews, recommandations, type }) => {
                                     alt='Cast 1'
                                     loading='lazy'
                                   />
-                                ) : cast.gender === 2 ? (
+                                ) : cast.gender === 0 ? (
                                   <img
                                     src='https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-4-user-grey-d8fe957375e70239d6abdd549fd7568c89281b2179b5f4470e2e12895792dfa5.svg'
                                     alt='Cast 1'
@@ -284,11 +285,31 @@ const Media = ({ movie, cast, keywords, reviews, recommandations, type }) => {
                                     }
                                   >
                                     {recommandation.backdrop_path !== null ? (
-                                      <img
-                                        src={`https://image.tmdb.org/t/p/w250_and_h141_face/${recommandation.backdrop_path}`}
-                                        alt='Recommandation 1'
-                                        loading='lazy'
-                                      />
+                                      <>
+                                        <img
+                                          src={`https://image.tmdb.org/t/p/w250_and_h141_face/${recommandation.backdrop_path}`}
+                                          alt='Recommandation 1'
+                                          loading='lazy'
+                                        />
+                                        <div className='hover_overlay'>
+                                          <span className='release_date'>
+                                            <span className='calender_icon'></span>
+                                            {type === 'movie' ? (
+                                              <FormatDate
+                                                date={
+                                                  recommandation.release_date
+                                                }
+                                              />
+                                            ) : (
+                                              <FormatDate
+                                                date={
+                                                  recommandation.first_air_date
+                                                }
+                                              />
+                                            )}
+                                          </span>
+                                        </div>
+                                      </>
                                     ) : (
                                       <div className='no-image' />
                                     )}
