@@ -2,6 +2,7 @@ import './navbar.scss';
 import { LOGO_URL } from '../Constants';
 
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   useEffect(() => {
@@ -34,14 +35,14 @@ const Navbar = () => {
     >
       <nav className='container navbar navbar-expand-lg navbar-light'>
         <div className='container-fluid navbar-inner'>
-          <a className='navbar-brand' href='#'>
+          <Link to='/' className='navbar-brand'>
             <img
               src={LOGO_URL}
               alt='The Movie Database (TMDB)'
               width='154'
               height='20'
             />
-          </a>
+          </Link>
           <button
             className='navbar-toggler'
             type='button'
