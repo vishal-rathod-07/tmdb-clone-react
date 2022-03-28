@@ -160,15 +160,24 @@ const MovieDetail = ({ type }) => {
         const data = await keywordResponse.json();
         setKeywords(data.keywords || data.results);
         console.log(data);
-        setLoading(false);
         console.log('KeyWords Fetch Sucess');
       } catch (error) {
         setError(error);
-        setLoading(false);
       }
     };
     fetchKeyword();
   }, [id, type]);
+
+  useEffect(() => {
+    if (movie && social && cast && reviews && provider && keywords) {
+      setLoading(false);
+      document.title = `${movie.title || movie.name} (${
+        (type === 'movie' ? '' : 'TV Series ') +
+        ((movie.release_date && movie.release_date.split('-')[0]) ||
+          (movie.first_air_date && movie.first_air_date.split('-')[0]))
+      }) — The Movie Database (TMDB)`;
+    }
+  }, [movie, social, cast, reviews, provider, keywords]);
 
   return (
     !loading && (
