@@ -1,3 +1,6 @@
+import { Line, Circle } from 'rc-progress';
+import { useEffect, useState } from 'react';
+import { ColorExtractor } from 'react-color-extractor';
 import { Link } from 'react-router-dom';
 import FormatDate from '../../FormatDate';
 
@@ -7,6 +10,11 @@ const Header = ({ movie, provider, type }) => {
   // provider.results.IN.buy && console.log(provider.results.IN.buy[0].logo_path);
 
   console.log(movie);
+
+  const [colors, setColors] = useState();
+  const [backDropStyles, setBackDropStyles] = useState();
+  backDropStyles && console.log(backDropStyles);
+  colors && console.log(colors);
   let totalMinutes = movie.runtime || movie.episode_run_time[0];
   let hours = Math.floor(totalMinutes / 60);
   let minutes = totalMinutes % 60;
@@ -20,6 +28,23 @@ const Header = ({ movie, provider, type }) => {
     (movie.release_date && movie.release_date.split('-')[0]) ||
     (movie.first_air_date && movie.first_air_date.split('-')[0]);
 
+  useEffect(() => {
+    const fetchColors = async () => {
+      <ColorExtractor
+        rgb
+        getColors={(colors) => {
+          setColors(colors);
+        }}
+      >
+        <img
+          src={`https://www.themoviedb.org/t/p/w300_and_h450_bestv2/${movie.poster_path}`}
+          alt=''
+        />
+      </ColorExtractor>;
+    };
+    fetchColors();
+  }, [movie.poster_path]);
+
   return (
     movie && (
       <div
@@ -30,9 +55,7 @@ const Header = ({ movie, provider, type }) => {
       >
         <div
           className='background-effect d-flex justify-content-center flex-wrap'
-          style={{
-            background: `linear-gradient(to right, rgb(53, 32, 32) 150px, rgba(53, 32, 32, 0.84) 100%)`,
-          }}
+          style={backDropStyles}
         >
           <div className='column w-100'>
             <section className='header-inner d-flex flex-nowrap'>
@@ -40,11 +63,20 @@ const Header = ({ movie, provider, type }) => {
                 <div className='poster'>
                   <div className='image-container w-100 h-100'>
                     {movie.poster_path ? (
-                      <img
-                        className='w-100 h-100'
-                        src={`https://www.themoviedb.org/t/p/w300_and_h450_bestv2/${movie.poster_path}`}
-                        alt=''
-                      />
+                      <ColorExtractor
+                        rgb
+                        getColors={(colors) => {
+                          setColors(colors);
+                          setBackDropStyles({
+                            background: `linear-gradient(to right, rgb(${colors[5][0]}, ${colors[5][1]}, ${colors[5][2]}) 150px, rgba(${colors[2][0]}, ${colors[2][0]}, ${colors[2][0]}, 0.84) 100%)`,
+                          });
+                        }}
+                      >
+                        <img
+                          src={`https://www.themoviedb.org/t/p/w300_and_h450_bestv2/${movie.poster_path}`}
+                          alt=''
+                        />
+                      </ColorExtractor>
                     ) : (
                       <div className='no-image'></div>
                     )}
@@ -127,8 +159,30 @@ const Header = ({ movie, provider, type }) => {
                   <ul className='action-list d-flex align-items-center justify-align-content-start list-unstyled'>
                     <li className='chart'>
                       <div className='rating'>
-                        {movie.vote_average * 10}
-                        <span>%</span>
+                        <Circle
+                          percent={movie.vote_average * 10}
+                          strokeWidth='6'
+                          trailWidth='7'
+                          text={movie.vote_average}
+                          trailColor={
+                            movie.vote_average >= 7
+                              ? '#204529'
+                              : movie.vote_average >= 4
+                              ? '#423d0f'
+                              : '#ff000054'
+                          }
+                          strokeColor={
+                            movie.vote_average >= 7
+                              ? '#21d07a'
+                              : movie.vote_average >= 4
+                              ? '#d2d531'
+                              : '#ff0000'
+                          }
+                        />
+                        <span className='rating-text'>
+                          {movie.vote_average * 10}
+                          <span className='rating-text-suffix'>%</span>
+                        </span>
                       </div>
                       <div className='text fw-bold'>
                         User <br />

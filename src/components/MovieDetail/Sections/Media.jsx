@@ -83,7 +83,14 @@ const Media = ({ movie, cast, keywords, reviews, recommandations, type }) => {
               {type === 'tv' && (
                 <section className='season w-100 d-block'>
                   <div className='heading d-flex'>
-                    <h3 dir='auto'>Current Season</h3>
+                    <h3 dir='auto'>
+                      {
+                        //last season or current season
+                        movie.next_episode_to_air === null
+                          ? 'Last Season'
+                          : 'Current Season'
+                      }
+                    </h3>
                   </div>
                   <div className='card overflow-hidden d-flex flex-wrap'>
                     <div className='d-flex'>
@@ -206,17 +213,14 @@ const Media = ({ movie, cast, keywords, reviews, recommandations, type }) => {
                                   </Link>
                                 </h3>
                                 <div className='rating'>
-                                  <span className='rating-value'>
-                                    {reviews.author_details.rating}
-                                  </span>
+                                  <span className='rating-value'></span>
+                                  {reviews.author_details.rating}.0
                                 </div>
                               </div>
                               <h5>
                                 Written by &nbsp;
-                                <Link
-                                  to={`/u/${reviews.author_details.username}`}
-                                >
-                                  {reviews.author_details.name}
+                                <Link to={`/u/${reviews.author}`}>
+                                  <strong>{reviews.author}</strong>
                                 </Link>
                                 &nbsp; on &nbsp;
                                 {new Date(reviews.created_at).toLocaleString(

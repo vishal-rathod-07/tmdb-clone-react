@@ -1,6 +1,5 @@
 .movie-detail {
   .sortcut-bar {
-    border-bottom: 1px solid rgba(52.5, 31.5, 31.5, 1);
     height: 46px;
     background-color: #fff;
     position: relative;
@@ -246,15 +245,21 @@
                     justify-content: center;
                     justify-items: baseline;
                     font-size: 25px;
-
+                    padding: 4px;
                     span {
-                      font-size: 10px;
-                      padding-bottom: 5px;
+                      font-size: 25px;
+                      position: absolute;
+                      padding-right: 6px;
+
+                      span {
+                        font-size: 12px;
+                        padding-top: 5px;
+                      }
                     }
                   }
                   .text {
                     color: #fff;
-                    margin-left: 6px;
+                    margin-left: 10px;
                     white-space: pre-line;
                   }
                 }
@@ -615,6 +620,27 @@
                       color: #fff;
                       border: 2px solid #fff;
                       transition: linear 0.1s;
+
+                      span {
+                        margin-right: 2px;
+                        background-image: url(https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-49-star-67a24f6d4324aa644c594653e762b1c0de2b3e1ce0852171cfa49cc2650de374.svg);
+                        filter: invert(1);
+                        position: relative;
+                        top: 0;
+                        left: 0;
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        min-width: 1em;
+                        min-height: 1em;
+                        width: 1em;
+                        height: 1em;
+                        line-height: inherit;
+                        background-position: center center;
+                        background-repeat: no-repeat;
+                        color: inherit;
+                        box-sizing: border-box;
+                      }
                     }
 
                     h5 {
