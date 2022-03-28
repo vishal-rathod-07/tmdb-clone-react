@@ -6,23 +6,40 @@ import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   useEffect(() => {
-    document.addEventListener('scroll', () => handleScroll());
+    document.addEventListener('scroll', () => hasScrolled());
 
     return () => {
-      document.removeEventListener('scroll', () => handleScroll());
+      document.removeEventListener('scroll', () => hasScrolled());
     };
   }, []);
 
   const [isNavbarFixed, setIsNavbarFixed] = useState(true);
+
   let lastScrollTop = 0;
-  const handleScroll = () => {
-    const scrollTop = window.scrollY || document.documentElement.scrollTop;
-    if (scrollTop < lastScrollTop) {
-      setIsNavbarFixed(true);
+  var delta = 10;
+  // var navbarHeight = document.querySelector('.navbar').offsetHeight;
+  var navbarHeight = 64;
+  // console.log(navbarHeight);
+
+  const hasScrolled = () => {
+    var st = window.pageYOffset;
+
+    // Make sure they scroll more than delta
+    if (Math.abs(lastScrollTop - st) <= delta) {
+      return;
     } else {
-      setIsNavbarFixed(false);
+      if (st > lastScrollTop && st > navbarHeight) {
+        // Scroll Down
+        setIsNavbarFixed(false);
+      } else {
+        // Scroll Up
+        if (st + window.innerHeight < document.body.scrollHeight) {
+          setIsNavbarFixed(true);
+        }
+      }
     }
-    lastScrollTop = scrollTop;
+
+    lastScrollTop = st;
   };
 
   return (
@@ -56,15 +73,31 @@ const Navbar = () => {
           </button>
           <div className='collapse navbar-collapse' id='navbarSupportedContent'>
             <ul className='navbar-nav me-auto mb-2 mb-lg-0'>
-              <li className='nav-item'>
-                <a className='nav-link active' aria-current='page' href='#'>
+              <li className='mtooltip nav-item'>
+                <Link to='/movie' className='nav-link'>
                   Movies
-                </a>
+                  <div className='tooltipMenu bottomSide'>
+                    <ul className=' list-unstyled'>
+                      <li>Popular</li>
+                      <li>Now Playing</li>
+                      <li>Upcoming</li>
+                      <li>Top Rated</li>
+                    </ul>
+                  </div>
+                </Link>
               </li>
-              <li className='nav-item'>
-                <a className='nav-link' href='#'>
+              <li className='mtooltip nav-item'>
+                <Link to='/tv' className='nav-link'>
                   TV Shows
-                </a>
+                  <div className='tooltipMenu bottomSide'>
+                    <ul className=' list-unstyled'>
+                      <li>Popular</li>
+                      <li>Airing Today</li>
+                      <li>On TV</li>
+                      <li>Top Rated</li>
+                    </ul>
+                  </div>
+                </Link>
               </li>
             </ul>
             <div className='nav-right'>

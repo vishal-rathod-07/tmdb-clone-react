@@ -5,6 +5,107 @@
 
   .navbar-inner {
     padding: 0 40px;
+
+    .tooltipMenu {
+      min-height: 100px;
+      width: 45%;
+    }
+
+    .tooltipMenu ul li {
+      color: #000;
+      font-family: sans-serif;
+      font-size: 15px;
+      width: 100%;
+      background: #fff;
+
+      align-items: center;
+      align-content: center;
+      display: flex;
+      line-height: 1.5;
+      position: relative;
+      padding: 3px 1.5rem;
+      padding-right: calc(3rem + 16px);
+
+      a {
+        padding: 3px 1.5rem;
+        padding-right: calc(3rem + 16px);
+        color: #000;
+        font-weight: 400;
+        align-items: center;
+        position: relative;
+        white-space: nowrap;
+        cursor: pointer;
+      }
+    }
+
+    .tooltipMenu ul {
+      height: 100%;
+      overflow: auto;
+      position: absolute;
+      font-size: 16px;
+      font-family: 'Source Sans Pro', Arial, sans-serif;
+      font-stretch: 100%;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 24px;
+      display: block;
+      transform: translateY(0px);
+      border-color: rgba(0, 0, 0, 0.15);
+      color: #212529;
+      background-color: #fff;
+      width: 100%;
+      padding: 0.5rem 0;
+      border-radius: 0.25rem 0.25rem 0.25rem 0.25rem;
+    }
+
+    .tooltipMenu ul li:hover {
+      color: #16181b;
+      background-color: #f8f9fa;
+      cursor: pointer;
+    }
+
+    .mtooltip {
+      position: relative !important;
+      display: inline-block;
+    }
+
+    .tooltipMenu {
+      width: 173.078px;
+      height: 138px;
+      overflow: visible;
+      z-index: 10002;
+      top: 40px;
+      left: 0px;
+      box-sizing: content-box;
+      display: block;
+      position: absolute;
+      border-radius: 0 0 0.25rem 0.25rem;
+      visibility: hidden;
+      position: absolute;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+    }
+
+    .mtooltip:hover .tooltipMenu {
+      visibility: visible;
+      cursor: pointer;
+    }
+
+    .bottomSide {
+      top: 100%;
+    }
+
+    // .tooltipMenu::after {
+    //   content: ' ';
+    //   position: absolute;
+    //   border-width: 10px;
+    //   border-style: solid;
+    // }
+
+    .bottomSide.tooltipMenu::after {
+      bottom: 100%;
+      left: 45%;
+      border-color: transparent transparent white transparent;
+    }
   }
 }
 
