@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import FormatDate from '../../FormatDate';
 
 const Header = ({ movie, provider, type }) => {
   console.log(movie);
@@ -13,31 +14,11 @@ const Header = ({ movie, provider, type }) => {
   let minutesString = minutes > 0 ? minutes + 'm' : '';
   let runtime = hoursString + minutesString;
 
-  let year;
-  year = movie.release_date || movie.first_air_date.split('-')[0];
-  let formattedyear;
-  let release_date;
-  let formattedmonth;
-  let dt;
+  console.log(movie.first_air_date);
 
-  if (type === 'movie') {
-    release_date = movie.release_date;
-    year = release_date.split('-')[0];
-
-    let date = new Date(release_date);
-    formattedyear = date.getFullYear();
-    formattedmonth = date.getMonth() + 1;
-    dt = date.getDate();
-
-    if (dt < 10) {
-      dt = '0' + dt;
-    }
-    if (formattedmonth < 10) {
-      formattedmonth = '0' + formattedmonth;
-    }
-  }
-
-  console.log(formattedyear + '/' + formattedmonth + '/' + dt);
+  let year =
+    (movie.release_date && movie.release_date.split('-')[0]) ||
+    (movie.first_air_date && movie.first_air_date.split('-')[0]);
 
   return (
     movie && (
@@ -107,7 +88,7 @@ const Header = ({ movie, provider, type }) => {
                       <Link to='/movie/12'>
                         {movie.title || movie.name + ' '}
                       </Link>
-                      <span className='release-date'>{'(' + year + ')'}</span>
+                      <span className='release-date'>{' (' + year + ')'}</span>
                     </h2>
                     <div className='facts d-flex'>
                       {/* <span className='certifications align-items-center align-content-center'>
@@ -115,8 +96,9 @@ const Header = ({ movie, provider, type }) => {
                       </span> */}
                       {type === 'movie' && (
                         <span className='release-date'>
-                          {formattedmonth + '/' + dt + '/' + formattedyear}
-                          {'('}
+                          <FormatDate date={movie.release_date} />
+                          {/* {formattedmonth + '/' + dt + '/' + formattedyear} */}
+                          {' ('}
                           {
                             movie.production_countries[
                               movie.production_countries.length - 1
@@ -144,10 +126,13 @@ const Header = ({ movie, provider, type }) => {
                   </div>
                   <ul className='action-list d-flex align-items-center justify-align-content-start list-unstyled'>
                     <li className='chart'>
-                      <div className='rating'>{movie.vote_average * 10}%</div>
-                      <div className='text'>
+                      <div className='rating'>
+                        {movie.vote_average * 10}
+                        <span>%</span>
+                      </div>
+                      <div className='text fw-bold'>
                         User <br />
-                        Rating
+                        Score
                       </div>
                     </li>
                   </ul>
