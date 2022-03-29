@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import './moviecard.scss';
+import { Circle } from 'rc-progress';
 
 const MovieCard = ({
   id,
@@ -38,7 +39,7 @@ const MovieCard = ({
   }
 
   return (
-    <div className='card style_1'>
+    <div className='m-card style_1'>
       <div className='card-image__wrapper' onClick={() => onMovieClick(id)}>
         <div className='card__image'>
           <Link className='image-link' to={detailsPath}>
@@ -60,7 +61,38 @@ const MovieCard = ({
           <div className='ring'>
             <div className='ring-inner'>
               <div className='percent'>
-                <span className='icon-per'>{rating}%</span>
+                <Circle
+                  percent={movie.vote_average * 10}
+                  strokeWidth='6'
+                  trailWidth='7'
+                  text={movie.vote_average}
+                  trailColor={
+                    movie.vote_average >= 7
+                      ? '#204529'
+                      : movie.vote_average >= 4
+                      ? '#423d0f'
+                      : movie.vote_average !== 0
+                      ? '#ff000054'
+                      : '#565a5b'
+                  }
+                  strokeColor={
+                    movie.vote_average >= 7
+                      ? '#21d07a'
+                      : movie.vote_average >= 4
+                      ? '#d2d531'
+                      : '#ff0000'
+                  }
+                />
+                <span className='rating-text'>
+                  {movie.vote_average > 0 ? (
+                    <>
+                      {movie.vote_average * 10}
+                      <span className='rating-text-suffix'>%</span>
+                    </>
+                  ) : (
+                    'NR'
+                  )}
+                </span>
               </div>
             </div>
           </div>
