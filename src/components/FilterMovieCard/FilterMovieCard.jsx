@@ -14,7 +14,7 @@ const FilterMovieCard = ({
 }) => {
   movie.media_type && (movie.media_type = movie.media_type.toLowerCase());
   // console.log(movie.media_type);
-  console.log(activeTab);
+  //   console.log(activeTab);
   let detailsPath;
   switch (activeTab) {
     case 'On_TV':
