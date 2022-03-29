@@ -76,28 +76,44 @@ const Navbar = () => {
               <li className='mtooltip nav-item'>
                 <Link to='/movie' className='nav-link'>
                   Movies
-                  <div className='tooltipMenu bottomSide'>
-                    <ul className=' list-unstyled'>
-                      <li>Popular</li>
-                      <li>Now Playing</li>
-                      <li>Upcoming</li>
-                      <li>Top Rated</li>
-                    </ul>
-                  </div>
                 </Link>
+                <div className='tooltipMenu bottomSide'>
+                  <ul className=' list-unstyled'>
+                    <li>
+                      <Link to='/movie/category/popular'>Popular</Link>
+                    </li>
+                    <li>
+                      <Link to='/movie/category/now_playing'>Now Playing</Link>
+                    </li>
+                    <li>
+                      <Link to='/movie/category/upcoming'>Upcoming</Link>
+                    </li>
+                    <li>
+                      <Link to='/movie/category/top_rated'>Top Rated</Link>
+                    </li>
+                  </ul>
+                </div>
               </li>
               <li className='mtooltip nav-item'>
                 <Link to='/tv' className='nav-link'>
                   TV Shows
-                  <div className='tooltipMenu bottomSide'>
-                    <ul className=' list-unstyled'>
-                      <li>Popular</li>
-                      <li>Airing Today</li>
-                      <li>On TV</li>
-                      <li>Top Rated</li>
-                    </ul>
-                  </div>
                 </Link>
+                <div className='tooltipMenu bottomSide'>
+                  <ul className=' list-unstyled'>
+                    <li>
+                      <Link to='/tv'>Popular</Link>
+                    </li>
+                    <li>
+                      <Link to='/tv/airing-today'>Airing Today</Link>
+                    </li>
+                    <li>
+                      <Link to='/tv/on-the-air'>On TV</Link>
+                    </li>
+                    <li>
+                      <Link to='/tv/top-rated'>Top Rated</Link>
+                    </li>
+                  </ul>
+                </div>
               </li>
             </ul>
             <div className='nav-right'>
