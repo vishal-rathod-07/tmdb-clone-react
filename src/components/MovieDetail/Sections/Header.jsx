@@ -1,3 +1,4 @@
+import { toBePartiallyChecked } from '@testing-library/jest-dom/dist/matchers';
 import { Line, Circle } from 'rc-progress';
 import { useEffect, useState } from 'react';
 import { ColorExtractor } from 'react-color-extractor';
@@ -12,7 +13,10 @@ const Header = ({ movie, provider, type }) => {
   console.log(movie);
 
   const [colors, setColors] = useState();
-  const [backDropStyles, setBackDropStyles] = useState();
+  const [backDropStyles, setBackDropStyles] = useState({
+    background: `linear-gradient(to right, rgba(227, 227, 227, 1) 150px, rgba(227, 227, 227, 0.84) 100%)`,
+    color: `#000`,
+  });
   backDropStyles && console.log(backDropStyles);
   colors && console.log(colors);
   let totalMinutes = movie.runtime || movie.episode_run_time[0];
@@ -69,6 +73,7 @@ const Header = ({ movie, provider, type }) => {
                           setColors(colors);
                           setBackDropStyles({
                             background: `linear-gradient(to right, rgb(${colors[5][0]}, ${colors[5][1]}, ${colors[5][2]}) 150px, rgba(${colors[2][0]}, ${colors[2][0]}, ${colors[2][0]}, 0.84) 100%)`,
+                            color: `#fff`,
                           });
                         }}
                       >
@@ -120,7 +125,12 @@ const Header = ({ movie, provider, type }) => {
                       <Link to='/movie/12'>
                         {movie.title || movie.name + ' '}
                       </Link>
-                      <span className='release-date'>{' (' + year + ')'}</span>
+
+                      {year && (
+                        <span className='release-date'>
+                          {' (' + year + ')'}
+                        </span>
+                      )}
                     </h2>
                     <div className='facts d-flex'>
                       {/* <span className='certifications align-items-center align-content-center'>
@@ -169,7 +179,9 @@ const Header = ({ movie, provider, type }) => {
                               ? '#204529'
                               : movie.vote_average >= 4
                               ? '#423d0f'
-                              : '#ff000054'
+                              : movie.vote_average !== 0
+                              ? '#ff000054'
+                              : '#565a5b'
                           }
                           strokeColor={
                             movie.vote_average >= 7
