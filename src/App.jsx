@@ -17,7 +17,20 @@ const App = () => {
       <div className='app'>
         <Routes>
           <Route path='/' element={<Main />} />
-          <Route path='/movie' element={<Movies />} />
+          <Route exact path='/movie' element={<Movies type={'popular'} />} />
+          {/*<Route
+            path='/movie/:now-playing'
+            element={<Movies type={'nowPlaying'} />}
+          />
+          <Route
+            path='/movie/:upcoming'
+            element={<Movies type={'upcoming'} />}
+          /> */}
+          <Route
+            path='/movie/category/:type'
+            element={<Movies />}
+            type={'topRated'}
+          />
           <Route path='/movie/:id' element={<MovieDetail type={'movie'} />} />
           <Route path='/tv/:id' element={<MovieDetail type={'tv'} />} />
           <Route path='*' exact={true} element={<PageNotFound />} />
