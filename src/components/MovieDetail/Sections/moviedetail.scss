@@ -39,7 +39,7 @@
     }
   }
   .header {
-    border-bottom: 1px solid rgba(52.5, 31.5, 31.5, 1);
+    // border-bottom: 1px solid rgba(52.5, 31.5, 31.5, 1);
     background-position: right -200px top;
     background-size: cover;
     background-repeat: no-repeat;
@@ -51,7 +51,7 @@
         z-index: 0;
         max-width: 1400px;
         .header-inner {
-          color: #fff;
+          color: inherit;
 
           .poster-wrapper {
             min-width: 300px;
@@ -129,7 +129,7 @@
           }
 
           .details-wrapper {
-            color: #fff;
+            color: inherit;
 
             .details {
               padding-left: 40px;
@@ -141,7 +141,7 @@
                   font-size: 2.2rem;
                   font-weight: 700;
                   a {
-                    color: #fff;
+                    color: inherit;
                     font-weight: 600;
                     text-decoration: none;
                   }
@@ -192,7 +192,7 @@
 
                     span {
                       a {
-                        color: #fff;
+                        color: inherit;
                         text-decoration: none;
                       }
                       padding: 0px;
@@ -239,6 +239,7 @@
                     height: 68px;
                     display: inline-block;
                     background-color: #000;
+                    color: #fff;
                     border-radius: 50%;
                     display: flex;
                     align-items: center;
@@ -258,7 +259,7 @@
                     }
                   }
                   .text {
-                    color: #fff;
+                    color: inherit;
                     margin-left: 10px;
                     white-space: pre-line;
                   }
@@ -266,12 +267,12 @@
                 .movietooltip {
                   padding: 3px 0;
                   margin-right: 20px;
-                  color: #fff;
+                  color: inherit;
                 }
               }
 
               .description {
-                color: #fff;
+                color: inherit;
                 .tagline {
                   margin-bottom: 0;
                   font-size: 1.1em;
@@ -318,7 +319,7 @@
                       text-overflow: ellipsis;
 
                       a {
-                        color: #fff;
+                        color: inherit;
                         text-decoration: none;
                         font-weight: 600;
                       }
@@ -730,6 +731,7 @@
                     .recommandation-item {
                       width: 250px;
                       margin: 0 15px 0 0;
+                      border: none;
                     }
 
                     .image {
