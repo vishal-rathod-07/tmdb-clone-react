@@ -95,22 +95,22 @@ const Navbar = () => {
                 </div>
               </li>
               <li className='mtooltip nav-item'>
-                <Link to='/tv' className='nav-link'>
+                <Link to='/tv/category/popular' className='nav-link'>
                   TV Shows
                 </Link>
                 <div className='tooltipMenu bottomSide'>
                   <ul className=' list-unstyled'>
                     <li>
-                      <Link to='/tv'>Popular</Link>
+                      <Link to='/tv/category/popular'>Popular</Link>
                     </li>
                     <li>
-                      <Link to='/tv/airing-today'>Airing Today</Link>
+                      <Link to='/tv/category/airing_today'>Airing Today</Link>
                     </li>
                     <li>
-                      <Link to='/tv/on-the-air'>On TV</Link>
+                      <Link to='/tv/category/on_the_air'>On TV</Link>
                     </li>
                     <li>
-                      <Link to='/tv/top-rated'>Top Rated</Link>
+                      <Link to='/tv/category/top_rated'>Top Rated</Link>
                     </li>
                   </ul>
                 </div>
