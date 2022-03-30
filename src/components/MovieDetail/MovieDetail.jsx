@@ -7,8 +7,8 @@ import './Sections/moviedetail.scss';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
-const MovieDetail = ({ type }) => {
-  const { id } = useParams();
+const MovieDetail = () => {
+  const { type, id } = useParams();
   // console.log(id);
   const [movie, setMovie] = useState(null);
   const [social, setSocial] = useState(null);
