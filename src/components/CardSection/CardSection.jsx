@@ -9,10 +9,13 @@ const CardSection = ({
   activeTab,
   setActiveTab,
   movies,
+  cardVisiblity,
+  setCardVisiblity,
 }) => {
   console.log(movies);
   const onTabClick = (id) => {
     console.log(id);
+    setCardVisiblity(!cardVisiblity);
     setActiveTab(id);
   };
 
@@ -60,6 +63,7 @@ const CardSection = ({
                     onMovieClick={onMovieClick}
                     activeTab={activeTab}
                     movie={movie}
+                    cardVisiblity={cardVisiblity}
                   />
                 ))}
                 <div className='card spacer'></div>
