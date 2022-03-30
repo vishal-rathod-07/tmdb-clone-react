@@ -74,7 +74,7 @@ const Navbar = () => {
           <div className='collapse navbar-collapse' id='navbarSupportedContent'>
             <ul className='navbar-nav me-auto mb-2 mb-lg-0'>
               <li className='mtooltip nav-item'>
-                <Link to='/movie' className='nav-link'>
+                <Link to='/movie/category/popular' className='nav-link'>
                   Movies
                 </Link>
                 <div className='tooltipMenu bottomSide'>
