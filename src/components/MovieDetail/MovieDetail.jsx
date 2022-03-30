@@ -2,6 +2,8 @@ import SortcutBar from './Sections/SortcutBar';
 import Header from './Sections/Header';
 import Media from './Sections/Media';
 
+import spinner from '../../assets/images/loader.gif';
+
 import './Sections/moviedetail.scss';
 
 import { useState, useEffect } from 'react';
@@ -179,25 +181,27 @@ const MovieDetail = () => {
     }
   }, [movie, social, cast, reviews, provider, keywords]);
 
-  return (
-    !loading && (
-      <section className='movie-detail container-fluid p-0'>
-        <SortcutBar />
-        {movie && provider && (
-          <Header movie={movie} provider={provider} type={type} />
-        )}
-        {cast && reviews && recommandations && provider && (
-          <Media
-            movie={movie}
-            cast={cast}
-            keywords={keywords}
-            reviews={reviews}
-            recommandations={recommandations}
-            type={type}
-          />
-        )}
-      </section>
-    )
+  return loading ? (
+    <div className='loading d-flex w-100 h-100 align-items-center justify-content-center'>
+      <img src={spinner} alt='Loading' />
+    </div>
+  ) : (
+    <section className='movie-detail container-fluid p-0'>
+      <SortcutBar />
+      {movie && provider && (
+        <Header movie={movie} provider={provider} type={type} />
+      )}
+      {cast && reviews && recommandations && provider && (
+        <Media
+          movie={movie}
+          cast={cast}
+          keywords={keywords}
+          reviews={reviews}
+          recommandations={recommandations}
+          type={type}
+        />
+      )}
+    </section>
   );
 };
 
