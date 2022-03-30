@@ -26,13 +26,8 @@ const App = () => {
             path='/movie/:upcoming'
             element={<Movies type={'upcoming'} />}
           /> */}
-          <Route
-            path='/movie/category/:type'
-            element={<Movies />}
-            type={'topRated'}
-          />
-          <Route path='/movie/:id' element={<MovieDetail type={'movie'} />} />
-          <Route path='/tv/:id' element={<MovieDetail type={'tv'} />} />
+          <Route path='/:showType/category/:type' element={<Movies />} />
+          <Route path='/:type/:id' element={<MovieDetail />} />
           <Route path='*' exact={true} element={<PageNotFound />} />
         </Routes>
       </div>
