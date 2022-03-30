@@ -164,6 +164,28 @@
               flex-wrap: wrap;
             }
           }
+
+          .load_more {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            background-color: rgb(1, 180, 228);
+            margin-top: 30px;
+            border-radius: 8px;
+            height: 50px;
+            align-items: center;
+            justify-content: center;
+
+            a {
+              font-size: 1.5em;
+              font-weight: 700;
+              color: #fff;
+              display: block;
+              margin-left: 4px;
+              margin-right: 4px;
+              text-decoration: none;
+            }
+          }
         }
       }
     }
