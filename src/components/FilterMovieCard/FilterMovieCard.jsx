@@ -9,29 +9,16 @@ const FilterMovieCard = ({
   date,
   rating,
   onMovieClick,
-  activeTab,
+  showType,
   movie,
 }) => {
   movie.media_type && (movie.media_type = movie.media_type.toLowerCase());
   // console.log(movie.media_type);
   //   console.log(activeTab);
   let detailsPath;
-  switch (activeTab) {
-    case 'On_TV':
+  switch (showType) {
+    case 'tv':
       detailsPath = `/tv/${id}`;
-      break;
-    case 'In_Theaters':
-      detailsPath = `/movie/${id}`;
-      break;
-    case 'Today':
-      movie.media_type === 'tv'
-        ? (detailsPath = `/tv/${id}`)
-        : (detailsPath = `/movie/${id}`);
-      break;
-    case 'This_Week':
-      movie.media_type === 'tv'
-        ? (detailsPath = `/tv/${id}`)
-        : (detailsPath = `/movie/${id}`);
       break;
     default:
       detailsPath = `/movie/${id}`;
