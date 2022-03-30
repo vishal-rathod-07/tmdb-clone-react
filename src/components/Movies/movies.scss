@@ -157,6 +157,16 @@
 
           .media_items {
             margin: 0;
+            .loader {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              overflow: hidden;
+
+              img {
+                height: 200px;
+              }
+            }
             .page_1 {
               width: 100%;
               display: flex;
