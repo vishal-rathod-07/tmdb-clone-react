@@ -328,16 +328,18 @@ const Movies = () => {
                           </div>
                         </InfiniteScroll>
                       )}
-                      <div className='load_more'>
-                        <Link
-                          to=''
-                          onClick={() => {
-                            setHasMore(true);
-                          }}
-                        >
-                          Load More
-                        </Link>
-                      </div>
+                      {page !== totalPages && (
+                        <div className='load_more'>
+                          <Link
+                            to=''
+                            onClick={() => {
+                              setHasMore(true);
+                            }}
+                          >
+                            Load More
+                          </Link>
+                        </div>
+                      )}
                     </div>
                   </section>
                 </div>
