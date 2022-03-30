@@ -287,28 +287,28 @@ const Movies = () => {
                               setSortBy(eventKey);
                             }}
                           >
-                            <Dropdown.Item eventKey='1'>
+                            <Dropdown.Item eventKey='popularity.desc'>
                               Popularity Descending
                             </Dropdown.Item>
-                            <Dropdown.Item eventKey='2'>
+                            <Dropdown.Item eventKey='popularity.asc'>
                               Popularity Ascending
                             </Dropdown.Item>
-                            <Dropdown.Item eventKey='3'>
+                            <Dropdown.Item eventKey='vote_average.desc'>
                               Rating Descending
                             </Dropdown.Item>
-                            <Dropdown.Item eventKey='4'>
+                            <Dropdown.Item eventKey='vote_count.asc'>
                               Rating Ascending
                             </Dropdown.Item>
-                            <Dropdown.Item eventKey='5'>
+                            <Dropdown.Item eventKey='release_date.desc'>
                               Release Date Descending
                             </Dropdown.Item>
-                            <Dropdown.Item eventKey='6'>
+                            <Dropdown.Item eventKey='release_date.asc'>
                               Release Date Ascending
                             </Dropdown.Item>
-                            <Dropdown.Item eventKey='7'>
+                            <Dropdown.Item eventKey='original_title.asc'>
                               Title (A-Z)
                             </Dropdown.Item>
-                            <Dropdown.Item eventKey='8'>
+                            <Dropdown.Item eventKey='original_title.desc'>
                               Title (Z-A)
                             </Dropdown.Item>
                           </DropdownButton>
