@@ -141,11 +141,10 @@ const Header = ({ movie, provider, type }) => {
                           <FormatDate date={movie.release_date} />
                           {/* {formattedmonth + '/' + dt + '/' + formattedyear} */}
                           {' ('}
-                          {
+                          {movie.production_countries.iso_3166_1 &&
                             movie.production_countries[
                               movie.production_countries.length - 1
-                            ].iso_3166_1
-                          }
+                            ].iso_3166_1}
                           {')'}
                         </span>
                       )}
