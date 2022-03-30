@@ -11,6 +11,7 @@ const MovieCard = ({
   onMovieClick,
   activeTab,
   movie,
+  cardVisiblity,
 }) => {
   movie.media_type && (movie.media_type = movie.media_type.toLowerCase());
   // console.log(movie.media_type);
@@ -39,7 +40,10 @@ const MovieCard = ({
   }
 
   return (
-    <div className='m-card style_1'>
+    <div
+      className={`m-card style_1
+      ${cardVisiblity ? 'fade-in' : 'fade-out'}`}
+    >
       <div className='card-image__wrapper' onClick={() => onMovieClick(id)}>
         <div className='card__image'>
           <Link className='image-link' to={detailsPath}>
