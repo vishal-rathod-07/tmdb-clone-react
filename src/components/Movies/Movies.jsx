@@ -8,40 +8,85 @@ import { NOW_PLAYING, UPCOMING, TOP_RATED, POPULAR } from '../Constants';
 import FilterMovieCard from '../FilterMovieCard/FilterMovieCard';
 import { Dropdown, Accordion, DropdownButton } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 const Movies = () => {
   const { type } = useParams();
 
+  useEffect(() => {
+    setPage(1);
+    setMovies([]);
+  }, [type]);
+
   //Fetch movies based on type
-  const [movies, setMovies] = useState(null);
-  const [filteredMovies, setFilteredMovies] = useState(movies);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [filtersArray, setFiltersArray] = useState([]);
-  const [sortFilter, setSortFilter] = useState(null);
+  const [movies, setMovies] = useState(null);
+  const [hasMore, setHasMore] = useState(false);
+  const [page, setPage] = useState(1);
 
-  console.log(filteredMovies);
+  const [totalPages, setTotalPages] = useState(null);
+
+  console.log(page);
 
   useEffect(() => {
-    const fetchMovies = async () => {
-      try {
-        const moviesResponse = await fetch(
-          `https://api.themoviedb.org/3/movie/${type}?api_key=${process.env.REACT_APP_API_KEY}&language=en-US&page=1`
-        );
-        const data = await moviesResponse.json();
+    setLoading(true);
+    setError(null);
+    setMovies(null);
+    setHasMore(false);
+    setTotalPages(null);
+
+    fetch(
+      `https://api.themoviedb.org/3/movie/${type}?api_key=${process.env.REACT_APP_API_KEY}&language=en-US&page=1`
+    )
+      .then((response) => response.json())
+      .then((data) => {
         setMovies(data.results);
+        console.log(data.total_pages);
+        console.log('====', data.page);
+        setTotalPages(data.total_pages);
         setLoading(false);
-        console.log('Movies Fetch Sucess');
-      } catch (error) {
+      })
+      .catch((error) => {
         setError(error);
-      }
-    };
-    fetchMovies();
+        setLoading(false);
+      });
   }, [type]);
+
+  const [filteredMovies, setFilteredMovies] = useState(movies);
+  const [filtersArray, setFiltersArray] = useState([]);
+
+  // console.log(filteredMovies);
+
+  movies && console.log(movies.length);
 
   useEffect(() => {
     setFilteredMovies(movies);
   }, [movies]);
+
+  const fetchMoreMovies = () => {
+    setLoading(true);
+    setError(null);
+    setPage(page + 1);
+
+    fetch(
+      `https://api.themoviedb.org/3/movie/${type}?api_key=${
+        process.env.REACT_APP_API_KEY
+      }&language=en-US&page=${page + 1}`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data.total_pages);
+        console.log('====', data.page);
+        setMovies([...movies, ...data.results]);
+        setHasMore(data.total_pages > page);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setError(error);
+        setLoading(false);
+      });
+  };
 
   //Fetch filter
   const [filterList, setFilterList] = useState(null);
@@ -62,52 +107,18 @@ const Movies = () => {
     fetchFilter();
   }, []);
 
-  //Fetch sort filter
-  const [sortFilterList, setSortFilterList] = useState(null);
-
-  useEffect(() => {
-    const fetchSortFilter = async () => {
-      try {
-        const sortFilterResponse = await fetch(
-          `https://api.themoviedb.org/3/movie/${type}/statuses?api_key=${process.env.REACT_APP_API_KEY}&language=en-US`
-        );
-        const data = await sortFilterResponse.json();
-        setSortFilterList(data.statuses);
-        console.log('Sort Filter Fetch Sucess');
-      } catch (error) {
-        setError(error);
-      }
-    };
-    fetchSortFilter();
-  }, [type]);
-
   //Fetch filter
-  const [filterSelected, setFilterSelected] = useState(null);
 
-  useEffect(() => {
-    const fetchFilterSelected = async () => {
-      try {
-        const filterSelectedResponse = await fetch(
-          `https://api.themoviedb.org/3/movie/${type}/list?api_key=${process.env.REACT_APP_API_KEY}&language=en-US`
-        );
-        const data = await filterSelectedResponse.json();
-        setFilterSelected(data.results);
-        console.log('Filter Selected Fetch Sucess');
-      } catch (error) {
-        setError(error);
-      }
-    };
-    fetchFilterSelected();
-  }, [type]);
-
-  console.log(filterList);
-  console.log(movies);
+  // console.log(filterList);
+  // console.log(movies);
 
   const onMovieClick = (movie) => {
     console.log(movie);
   };
 
-  console.log(filtersArray);
+  // console.log(filtersArray);
+
+  console.log(hasMore);
 
   const toggleFilter = (filter) => {
     if (filtersArray.includes(filter)) {
@@ -122,14 +133,6 @@ const Movies = () => {
       return movies.filter((movie) =>
         filtersArray.some((filter) => movie.genre_ids.includes(filter.id))
       );
-    } else {
-      return movies;
-    }
-  };
-
-  const getFilteredMoviesBySort = () => {
-    if (sortFilter) {
-      return movies.filter((movie) => movie.status === sortFilter);
     } else {
       return movies;
     }
@@ -281,39 +284,59 @@ const Movies = () => {
                     </Accordion.Item>
                   </Accordion>
                 </div>
-                <div
-                  className='search-btn'
-                  onClick={() => {
-                    setFiltersArray([]);
-                    setSortFilter('');
-                    setFilteredMovies(getFilteredMovies());
-                  }}
-                >
-                  Search
-                </div>
+                <div className='search-btn'>Search</div>
               </div>
               <div className='movies-section'>
                 <div className='wrapper'>
                   <section className='pannel'>
                     <div className='media_items'>
-                      <div className='page_1'>
-                        {movies &&
-                          movies.map((movie, index) => (
-                            <FilterMovieCard
-                              key={index}
-                              id={movie.id}
-                              poster={movie.poster_path}
-                              title={movie.name || movie.title}
-                              date={movie.first_air_date || movie.release_date}
-                              rating={movie.vote_average * 10}
-                              onMovieClick={onMovieClick}
-                              activeTab={activeTab}
-                              movie={movie}
-                            />
-                          ))}
-                      </div>
+                      {movies && (
+                        <InfiniteScroll
+                          dataLength={movies.length}
+                          next={() => {
+                            fetchMoreMovies();
+                          }}
+                          hasMore={hasMore}
+                          loader={
+                            <div className='loader'>
+                              <img
+                                src={require('../../assets/images/loader.gif')}
+                                alt='loader'
+                                height={'10px'}
+                                width={'10px'}
+                              />
+                            </div>
+                          }
+                        >
+                          <div className='page_1'>
+                            {movies &&
+                              movies.map((movie, index) => (
+                                <FilterMovieCard
+                                  key={index}
+                                  id={movie.id}
+                                  poster={movie.poster_path}
+                                  title={movie.name || movie.title}
+                                  date={
+                                    movie.first_air_date || movie.release_date
+                                  }
+                                  rating={movie.vote_average * 10}
+                                  onMovieClick={onMovieClick}
+                                  activeTab={activeTab}
+                                  movie={movie}
+                                />
+                              ))}
+                          </div>
+                        </InfiniteScroll>
+                      )}
                       <div className='load_more'>
-                        <Link to='/movies'>Load More</Link>
+                        <Link
+                          to=''
+                          onClick={() => {
+                            setHasMore(true);
+                          }}
+                        >
+                          Load More
+                        </Link>
                       </div>
                     </div>
                   </section>
