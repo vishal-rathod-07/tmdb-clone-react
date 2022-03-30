@@ -7,11 +7,10 @@ import FilterMovieCard from '../FilterMovieCard/FilterMovieCard';
 import { Dropdown, Accordion, DropdownButton } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import LoadingBar from 'react-top-loading-bar';
 
 const Movies = () => {
   const { showType, type } = useParams();
-
-  // console.log(showType);
 
   useEffect(() => {
     setPage(1);
@@ -19,15 +18,21 @@ const Movies = () => {
   }, [type]);
 
   //Fetch movies based on type
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [movies, setMovies] = useState(null);
-  const [hasMore, setHasMore] = useState(false);
-  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(true); //Loading
+  const [error, setError] = useState(null); //Error handling
+  const [movies, setMovies] = useState(null); //Array of movies
+  const [hasMore, setHasMore] = useState(false); //Infinite scroll
+  const [page, setPage] = useState(1); //Page number
+  const [totalPages, setTotalPages] = useState(null); //total pages of movies
 
-  const [totalPages, setTotalPages] = useState(null);
+  const [sortBy, setSortBy] = useState(null); //Sort by popularity or rating or release date or title
 
-  const [sortBy, setSortBy] = useState(null);
+  const [filteredMovies, setFilteredMovies] = useState(movies); //Filtered movies
+  const [filtersArray, setFiltersArray] = useState([]); //Array of filters
+
+  const [filterList, setFilterList] = useState(null); //Filter list
+
+  const [progress, setProgress] = useState(10); //Progress bar
 
   // console.log(page);
 
@@ -47,27 +52,36 @@ const Movies = () => {
       .then((response) => response.json())
       .then((data) => {
         setMovies(data.results);
-        // console.log(data.total_pages);
-        // console.log('====', data.page);
         setTotalPages(data.total_pages);
         setLoading(false);
+        setProgress(100);
       })
       .catch((error) => {
         setError(error);
         setLoading(false);
       });
-  }, [showType, type]);
-
-  const [filteredMovies, setFilteredMovies] = useState(movies);
-  const [filtersArray, setFiltersArray] = useState([]);
-
-  console.log(filteredMovies);
-
-  // movies && console.log(movies.length);
+  }, [showType, type]); //Runs when showType or type changes
 
   useEffect(() => {
     setFilteredMovies(movies);
-  }, [movies]);
+  }, [movies]); //Runs when movies changes
+
+  useEffect(() => {
+    const fetchFilter = async () => {
+      try {
+        const filterResponse = await fetch(
+          `https://api.themoviedb.org/3/genre/${
+            showType === 'tv' ? 'tv/' : 'movie/'
+          }list?api_key=${process.env.REACT_APP_API_KEY}&language=en-US`
+        );
+        const data = await filterResponse.json();
+        setFilterList(data.genres);
+      } catch (error) {
+        setError(error);
+      }
+    };
+    fetchFilter();
+  }, [showType]); //Runs when showType changes
 
   const fetchMoreMovies = () => {
     setLoading(true);
@@ -88,39 +102,19 @@ const Movies = () => {
         setMovies([...movies, ...data.results]);
         setHasMore(data.total_pages > page);
         setLoading(false);
+        setProgress(100);
       })
       .catch((error) => {
         setError(error);
         setLoading(false);
       });
-  };
-
-  //Fetch filter
-  const [filterList, setFilterList] = useState(null);
-
-  useEffect(() => {
-    const fetchFilter = async () => {
-      try {
-        const filterResponse = await fetch(
-          `https://api.themoviedb.org/3/genre/${
-            showType === 'tv' ? 'tv/' : 'movie/'
-          }list?api_key=${process.env.REACT_APP_API_KEY}&language=en-US`
-        );
-        const data = await filterResponse.json();
-        setFilterList(data.genres);
-        // console.log('Filter Fetch Sucess');
-      } catch (error) {
-        setError(error);
-      }
-    };
-    fetchFilter();
-  }, []);
+  }; //Fetch more movies
 
   const onMovieClick = (movie) => {
     console.log(movie);
   };
 
-  const handleSearchClick = (e) => {
+  const handleSearch = () => {
     if (sortBy) {
       switch (sortBy) {
         case '1':
@@ -237,226 +231,239 @@ const Movies = () => {
   };
 
   return (
-    <section className='content container'>
-      <div className='media'>
-        <div className='column d-flex align-items-start w-100 justify-content-center align-content-start'>
-          <div className='content_wrapper d-flex align-items-start align-content-start flex-wrap'>
-            <div className='title row w-100'>
-              <h2 className='w-100 m-0 p-0 fw-bold'>Popular Movies</h2>
-            </div>
-            <div className='content d-flex align-items-start w-100'>
-              <div className='filter-section'>
-                <div className='filter-section_wrapper'>
-                  <Accordion
-                    style={{
-                      width: '100%',
-                      borderRadius: '8px',
-                    }}
-                  >
-                    <Accordion.Item eventKey='0'>
-                      <Accordion.Header>Sort</Accordion.Header>
-                      <Accordion.Body>
-                        <h3
-                          style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            width: '100%',
-                            fontSize: '1em',
-                            fontWeight: '300',
-                            marginBottom: '10px',
-                          }}
-                          className='filter-title p-0'
-                        >
-                          Sort Results By
-                        </h3>
-                        <DropdownButton
-                          id='dropdown-basic-button'
-                          title='Popularity'
-                          variant='secondary'
-                          style={{
-                            width: '100%',
-                            fontSize: '1em',
-                            fontWeight: '300',
-                            marginBottom: '10px',
-                          }}
-                          onSelect={(eventKey) => {
-                            console.log(eventKey);
-                            setSortBy(eventKey);
-                          }}
-                        >
-                          <Dropdown.Item eventKey='1'>
-                            Popularity Descending
-                          </Dropdown.Item>
-                          <Dropdown.Item eventKey='2'>
-                            Popularity Ascending
-                          </Dropdown.Item>
-                          <Dropdown.Item eventKey='3'>
-                            Rating Descending
-                          </Dropdown.Item>
-                          <Dropdown.Item eventKey='4'>
-                            Rating Ascending
-                          </Dropdown.Item>
-                          <Dropdown.Item eventKey='5'>
-                            Release Date Descending
-                          </Dropdown.Item>
-                          <Dropdown.Item eventKey='6'>
-                            Release Date Ascending
-                          </Dropdown.Item>
-                          <Dropdown.Item eventKey='7'>
-                            Title (A-Z)
-                          </Dropdown.Item>
-                          <Dropdown.Item eventKey='8'>
-                            Title (Z-A)
-                          </Dropdown.Item>
-                        </DropdownButton>
-                      </Accordion.Body>
-                    </Accordion.Item>
-                  </Accordion>
-                </div>
-                <div className='filter-section_wrapper'>
-                  <Accordion
-                    style={{
-                      width: '100%',
-                    }}
-                  >
-                    <Accordion.Item eventKey='0'>
-                      <Accordion.Header>Filters</Accordion.Header>
-                      <Accordion.Body>
-                        <h3
-                          style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            width: '100%',
-                            fontSize: '1em',
-                            fontWeight: '300',
-                            marginBottom: '10px',
-                          }}
-                          className='filter-title p-0'
-                        >
-                          Generes
-                        </h3>
-                        <ul className='filter-list p-0'>
-                          {filterList &&
-                            filterList.map((filter) => (
-                              <li
-                                key={filter.id}
-                                className={`filter-list_item ${
-                                  filtersArray.includes(filter.id)
-                                    ? 'filter-list_item-active'
-                                    : ''
-                                }`}
-                                onClick={() => {
-                                  toggleFilter(filter.id);
-                                  console.log(filter.id);
-                                }}
-                              >
-                                {filter.name}
-                              </li>
-                            ))}
-                        </ul>
-                      </Accordion.Body>
-                    </Accordion.Item>
-                  </Accordion>
-                </div>
-                <div className='filter-section_wrapper'>
-                  <Accordion
-                    style={{
-                      width: '100%',
-                    }}
-                  >
-                    <Accordion.Item eventKey='0'>
-                      <Accordion.Header>Where To Watch</Accordion.Header>
-                      <Accordion.Body>
-                        <h3
-                          style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            width: '100%',
-                            fontSize: '1em',
-                            fontWeight: '300',
-                            marginBottom: '10px',
-                          }}
-                          className='filter-title m-0 p-0'
-                        >
-                          Sort Results By
-                        </h3>
-                      </Accordion.Body>
-                    </Accordion.Item>
-                  </Accordion>
-                </div>
-                <div className='search-btn' onClick={handleSearchClick}>
-                  Search
-                </div>
+    <>
+      <LoadingBar
+        color='#01b4e4'
+        progress={progress}
+        onLoaderFinished={() => setProgress(0)}
+        shadow={true}
+        height={4}
+        transitionTime={400}
+      />
+      <section className='content container'>
+        <div className='media'>
+          <div className='column d-flex align-items-start w-100 justify-content-center align-content-start'>
+            <div className='content_wrapper d-flex align-items-start align-content-start flex-wrap'>
+              <div className='title row w-100'>
+                <h2 className='w-100 m-0 p-0 fw-bold'>Popular Movies</h2>
               </div>
-              <div className='movies-section'>
-                <div className='wrapper'>
-                  <section className='pannel'>
-                    <div className='media_items'>
-                      {loading ? (
-                        <div className='loader'>
-                          <img
-                            src={require('../../assets/images/loader.gif')}
-                            alt='loader'
-                          />
-                        </div>
-                      ) : null}
-                      {movies && (
-                        <InfiniteScroll
-                          dataLength={movies.length}
-                          next={() => {
-                            fetchMoreMovies();
-                          }}
-                          hasMore={hasMore}
-                          loader={
-                            <div className='loader'>
-                              <img
-                                src={require('../../assets/images/loader.gif')}
-                                alt='loader'
-                              />
-                            </div>
-                          }
-                        >
-                          <div className='page_1'>
-                            {filteredMovies &&
-                              filteredMovies.map((movie, index) => (
-                                <FilterMovieCard
-                                  key={index}
-                                  id={movie.id}
-                                  poster={movie.poster_path}
-                                  title={movie.name || movie.title}
-                                  date={
-                                    movie.first_air_date || movie.release_date
-                                  }
-                                  rating={movie.vote_average * 10}
-                                  onMovieClick={onMovieClick}
-                                  showType={showType}
-                                  movie={movie}
-                                />
-                              ))}
-                          </div>
-                        </InfiniteScroll>
-                      )}
-                      {page !== totalPages && (
-                        <div className='load_more'>
-                          <Link
-                            to=''
-                            onClick={() => {
-                              setHasMore(true);
+              <div className='content d-flex align-items-start w-100'>
+                <div className='filter-section'>
+                  <div className='filter-section_wrapper'>
+                    <Accordion
+                      style={{
+                        width: '100%',
+                        borderRadius: '8px',
+                      }}
+                    >
+                      <Accordion.Item eventKey='0'>
+                        <Accordion.Header>Sort</Accordion.Header>
+                        <Accordion.Body>
+                          <h3
+                            style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              width: '100%',
+                              fontSize: '1em',
+                              fontWeight: '300',
+                              marginBottom: '10px',
+                            }}
+                            className='filter-title p-0'
+                          >
+                            Sort Results By
+                          </h3>
+                          <DropdownButton
+                            id='dropdown-basic-button'
+                            title='Popularity'
+                            variant='secondary'
+                            style={{
+                              width: '100%',
+                              fontSize: '1em',
+                              fontWeight: '300',
+                              marginBottom: '10px',
+                            }}
+                            onSelect={(eventKey) => {
+                              console.log(eventKey);
+                              setSortBy(eventKey);
                             }}
                           >
-                            Load More
-                          </Link>
-                        </div>
-                      )}
-                    </div>
-                  </section>
+                            <Dropdown.Item eventKey='1'>
+                              Popularity Descending
+                            </Dropdown.Item>
+                            <Dropdown.Item eventKey='2'>
+                              Popularity Ascending
+                            </Dropdown.Item>
+                            <Dropdown.Item eventKey='3'>
+                              Rating Descending
+                            </Dropdown.Item>
+                            <Dropdown.Item eventKey='4'>
+                              Rating Ascending
+                            </Dropdown.Item>
+                            <Dropdown.Item eventKey='5'>
+                              Release Date Descending
+                            </Dropdown.Item>
+                            <Dropdown.Item eventKey='6'>
+                              Release Date Ascending
+                            </Dropdown.Item>
+                            <Dropdown.Item eventKey='7'>
+                              Title (A-Z)
+                            </Dropdown.Item>
+                            <Dropdown.Item eventKey='8'>
+                              Title (Z-A)
+                            </Dropdown.Item>
+                          </DropdownButton>
+                        </Accordion.Body>
+                      </Accordion.Item>
+                    </Accordion>
+                  </div>
+                  <div className='filter-section_wrapper'>
+                    <Accordion
+                      style={{
+                        width: '100%',
+                      }}
+                    >
+                      <Accordion.Item eventKey='0'>
+                        <Accordion.Header>Filters</Accordion.Header>
+                        <Accordion.Body>
+                          <h3
+                            style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              width: '100%',
+                              fontSize: '1em',
+                              fontWeight: '300',
+                              marginBottom: '10px',
+                            }}
+                            className='filter-title p-0'
+                          >
+                            Generes
+                          </h3>
+                          <ul className='filter-list p-0'>
+                            {filterList &&
+                              filterList.map((filter) => (
+                                <li
+                                  key={filter.id}
+                                  className={`filter-list_item ${
+                                    filtersArray.includes(filter.id)
+                                      ? 'filter-list_item-active'
+                                      : ''
+                                  }`}
+                                  onClick={() => {
+                                    toggleFilter(filter.id);
+                                    console.log(filter.id);
+                                  }}
+                                >
+                                  {filter.name}
+                                </li>
+                              ))}
+                          </ul>
+                        </Accordion.Body>
+                      </Accordion.Item>
+                    </Accordion>
+                  </div>
+                  <div className='filter-section_wrapper'>
+                    <Accordion
+                      style={{
+                        width: '100%',
+                      }}
+                    >
+                      <Accordion.Item eventKey='0'>
+                        <Accordion.Header>Where To Watch</Accordion.Header>
+                        <Accordion.Body>
+                          <h3
+                            style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              width: '100%',
+                              fontSize: '1em',
+                              fontWeight: '300',
+                              marginBottom: '10px',
+                            }}
+                            className='filter-title m-0 p-0'
+                          >
+                            Sort Results By
+                          </h3>
+                        </Accordion.Body>
+                      </Accordion.Item>
+                    </Accordion>
+                  </div>
+                  <div className='search-btn' onClick={handleSearch}>
+                    Search
+                  </div>
+                </div>
+                <div className='movies-section'>
+                  <div className='wrapper'>
+                    <section className='pannel'>
+                      <div className='media_items'>
+                        {loading && (
+                          <div className='loader'>
+                            <img
+                              src={require('../../assets/images/loader.gif')}
+                              alt='loader'
+                            />
+                          </div>
+                        )}
+                        {movies && (
+                          <InfiniteScroll
+                            dataLength={movies.length}
+                            next={() => {
+                              setProgress(50);
+                              fetchMoreMovies();
+                            }}
+                            hasMore={hasMore}
+                            loader={
+                              <div className='loader'>
+                                <img
+                                  src={require('../../assets/images/loader.gif')}
+                                  alt='loader'
+                                />
+                              </div>
+                            }
+                          >
+                            <div className='page_1'>
+                              {filteredMovies &&
+                                filteredMovies.map((movie, index) => (
+                                  <FilterMovieCard
+                                    key={index}
+                                    id={movie.id}
+                                    poster={movie.poster_path}
+                                    title={movie.name || movie.title}
+                                    date={
+                                      movie.first_air_date || movie.release_date
+                                    }
+                                    rating={movie.vote_average * 10}
+                                    onMovieClick={onMovieClick}
+                                    showType={showType}
+                                    movie={movie}
+                                  />
+                                ))}
+                            </div>
+                          </InfiniteScroll>
+                        )}
+                        {page !== totalPages && (
+                          <div className='load_more'>
+                            <Link
+                              to=''
+                              onClick={() => {
+                                setHasMore(true);
+                                fetchMoreMovies();
+                                setProgress(50);
+                              }}
+                            >
+                              Load More
+                            </Link>
+                          </div>
+                        )}
+                      </div>
+                    </section>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 };
 
