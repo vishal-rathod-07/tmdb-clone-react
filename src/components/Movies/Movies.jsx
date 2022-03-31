@@ -9,17 +9,22 @@ import { Link } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import LoadingBar from 'react-top-loading-bar';
 
+import DatePicker from 'react-datepicker';
+
+import 'react-datepicker/dist/react-datepicker.css';
+
 const Movies = () => {
-  const { showType, type } = useParams();
+  const { showType, categoryType } = useParams();
 
   useEffect(() => {
     setPage(1);
     setMovies([]);
-  }, [type]);
+  }, [categoryType]);
 
   //Fetch movies based on type
   const [loading, setLoading] = useState(true); //Loading
   const [error, setError] = useState(null); //Error handling
+
   const [movies, setMovies] = useState(null); //Array of movies
   const [hasMore, setHasMore] = useState(false); //Infinite scroll
   const [page, setPage] = useState(1); //Page number
@@ -28,13 +33,62 @@ const Movies = () => {
   const [sortBy, setSortBy] = useState(null); //Sort by popularity or rating or release date or title
 
   const [filteredMovies, setFilteredMovies] = useState(movies); //Filtered movies
-  const [filtersArray, setFiltersArray] = useState([]); //Array of filters
 
   const [filterList, setFilterList] = useState(null); //Filter list
+  const [activeFiltersArray, setActiveFiltersArray] = useState([]); //Array of filters
+
+  const [CertificationList, setCertificationList] = useState(null); //Certification list
+  const [activeCertificationsArray, setActiveCertificationsArray] = useState(
+    []
+  ); //Array of certifications
 
   const [progress, setProgress] = useState(10); //Progress bar
 
-  // console.log(page);
+  const [sortUrl, setSortUrl] = useState(null); //Sort url
+
+  const [startDate, setStartDate] = useState(); //Start date
+  const [endDate, setEndDate] = useState(
+    //six months from today
+    new Date(new Date().setMonth(new Date().getMonth() + 6))
+  ); //End date
+
+  const [discoverUrl, setDiscoverUrl] = useState(null); //Discover url
+
+  const [isAllAvailabilities, setIsAllAvailabilities] = useState(true); //All available
+
+  const toggleAllAvailabilities = () => {
+    setIsAllAvailabilities(!isAllAvailabilities);
+  };
+
+  const [activeAvalabilitiesArray, setActiveAvalabilitiesArray] = useState([
+    'flatrate',
+    'free',
+    'ads',
+    'rent',
+    'buy',
+  ]); //Array of availabilities
+
+  const toggleActiveAvalabilities = (availability) => {
+    if (activeAvalabilitiesArray.includes(availability)) {
+      setActiveAvalabilitiesArray(
+        activeAvalabilitiesArray.filter((item) => item !== availability)
+      );
+    } else {
+      setActiveAvalabilitiesArray([...activeAvalabilitiesArray, availability]);
+    }
+  };
+
+  const [isAllReleaseDates, setIsAllReleaseDates] = useState(true); //All release dates
+
+  const toggleAllReleaseDates = () => {
+    setIsAllReleaseDates(!isAllReleaseDates);
+  };
+
+  const [isAllCountries, setIsAllCountries] = useState(true); //All countries
+
+  const toggleAllCountries = () => {
+    setIsAllCountries(!isAllCountries);
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -47,7 +101,9 @@ const Movies = () => {
     fetch(
       `https://api.themoviedb.org/3/${
         showType === 'tv' ? 'tv/' : 'movie/'
-      }${type}?api_key=${process.env.REACT_APP_API_KEY}&language=en-US&page=1`
+      }${categoryType}?api_key=${
+        process.env.REACT_APP_API_KEY
+      }&language=en-US&page=1`
     )
       .then((response) => response.json())
       .then((data) => {
@@ -60,7 +116,30 @@ const Movies = () => {
         setError(error);
         setLoading(false);
       });
-  }, [showType, type]); //Runs when showType or type changes
+  }, [showType, categoryType]); //Runs when showType or type changes
+
+  useEffect(() => {
+    setLoading(true);
+    setError(null);
+    setMovies(null);
+    setHasMore(false);
+    setTotalPages(null);
+    // setSortBy(null);
+
+    fetch(discoverUrl)
+      .then((response) => response.json())
+      .then((data) => {
+        setMovies(data.results);
+        console.log(data.results);
+        setTotalPages(data.total_pages);
+        setLoading(false);
+        setProgress(100);
+      })
+      .catch((error) => {
+        setError(error);
+        setLoading(false);
+      });
+  }, [page, showType, sortUrl, categoryType, discoverUrl]);
 
   useEffect(() => {
     setFilteredMovies(movies);
@@ -81,7 +160,23 @@ const Movies = () => {
       }
     };
     fetchFilter();
-  }, [showType]); //Runs when showType changes
+  }, [showType]); //Fetch filter list when show type changes
+
+  useEffect(() => {
+    const fetchCertification = async () => {
+      try {
+        const certificationResponse = await fetch(
+          `https://api.themoviedb.org/3/certification/movie/list?api_key=${process.env.REACT_APP_API_KEY}&language=en-US`
+        );
+        const data = await certificationResponse.json();
+        setCertificationList(data.certifications.IN);
+        console.log(data.certifications.IN);
+      } catch (error) {
+        setError(error);
+      }
+    };
+    fetchCertification();
+  }, []); //Fetch certification list
 
   const fetchMoreMovies = () => {
     setLoading(true);
@@ -91,9 +186,9 @@ const Movies = () => {
     fetch(
       `https://api.themoviedb.org/3/${
         showType === 'tv' ? 'tv/' : 'movie/'
-      }${type}?api_key=${process.env.REACT_APP_API_KEY}&language=en-US&page=${
-        page + 1
-      }`
+      }${categoryType}?api_key=${
+        process.env.REACT_APP_API_KEY
+      }&language=en-US&page=${page + 1}`
     )
       .then((response) => response.json())
       .then((data) => {
@@ -115,87 +210,30 @@ const Movies = () => {
   };
 
   const handleSearch = () => {
-    if (sortBy) {
-      switch (sortBy) {
-        case '1':
-          setFilteredMovies(movies.sort((a, b) => b.popularity - a.popularity));
-          break;
-        case '2':
-          setFilteredMovies(movies.sort((a, b) => a.popularity - b.popularity));
-          break;
-        case '3':
-          setFilteredMovies(
-            movies.sort((a, b) => b.vote_average - a.vote_average)
-          );
-          break;
-        case '4':
-          setFilteredMovies(
-            movies.sort((a, b) => a.vote_average - b.vote_average)
-          );
-          break;
-        case '5':
-          setFilteredMovies(
-            movies.sort(
-              showType === 'tv'
-                ? movies.sort((a, b) => b.first_air_date - a.first_air_date)
-                : movies.sort((a, b) => b.release_date - a.release_date)
+    setDiscoverUrl(
+      `https://api.themoviedb.org/3/discover/${showType}?api_key=${
+        process.env.REACT_APP_API_KEY
+      }&sort_by=${
+        sortBy ? sortBy : 'popularity.desc'
+      }&page=${page}&with_ott_monetization_types=${
+        isAllAvailabilities ? '' : activeAvalabilitiesArray.join('%7C')
+      }&certification_country=IN&certification=${
+        activeCertificationsArray.length > 0
+          ? activeCertificationsArray.map(
+              (item, index) => `${item}
+          ${index === activeCertificationsArray.length - 1 ? '' : '%7C'}
+          `
             )
-          );
-          break;
-        case '6':
-          setFilteredMovies(
-            movies.sort(
-              showType === 'tv'
-                ? movies.sort(
-                    (a, b) =>
-                      new Date(a.first_air_date) - new Date(b.first_air_date)
-                  )
-                : movies.sort(
-                    (a, b) =>
-                      new Date(a.release_date) - new Date(b.release_date)
-                  )
-            )
-          );
-          break;
-
-        case '7':
-          setFilteredMovies(
-            showType === 'tv'
-              ? movies.sort((a, b) => b.name.localeCompare(a.name)) //sort by title
-              : movies.sort((a, b) => b.title.localeCompare(a.title))
-          );
-          break;
-        case '8':
-          setFilteredMovies(
-            showType === 'tv'
-              ? movies.sort((a, b) => a.name.localeCompare(b.name)) //sort by title
-              : movies.sort((a, b) => a.title.localeCompare(b.title)) //sort by title
-          );
-          break;
-        default:
-          setFilteredMovies(movies);
-          break;
-      }
-    }
+          : ''
+      }&release_date.gte=${
+        startDate ? `${startDate.toISOString().split('T')[0]}` : ''
+      }&release_date.lte=${
+        endDate ? `${endDate.toISOString().split('T')[0]}` : ''
+      }&with_genres=${
+        activeFiltersArray.length > 0 ? activeFiltersArray.join('%2C') : ''
+      }`
+    );
   };
-
-  useEffect(() => {
-    if (filtersArray.length > 0) {
-      const filterMovies = movies.filter((movie) => {
-        const movieGenres = movie.genre_ids;
-        let isIncluded = false;
-        movieGenres.forEach((genre) => {
-          if (filtersArray.includes(genre)) {
-            isIncluded = true;
-          }
-        });
-        return isIncluded;
-      });
-      setFilteredMovies(filterMovies);
-    } else {
-      setFilteredMovies(movies);
-    }
-  }, [movies, filtersArray]);
 
   // useEffect(() => {
   //   if (sortBy) {
@@ -213,22 +251,37 @@ const Movies = () => {
   // console.log(hasMore);
 
   const toggleFilter = (filter) => {
-    if (filtersArray.includes(filter)) {
-      setFiltersArray(filtersArray.filter((item) => item !== filter));
+    if (activeFiltersArray.includes(filter)) {
+      setActiveFiltersArray(
+        activeFiltersArray.filter((item) => item !== filter)
+      );
     } else {
-      setFiltersArray([...filtersArray, filter]);
+      setActiveFiltersArray([...activeFiltersArray, filter]);
     }
   };
 
-  const getFilteredMovies = () => {
-    if (filtersArray.length > 0) {
-      return movies.filter((movie) =>
-        filtersArray.some((filter) => movie.genre_ids.includes(filter.id))
+  const toggleCertification = (certification) => {
+    if (activeCertificationsArray.includes(certification)) {
+      setActiveCertificationsArray(
+        activeCertificationsArray.filter((item) => item !== certification)
       );
     } else {
-      return movies;
+      setActiveCertificationsArray([
+        ...activeCertificationsArray,
+        certification,
+      ]);
     }
   };
+
+  // const getFilteredMovies = () => {
+  //   if (filtersArray.length > 0) {
+  //     return movies.filter((movie) =>
+  //       filtersArray.some((filter) => movie.genre_ids.includes(filter.id))
+  //     );
+  //   } else {
+  //     return movies;
+  //   }
+  // };
 
   return (
     <>
@@ -251,6 +304,7 @@ const Movies = () => {
                 <div className='filter-section'>
                   <div className='filter-section_wrapper'>
                     <Accordion
+                      defaultActiveKey='0'
                       style={{
                         width: '100%',
                         borderRadius: '8px',
@@ -274,7 +328,7 @@ const Movies = () => {
                           </h3>
                           <DropdownButton
                             id='dropdown-basic-button'
-                            title='Popularity'
+                            title={sortBy ? sortBy : 'popularity'}
                             variant='secondary'
                             style={{
                               width: '100%',
@@ -296,19 +350,19 @@ const Movies = () => {
                             <Dropdown.Item eventKey='vote_average.desc'>
                               Rating Descending
                             </Dropdown.Item>
-                            <Dropdown.Item eventKey='vote_count.asc'>
+                            <Dropdown.Item eventKey='vote_average.asc'>
                               Rating Ascending
                             </Dropdown.Item>
-                            <Dropdown.Item eventKey='release_date.desc'>
+                            <Dropdown.Item eventKey='primary_release_date.desc'>
                               Release Date Descending
                             </Dropdown.Item>
-                            <Dropdown.Item eventKey='release_date.asc'>
+                            <Dropdown.Item eventKey='primary_release_date.asc'>
                               Release Date Ascending
                             </Dropdown.Item>
-                            <Dropdown.Item eventKey='original_title.asc'>
+                            <Dropdown.Item eventKey='title.asc'>
                               Title (A-Z)
                             </Dropdown.Item>
-                            <Dropdown.Item eventKey='original_title.desc'>
+                            <Dropdown.Item eventKey='title.desc'>
                               Title (Z-A)
                             </Dropdown.Item>
                           </DropdownButton>
@@ -336,7 +390,349 @@ const Movies = () => {
                             }}
                             className='filter-title p-0'
                           >
-                            Generes
+                            Availabilities
+                          </h3>
+                          <label className='all_availablities'>
+                            <div className='form-check'>
+                              <input
+                                type='checkbox'
+                                className='form-check-input'
+                                id='exampleCheck1'
+                                onChange={toggleAllAvailabilities}
+                                checked={isAllAvailabilities}
+                              />
+                              <label
+                                className='form-check-label'
+                                htmlFor='exampleCheck1'
+                              >
+                                Search all availabilities?
+                              </label>
+                            </div>
+                          </label>
+                          {!isAllAvailabilities && (
+                            <div className='availabilities_wrapper d-flex flex-column'>
+                              <label className='all_availablities'>
+                                <div className='form-check'>
+                                  <input
+                                    type='checkbox'
+                                    className='form-check-input'
+                                    id='monetization_type_flatrate'
+                                    value='flatrate'
+                                    onChange={() =>
+                                      toggleActiveAvalabilities('flatrate')
+                                    }
+                                    checked={activeAvalabilitiesArray.includes(
+                                      'flatrate'
+                                    )}
+                                  />
+                                  <label
+                                    className='form-check-label'
+                                    htmlFor='monetization_type_flatrate'
+                                  >
+                                    Stream
+                                  </label>
+                                </div>
+                              </label>
+                              <label className='all_availablities'>
+                                <div className='form-check'>
+                                  <input
+                                    type='checkbox'
+                                    className='form-check-input'
+                                    id='monetization_type_free'
+                                    value='free'
+                                    onChange={() =>
+                                      toggleActiveAvalabilities('free')
+                                    }
+                                    checked={activeAvalabilitiesArray.includes(
+                                      'free'
+                                    )}
+                                  />
+                                  <label
+                                    className='form-check-label'
+                                    htmlFor='monetization_type_free'
+                                  >
+                                    Free
+                                  </label>
+                                </div>
+                              </label>
+                              <label className='all_availablities'>
+                                <div className='form-check'>
+                                  <input
+                                    type='checkbox'
+                                    className='form-check-input'
+                                    id='monetization_type_ads'
+                                    value='ads'
+                                    onChange={() =>
+                                      toggleActiveAvalabilities('ads')
+                                    }
+                                    checked={activeAvalabilitiesArray.includes(
+                                      'ads'
+                                    )}
+                                  />
+                                  <label
+                                    className='form-check-label'
+                                    htmlFor='monetization_type_ads'
+                                  >
+                                    Ads
+                                  </label>
+                                </div>
+                              </label>
+                              <label className='all_availablities'>
+                                <div className='form-check'>
+                                  <input
+                                    type='checkbox'
+                                    className='form-check-input'
+                                    id='monetization_type_rent'
+                                    value='rent'
+                                    onChange={() =>
+                                      toggleActiveAvalabilities('rent')
+                                    }
+                                    checked={activeAvalabilitiesArray.includes(
+                                      'rent'
+                                    )}
+                                  />
+                                  <label
+                                    className='form-check-label'
+                                    htmlFor='monetization_type_rent'
+                                  >
+                                    Rent
+                                  </label>
+                                </div>
+                              </label>
+                              <label className='all_availablities'>
+                                <div className='form-check'>
+                                  <input
+                                    type='checkbox'
+                                    className='form-check-input'
+                                    id='monetization_type_buy'
+                                    value='buy'
+                                    onChange={() =>
+                                      toggleActiveAvalabilities('buy')
+                                    }
+                                    checked={activeAvalabilitiesArray.includes(
+                                      'buy'
+                                    )}
+                                  />
+                                  <label
+                                    className='form-check-label'
+                                    htmlFor='monetization_type_buy'
+                                  >
+                                    Buy
+                                  </label>
+                                </div>
+                              </label>
+                            </div>
+                          )}
+                        </Accordion.Body>
+                        <Accordion.Body>
+                          <h3
+                            style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              width: '100%',
+                              fontSize: '1em',
+                              fontWeight: '300',
+                              marginBottom: '10px',
+                            }}
+                            className='filter-title p-0'
+                          >
+                            Release Dates
+                          </h3>
+                          <label className='release_type'>
+                            <div className='form-check'>
+                              <input
+                                type='checkbox'
+                                className='form-check-input'
+                                id='exampleCheck1'
+                                onChange={toggleAllReleaseDates}
+                                checked={isAllReleaseDates}
+                              />
+                              <label
+                                className='form-check-label'
+                                htmlFor='exampleCheck1'
+                              >
+                                Search all releases?
+                              </label>
+                            </div>
+                          </label>
+                          {!isAllReleaseDates && (
+                            <div className='release_type_wrapper d-flex flex-column'>
+                              <label className='all_countries'>
+                                <div className='form-check'>
+                                  <input
+                                    type='checkbox'
+                                    className='form-check-input'
+                                    id='exampleCheck1'
+                                    onChange={toggleAllCountries}
+                                    checked={isAllCountries}
+                                  />
+                                  <label
+                                    className='form-check-label'
+                                    htmlFor='exampleCheck1'
+                                  >
+                                    Search all countries?
+                                  </label>
+                                </div>
+                              </label>
+                              {!isAllCountries && (
+                                <div className='all_countries_wrapper'>
+                                  <Dropdown>
+                                    <Dropdown.Toggle
+                                      variant='success'
+                                      id='dropdown-basic'
+                                    >
+                                      Dropdown Button
+                                    </Dropdown.Toggle>
+
+                                    <Dropdown.Menu>
+                                      <Dropdown.Item href='#/action-1'>
+                                        Action
+                                      </Dropdown.Item>
+                                      <Dropdown.Item href='#/action-2'>
+                                        Another action
+                                      </Dropdown.Item>
+                                      <Dropdown.Item href='#/action-3'>
+                                        Something else
+                                      </Dropdown.Item>
+                                    </Dropdown.Menu>
+                                  </Dropdown>
+                                </div>
+                              )}
+                              <label className='all_release_type'>
+                                <div className='form-check'>
+                                  <input
+                                    type='checkbox'
+                                    className='form-check-input'
+                                    id='monetization_type_flatrate'
+                                    value='flatrate'
+                                  />
+                                  <label
+                                    className='form-check-label'
+                                    htmlFor='monetization_type_flatrate'
+                                  >
+                                    Premiere
+                                  </label>
+                                </div>
+                              </label>
+                              <label className='all_release_type'>
+                                <div className='form-check'>
+                                  <input
+                                    type='checkbox'
+                                    className='form-check-input'
+                                    id='monetization_type_free'
+                                    value='free'
+                                  />
+                                  <label
+                                    className='form-check-label'
+                                    htmlFor='monetization_type_free'
+                                  >
+                                    Theatrical (limited)
+                                  </label>
+                                </div>
+                              </label>
+                              <label className='all_release_type'>
+                                <div className='form-check'>
+                                  <input
+                                    type='checkbox'
+                                    className='form-check-input'
+                                    id='monetization_type_ads'
+                                    value='ads'
+                                  />
+                                  <label
+                                    className='form-check-label'
+                                    htmlFor='monetization_type_ads'
+                                  >
+                                    Theatrical
+                                  </label>
+                                </div>
+                              </label>
+                              <label className='all_release_type'>
+                                <div className='form-check'>
+                                  <input
+                                    type='checkbox'
+                                    className='form-check-input'
+                                    id='monetization_type_rent'
+                                    value='rent'
+                                  />
+                                  <label
+                                    className='form-check-label'
+                                    htmlFor='monetization_type_rent'
+                                  >
+                                    Digital
+                                  </label>
+                                </div>
+                              </label>
+                              <label className='all_release_type'>
+                                <div className='form-check'>
+                                  <input
+                                    type='checkbox'
+                                    className='form-check-input'
+                                    id='monetization_type_buy'
+                                    value='buy'
+                                  />
+                                  <label
+                                    className='form-check-label'
+                                    htmlFor='monetization_type_buy'
+                                  >
+                                    Physical
+                                  </label>
+                                </div>
+                              </label>
+                              <label className='all_release_type'>
+                                <div className='form-check'>
+                                  <input
+                                    type='checkbox'
+                                    className='form-check-input'
+                                    id='monetization_type_buy'
+                                    value='buy'
+                                  />
+                                  <label
+                                    className='form-check-label'
+                                    htmlFor='monetization_type_buy'
+                                  >
+                                    TV
+                                  </label>
+                                </div>
+                              </label>
+                            </div>
+                          )}
+
+                          <div className='year_column d-flex justify-content-between'>
+                            <span className='year_column_title'>from</span>
+                            <span className='date_picker'>
+                              <span className='date_picker_wrapper'>
+                                <DatePicker
+                                  selected={startDate}
+                                  onChange={(date) => setStartDate(date)}
+                                />
+                              </span>
+                            </span>
+                          </div>
+                          <div className='year_column d-flex justify-content-between'>
+                            <span className='year_column_title'>to</span>
+                            <span className='date_picker'>
+                              <span className='date_picker_wrapper'>
+                                <DatePicker
+                                  selected={endDate}
+                                  onChange={(date) => setEndDate(date)}
+                                />
+                              </span>
+                            </span>
+                          </div>
+                        </Accordion.Body>
+                        <Accordion.Body>
+                          <h3
+                            style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              width: '100%',
+                              fontSize: '1em',
+                              fontWeight: '300',
+                              marginBottom: '10px',
+                            }}
+                            className='filter-title p-0'
+                          >
+                            Genres
                           </h3>
                           <ul className='filter-list p-0'>
                             {filterList &&
@@ -344,7 +740,7 @@ const Movies = () => {
                                 <li
                                   key={filter.id}
                                   className={`filter-list_item ${
-                                    filtersArray.includes(filter.id)
+                                    activeFiltersArray.includes(filter.id)
                                       ? 'filter-list_item-active'
                                       : ''
                                   }`}
@@ -354,6 +750,44 @@ const Movies = () => {
                                   }}
                                 >
                                   {filter.name}
+                                </li>
+                              ))}
+                          </ul>
+                        </Accordion.Body>
+                        <Accordion.Body>
+                          <h3
+                            style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              width: '100%',
+                              fontSize: '1em',
+                              fontWeight: '300',
+                              marginBottom: '10px',
+                            }}
+                            className='filter-title p-0'
+                          >
+                            Certification
+                          </h3>
+                          <ul className='filter-list p-0'>
+                            {CertificationList &&
+                              CertificationList.map((certification, index) => (
+                                <li
+                                  key={index}
+                                  className={`filter-list_item ${
+                                    activeCertificationsArray.includes(
+                                      certification.certification
+                                    )
+                                      ? 'filter-list_item-active'
+                                      : ''
+                                  }`}
+                                  onClick={() => {
+                                    toggleCertification(
+                                      certification.certification
+                                    );
+                                    console.log(certification.certification);
+                                  }}
+                                >
+                                  {certification.certification}
                                 </li>
                               ))}
                           </ul>
@@ -421,7 +855,7 @@ const Movies = () => {
                             }
                           >
                             <div className='page_1'>
-                              {filteredMovies &&
+                              {filteredMovies ? (
                                 filteredMovies.map((movie, index) => (
                                   <FilterMovieCard
                                     key={index}
@@ -436,10 +870,16 @@ const Movies = () => {
                                     showType={showType}
                                     movie={movie}
                                   />
-                                ))}
+                                ))
+                              ) : (
+                                <div>
+                                  No items were found that match your query.
+                                </div>
+                              )}
                             </div>
                           </InfiniteScroll>
                         )}
+
                         {page !== totalPages && (
                           <div className='load_more'>
                             <Link
