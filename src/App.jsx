@@ -26,7 +26,10 @@ const App = () => {
             path='/movie/:upcoming'
             element={<Movies type={'upcoming'} />}
           /> */}
-          <Route path='/:showType/category/:type' element={<Movies />} />
+          <Route
+            path='/:showType/category/:categoryType'
+            element={<Movies />}
+          />
           <Route path='/:type/:id' element={<MovieDetail />} />
           <Route path='*' exact={true} element={<PageNotFound />} />
         </Routes>
