@@ -231,13 +231,7 @@ const Movies = () => {
     setError(null);
     setPage(page + 1);
 
-    fetch(
-      `https://api.themoviedb.org/3/${
-        showType === 'tv' ? 'tv/' : 'movie/'
-      }${categoryType}?api_key=${
-        process.env.REACT_APP_API_KEY
-      }&language=en-US&page=${page + 1}`
-    )
+    fetch(`${discoverUrl}&page=${page + 1}`)
       .then((response) => response.json())
       .then((data) => {
         console.log(data.total_pages);
