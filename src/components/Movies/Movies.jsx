@@ -32,6 +32,8 @@ const Movies = () => {
 
   const [sortBy, setSortBy] = useState(null); //Sort by popularity or rating or release date or title
 
+  const [activeCountry, setActiveCountry] = useState(null); //Country filter
+
   const [filteredMovies, setFilteredMovies] = useState(movies); //Filtered movies
 
   const [filterList, setFilterList] = useState(null); //Filter list
@@ -41,6 +43,10 @@ const Movies = () => {
   const [activeCertificationsArray, setActiveCertificationsArray] = useState(
     []
   ); //Array of certifications
+
+  const [countriesList, setCountriesList] = useState(null); //Countries list
+
+  const [countryIsoList, setCountryIsoList] = useState(null); //Countries list
 
   const [progress, setProgress] = useState(10); //Progress bar
 
@@ -78,10 +84,29 @@ const Movies = () => {
     }
   };
 
-  const [isAllReleaseDates, setIsAllReleaseDates] = useState(true); //All release dates
+  const [isAllReleases, setIsAllReleases] = useState(true); //All release dates
 
   const toggleAllReleaseDates = () => {
-    setIsAllReleaseDates(!isAllReleaseDates);
+    setIsAllReleases(!isAllReleases);
+  };
+
+  const [activeReleasesArray, setActiveReleasesArray] = useState([
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+  ]); //Array of release dates
+
+  const toggleActiveReleases = (release) => {
+    if (activeReleasesArray.includes(release)) {
+      setActiveReleasesArray(
+        activeReleasesArray.filter((item) => item !== release)
+      );
+    } else {
+      setActiveReleasesArray([...activeReleasesArray, release]);
+    }
   };
 
   const [isAllCountries, setIsAllCountries] = useState(true); //All countries
@@ -163,6 +188,29 @@ const Movies = () => {
   }, [showType]); //Fetch filter list when show type changes
 
   useEffect(() => {
+    const fetchCountries = async () => {
+      try {
+        const countriesResponse = await fetch(
+          `https://api.themoviedb.org/3/configuration/countries?api_key=15d2ea6d0dc1d476efbca3eba2b9bbfb`
+        );
+        const data = await countriesResponse.json();
+        setCountriesList(
+          data.sort((a, b) => {
+            if (a.english_name < b.english_name) return -1;
+            if (a.english_name > b.english_name) return 1;
+            return 0;
+          })
+        );
+        setCountryIsoList(data.map((item) => item.iso_3166_1));
+        console.log(data);
+        console.log(data.map((item) => item.iso_3166_1));
+        // console.log(data.map((country) => country.english_name));
+      } catch (error) {
+        setError(error);
+      }
+    };
+    fetchCountries();
+
     const fetchCertification = async () => {
       try {
         const certificationResponse = await fetch(
@@ -176,7 +224,7 @@ const Movies = () => {
       }
     };
     fetchCertification();
-  }, []); //Fetch certification list
+  }, []); //Fetch countries and certification list
 
   const fetchMoreMovies = () => {
     setLoading(true);
@@ -231,6 +279,8 @@ const Movies = () => {
         endDate ? `${endDate.toISOString().split('T')[0]}` : ''
       }&with_genres=${
         activeFiltersArray.length > 0 ? activeFiltersArray.join('%2C') : ''
+      }&region=${activeCountry ? activeCountry : ''}&with_release_type=${
+        activeReleasesArray.length > 0 ? activeReleasesArray.join('%7C') : ''
       }`
     );
   };
@@ -545,7 +595,7 @@ const Movies = () => {
                                 className='form-check-input'
                                 id='exampleCheck1'
                                 onChange={toggleAllReleaseDates}
-                                checked={isAllReleaseDates}
+                                checked={isAllReleases}
                               />
                               <label
                                 className='form-check-label'
@@ -555,7 +605,7 @@ const Movies = () => {
                               </label>
                             </div>
                           </label>
-                          {!isAllReleaseDates && (
+                          {!isAllReleases && (
                             <div className='release_type_wrapper d-flex flex-column'>
                               <label className='all_countries'>
                                 <div className='form-check'>
@@ -576,26 +626,41 @@ const Movies = () => {
                               </label>
                               {!isAllCountries && (
                                 <div className='all_countries_wrapper'>
-                                  <Dropdown>
-                                    <Dropdown.Toggle
-                                      variant='success'
-                                      id='dropdown-basic'
-                                    >
-                                      Dropdown Button
-                                    </Dropdown.Toggle>
+                                  <DropdownButton
+                                    id='dropdown-basic-button'
+                                    title={
+                                      activeCountry
+                                        ? countriesList.find(
+                                            (country) =>
+                                              country.iso_3166_1 ===
+                                              activeCountry
+                                          ).english_name
+                                        : 'Countries'
+                                    }
+                                    variant='secondary'
+                                    style={{
+                                      width: '100%',
+                                      fontSize: '1em',
+                                      fontWeight: '300',
+                                      marginBottom: '10px',
+                                    }}
+                                    onSelect={(eventKey) => {
+                                      console.log(eventKey);
+                                      setActiveCountry(eventKey);
+                                    }}
+                                  >
+                                    {countriesList.map((country) => (
+                                      <Dropdown.Item
+                                        key={country.iso_3166_1}
+                                        eventKey={country.iso_3166_1}
+                                      >
+                                        {country.english_name}
+                                      </Dropdown.Item>
+                                    ))}
 
-                                    <Dropdown.Menu>
-                                      <Dropdown.Item href='#/action-1'>
-                                        Action
-                                      </Dropdown.Item>
-                                      <Dropdown.Item href='#/action-2'>
-                                        Another action
-                                      </Dropdown.Item>
-                                      <Dropdown.Item href='#/action-3'>
-                                        Something else
-                                      </Dropdown.Item>
-                                    </Dropdown.Menu>
-                                  </Dropdown>
+                                    {/* .map((country) => country.english_name)
+            .sort((a, b) => a.localeCompare(b) */}
+                                  </DropdownButton>
                                 </div>
                               )}
                               <label className='all_release_type'>
@@ -603,12 +668,14 @@ const Movies = () => {
                                   <input
                                     type='checkbox'
                                     className='form-check-input'
-                                    id='monetization_type_flatrate'
-                                    value='flatrate'
+                                    id='release_type_1'
+                                    value='1'
+                                    onChange={() => toggleActiveReleases('1')}
+                                    checked={activeReleasesArray.includes('1')}
                                   />
                                   <label
                                     className='form-check-label'
-                                    htmlFor='monetization_type_flatrate'
+                                    htmlFor='release_type_1'
                                   >
                                     Premiere
                                   </label>
@@ -619,12 +686,14 @@ const Movies = () => {
                                   <input
                                     type='checkbox'
                                     className='form-check-input'
-                                    id='monetization_type_free'
-                                    value='free'
+                                    id='release_type_2'
+                                    value='2'
+                                    onChange={() => toggleActiveReleases('2')}
+                                    checked={activeReleasesArray.includes('2')}
                                   />
                                   <label
                                     className='form-check-label'
-                                    htmlFor='monetization_type_free'
+                                    htmlFor='release_type_2'
                                   >
                                     Theatrical (limited)
                                   </label>
@@ -635,12 +704,14 @@ const Movies = () => {
                                   <input
                                     type='checkbox'
                                     className='form-check-input'
-                                    id='monetization_type_ads'
-                                    value='ads'
+                                    id='release_type_3'
+                                    value='3'
+                                    onChange={() => toggleActiveReleases('3')}
+                                    checked={activeReleasesArray.includes('3')}
                                   />
                                   <label
                                     className='form-check-label'
-                                    htmlFor='monetization_type_ads'
+                                    htmlFor='release_type_3'
                                   >
                                     Theatrical
                                   </label>
@@ -651,12 +722,14 @@ const Movies = () => {
                                   <input
                                     type='checkbox'
                                     className='form-check-input'
-                                    id='monetization_type_rent'
-                                    value='rent'
+                                    id='release_type_4'
+                                    value='4'
+                                    onChange={() => toggleActiveReleases('4')}
+                                    checked={activeReleasesArray.includes('4')}
                                   />
                                   <label
                                     className='form-check-label'
-                                    htmlFor='monetization_type_rent'
+                                    htmlFor='release_type_4'
                                   >
                                     Digital
                                   </label>
@@ -667,12 +740,14 @@ const Movies = () => {
                                   <input
                                     type='checkbox'
                                     className='form-check-input'
-                                    id='monetization_type_buy'
-                                    value='buy'
+                                    id='release_type_5'
+                                    value='5'
+                                    onChange={() => toggleActiveReleases('5')}
+                                    checked={activeReleasesArray.includes('5')}
                                   />
                                   <label
                                     className='form-check-label'
-                                    htmlFor='monetization_type_buy'
+                                    htmlFor='release_type_5'
                                   >
                                     Physical
                                   </label>
@@ -683,12 +758,14 @@ const Movies = () => {
                                   <input
                                     type='checkbox'
                                     className='form-check-input'
-                                    id='monetization_type_buy'
-                                    value='buy'
+                                    id='release_type_6'
+                                    value='6'
+                                    onChange={() => toggleActiveReleases('6')}
+                                    checked={activeReleasesArray.includes('6')}
                                   />
                                   <label
                                     className='form-check-label'
-                                    htmlFor='monetization_type_buy'
+                                    htmlFor='release_type_6'
                                   >
                                     TV
                                   </label>
