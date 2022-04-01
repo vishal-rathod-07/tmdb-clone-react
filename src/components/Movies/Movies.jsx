@@ -67,6 +67,7 @@ const Movies = () => {
   }, [sortBy]);
 
   const [activeCountry, setActiveCountry] = useState(null); //Country filter
+  const [activeLanguage, setActiveLanguage] = useState(null); //Language filter
 
   const [filteredMovies, setFilteredMovies] = useState(movies); //Filtered movies
 
@@ -145,6 +146,9 @@ const Movies = () => {
 
   const [isAllCountries, setIsAllCountries] = useState(true); //All countries
 
+  const [languagesList, setLanguagesList] = useState(null); //Languages list
+  const [languagesIsoList, setLanguagesIsoList] = useState(null); //Languages list
+
   const toggleAllCountries = () => {
     setIsAllCountries(!isAllCountries);
   };
@@ -220,6 +224,28 @@ const Movies = () => {
   }, [showType]); //Fetch filter list when show type changes
 
   useEffect(() => {
+    const fetchLanguages = async () => {
+      try {
+        const languagesResponse = await fetch(
+          `https://api.themoviedb.org/3/configuration/languages?api_key=${API}`
+        );
+        const data = await languagesResponse.json();
+        setLanguagesList(
+          data.sort((a, b) => {
+            if (a.english_name < b.english_name) return -1;
+            if (a.english_name > b.english_name) return 1;
+            return 0;
+          })
+        );
+
+        setLanguagesIsoList(data.map((item) => item.iso_3166_1));
+        console.log(data);
+      } catch (error) {
+        setError(error);
+      }
+    };
+    fetchLanguages();
+
     const fetchCountries = async () => {
       try {
         const countriesResponse = await fetch(
@@ -234,8 +260,8 @@ const Movies = () => {
           })
         );
         setCountryIsoList(data.map((item) => item.iso_3166_1));
-        console.log(data);
-        console.log(data.map((item) => item.iso_3166_1));
+        // console.log(data);
+        // console.log(data.map((item) => item.iso_3166_1));
         // console.log(data.map((country) => country.english_name));
       } catch (error) {
         setError(error);
@@ -305,7 +331,7 @@ const Movies = () => {
         activeFiltersArray.length > 0 ? activeFiltersArray.join('%2C') : ''
       }&region=${activeCountry ? activeCountry : ''}&with_release_type=${
         activeReleasesArray.length > 0 ? activeReleasesArray.join('%7C') : ''
-      }`
+      }&with_original_language=${activeLanguage ? activeLanguage : ''}`
     );
   };
 
@@ -897,6 +923,58 @@ const Movies = () => {
                                 </li>
                               ))}
                           </ul>
+                        </Accordion.Body>
+                        <Accordion.Body className='Language-filter'>
+                          <h3
+                            style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              width: '100%',
+                              fontSize: '1em',
+                              fontWeight: '300',
+                              marginBottom: '10px',
+                              color: '#000',
+                            }}
+                            className='filter-title p-0'
+                          >
+                            Language
+                          </h3>
+                          {languagesList && (
+                            <DropdownButton
+                              id='dropdown-basic-button'
+                              title={
+                                activeLanguage
+                                  ? languagesList.find(
+                                      (language) =>
+                                        language.iso_639_1 === activeLanguage
+                                    ).english_name
+                                  : 'None Selected'
+                              }
+                              variant='secondary'
+                              style={{
+                                width: '100%',
+                                fontSize: '1em',
+                                fontWeight: '300',
+                                marginBottom: '10px',
+                              }}
+                              onSelect={(eventKey) => {
+                                console.log(eventKey);
+                                setActiveLanguage(eventKey);
+                              }}
+                            >
+                              {languagesList.map((language) => (
+                                <Dropdown.Item
+                                  key={language.iso_639_1}
+                                  eventKey={language.iso_639_1}
+                                >
+                                  {language.english_name}
+                                </Dropdown.Item>
+                              ))}
+
+                              {/* .map((country) => country.english_name)
+            .sort((a, b) => a.localeCompare(b) */}
+                            </DropdownButton>
+                          )}
                         </Accordion.Body>
                       </Accordion.Item>
                     </Accordion>
