@@ -1,4 +1,4 @@
-export const API = process.env.REACT_APP_API_KEY;
+export const API = '15d2ea6d0dc1d476efbca3eba2b9bbfb';
 
 export const API_URL = 'https://api.themoviedb.org/3';
 
