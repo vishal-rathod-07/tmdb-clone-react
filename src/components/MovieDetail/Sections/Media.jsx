@@ -2,11 +2,11 @@ import { Link } from 'react-router-dom';
 import FormatDate from '../../FormatDate';
 
 const Media = ({ movie, cast, keywords, reviews, recommandations, type }) => {
-  console.log(reviews);
-  console.log('rec');
-  console.log(recommandations);
-  console.log('type');
-  console.log(cast);
+  // console.log(reviews);
+  // console.log('rec');
+  // console.log(recommandations);
+  // console.log('type');
+  // console.log(cast);
   const reviewLength = reviews.length;
   reviews.length > 0 &&
     (reviews = reviews[Math.floor(Math.random() * reviews.length)]);

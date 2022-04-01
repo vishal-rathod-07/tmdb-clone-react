@@ -24,11 +24,11 @@ const MovieDetail = () => {
   const [error, setError] = useState(null);
 
   // movie && console.log(movie);
-  error && console.log(error);
+  // error && console.log(error);
   // social && console.log(social);
   //   console.log(provider.results.IN.flatrate[0].logo_path);
   // cast && console.log(cast.cast);
-  reviews && console.log(reviews);
+  // reviews && console.log(reviews);
 
   //   const providerLogo = provider.results.IN.flatrate[0].logo_path;
 
@@ -42,7 +42,7 @@ const MovieDetail = () => {
         );
         const data = await movieResponse.json();
         setMovie(data);
-        console.log('Movie Fetch Sucess');
+        // console.log('Movie Fetch Sucess');
       } catch (error) {
         setError(error);
       }
@@ -57,7 +57,7 @@ const MovieDetail = () => {
         );
         const data = await socialResponse.json();
         setSocial(data);
-        console.log('Social Fetch Sucess');
+        // console.log('Social Fetch Sucess');
       } catch (error) {
         setError(error);
       }
@@ -72,7 +72,7 @@ const MovieDetail = () => {
         );
         const data = await providerResponse.json();
         setProvider(data);
-        console.log('Provider Fetch Sucess');
+        // console.log('Provider Fetch Sucess');
       } catch (error) {
         setError(error);
       }
@@ -87,7 +87,7 @@ const MovieDetail = () => {
         );
         const data = await castResponse.json();
         setCast(data.cast);
-        console.log('Cast Fetch Sucess');
+        // console.log('Cast Fetch Sucess');
       } catch (error) {
         setError(error);
       }
@@ -102,7 +102,7 @@ const MovieDetail = () => {
         );
         const data = await reviewResponse.json();
         setReviews(data.results);
-        console.log('Review Fetch Sucess');
+        // console.log('Review Fetch Sucess');
       } catch (error) {
         setError(error);
       }
@@ -119,7 +119,7 @@ const MovieDetail = () => {
         const data = await trailerResponse.json();
         // console.log(data);
         // setLoading(false);
-        console.log('Trailer Fetch Sucess');
+        // console.log('Trailer Fetch Sucess');
       } catch (error) {
         setError(error);
         // setLoading(false);
@@ -135,7 +135,7 @@ const MovieDetail = () => {
         );
         const data = await recommandationsResponse.json();
         setRecommandations(data.results);
-        console.log('Recommandations Fetch Sucess');
+        // console.log('Recommandations Fetch Sucess');
       } catch (error) {
         setError(error);
       }
@@ -150,8 +150,8 @@ const MovieDetail = () => {
         );
         const data = await keywordResponse.json();
         setKeywords(data.keywords || data.results);
-        console.log(data);
-        console.log('KeyWords Fetch Sucess');
+        // console.log(data);
+        // console.log('KeyWords Fetch Sucess');
       } catch (error) {
         setError(error);
       }

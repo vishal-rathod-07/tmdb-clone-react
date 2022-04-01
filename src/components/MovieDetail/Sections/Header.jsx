@@ -6,19 +6,19 @@ import { Link } from 'react-router-dom';
 import FormatDate from '../../FormatDate';
 
 const Header = ({ movie, provider, type }) => {
-  console.log(movie);
-  console.log(provider);
+  // console.log(movie);
+  // console.log(provider);
   // provider.results.IN.buy && console.log(provider.results.IN.buy[0].logo_path);
 
-  console.log(movie);
+  // console.log(movie);
 
   const [colors, setColors] = useState();
   const [backDropStyles, setBackDropStyles] = useState({
     background: `linear-gradient(to right, rgba(227, 227, 227, 1) 150px, rgba(227, 227, 227, 0.84) 100%)`,
     color: `#000`,
   });
-  backDropStyles && console.log(backDropStyles);
-  colors && console.log(colors);
+  // backDropStyles && console.log(backDropStyles);
+  // colors && console.log(colors);
   let totalMinutes = movie.runtime || movie.episode_run_time[0];
   let hours = Math.floor(totalMinutes / 60);
   let minutes = totalMinutes % 60;
@@ -26,7 +26,7 @@ const Header = ({ movie, provider, type }) => {
   let minutesString = minutes > 0 ? minutes + 'm' : '';
   let runtime = hoursString + minutesString;
 
-  console.log(movie.first_air_date);
+  // console.log(movie.first_air_date);
 
   let year =
     (movie.release_date && movie.release_date.split('-')[0]) ||

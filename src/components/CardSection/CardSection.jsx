@@ -12,15 +12,15 @@ const CardSection = ({
   cardVisiblity,
   setCardVisiblity,
 }) => {
-  console.log(movies);
+  // console.log(movies);
   const onTabClick = (id) => {
-    console.log(id);
+    // console.log(id);
     setCardVisiblity(!cardVisiblity);
     setActiveTab(id);
   };
 
   const onMovieClick = (id) => {
-    console.log(id);
+    // console.log(id);
   };
 
   return (

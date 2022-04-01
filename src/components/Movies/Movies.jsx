@@ -191,7 +191,7 @@ const Movies = () => {
       .then((response) => response.json())
       .then((data) => {
         setMovies(data.results);
-        console.log(data.results);
+        // console.log(data.results);
         setTotalPages(data.total_pages);
         setLoading(false);
         setProgress(100);
@@ -239,7 +239,7 @@ const Movies = () => {
         );
 
         setLanguagesIsoList(data.map((item) => item.iso_3166_1));
-        console.log(data);
+        // console.log(data);
       } catch (error) {
         setError(error);
       }
@@ -276,7 +276,7 @@ const Movies = () => {
         );
         const data = await certificationResponse.json();
         setCertificationList(data.certifications.IN);
-        console.log(data.certifications.IN);
+        // console.log(data.certifications.IN);
       } catch (error) {
         setError(error);
       }
@@ -292,8 +292,8 @@ const Movies = () => {
     fetch(`${discoverUrl}&page=${page + 1}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data.total_pages);
-        console.log('====', data.page);
+        // console.log(data.total_pages);
+        // console.log('====', data.page);
         setMovies([...movies, ...data.results]);
         setHasMore(data.total_pages > page);
         setLoading(false);
@@ -306,7 +306,7 @@ const Movies = () => {
   }; //Fetch more movies
 
   const onMovieClick = (movie) => {
-    console.log(movie);
+    // console.log(movie);
   };
 
   const handleSearch = () => {
@@ -437,7 +437,7 @@ const Movies = () => {
                               fontWeight: '300',
                             }}
                             onSelect={(eventKey) => {
-                              console.log(eventKey);
+                              // console.log(eventKey);
                               setSortBy(eventKey);
                             }}
                           >
@@ -698,7 +698,7 @@ const Movies = () => {
                                       marginBottom: '10px',
                                     }}
                                     onSelect={(eventKey) => {
-                                      console.log(eventKey);
+                                      // console.log(eventKey);
                                       setActiveCountry(eventKey);
                                     }}
                                   >
@@ -877,7 +877,7 @@ const Movies = () => {
                                   }`}
                                   onClick={() => {
                                     toggleFilter(filter.id);
-                                    console.log(filter.id);
+                                    // console.log(filter.id);
                                   }}
                                 >
                                   {filter.name}
@@ -916,7 +916,7 @@ const Movies = () => {
                                     toggleCertification(
                                       certification.certification
                                     );
-                                    console.log(certification.certification);
+                                    // console.log(certification.certification);
                                   }}
                                 >
                                   {certification.certification}
@@ -958,7 +958,7 @@ const Movies = () => {
                                 marginBottom: '10px',
                               }}
                               onSelect={(eventKey) => {
-                                console.log(eventKey);
+                                // console.log(eventKey);
                                 setActiveLanguage(eventKey);
                               }}
                             >
