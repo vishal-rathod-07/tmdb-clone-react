@@ -1,6 +1,7 @@
 import SortcutBar from './Sections/SortcutBar';
 import Header from './Sections/Header';
 import Media from './Sections/Media';
+import { API } from '../Constants';
 
 import spinner from '../../assets/images/loader.gif';
 
@@ -37,7 +38,7 @@ const MovieDetail = () => {
         const movieResponse = await fetch(
           `https://api.themoviedb.org/3/${
             type === 'movie' ? 'movie' : 'tv'
-          }/${id}?api_key=${process.env.REACT_APP_API_KEY}&language=en-US`
+          }/${id}?api_key=${API}&language=en-US`
         );
         const data = await movieResponse.json();
         setMovie(data);
@@ -52,9 +53,7 @@ const MovieDetail = () => {
         const socialResponse = await fetch(
           `https://api.themoviedb.org/3/${
             type === 'movie' ? 'movie' : 'tv'
-          }/${id}/external_ids?api_key=${
-            process.env.REACT_APP_API_KEY
-          }&language=en-US`
+          }/${id}/external_ids?api_key=${API}&language=en-US`
         );
         const data = await socialResponse.json();
         setSocial(data);
@@ -69,9 +68,7 @@ const MovieDetail = () => {
         const providerResponse = await fetch(
           `https://api.themoviedb.org/3/${
             type === 'movie' ? 'movie' : 'tv'
-          }/${id}/watch/providers?api_key=${
-            process.env.REACT_APP_API_KEY
-          }&language=en-US`
+          }/${id}/watch/providers?api_key=${API}&language=en-US`
         );
         const data = await providerResponse.json();
         setProvider(data);
@@ -86,9 +83,7 @@ const MovieDetail = () => {
         const castResponse = await fetch(
           `https://api.themoviedb.org/3/${
             type === 'movie' ? 'movie' : 'tv'
-          }/${id}/credits?api_key=${
-            process.env.REACT_APP_API_KEY
-          }&language=en-US`
+          }/${id}/credits?api_key=${API}&language=en-US`
         );
         const data = await castResponse.json();
         setCast(data.cast);
@@ -103,9 +98,7 @@ const MovieDetail = () => {
         const reviewResponse = await fetch(
           `https://api.themoviedb.org/3/${
             type === 'movie' ? 'movie' : 'tv'
-          }/${id}/reviews?api_key=${
-            process.env.REACT_APP_API_KEY
-          }&language=en-US`
+          }/${id}/reviews?api_key=${API}&language=en-US`
         );
         const data = await reviewResponse.json();
         setReviews(data.results);
@@ -121,9 +114,7 @@ const MovieDetail = () => {
         const trailerResponse = await fetch(
           `https://api.themoviedb.org/3/${
             type === 'movie' ? 'movie' : 'tv'
-          }/${id}/videos?api_key=${
-            process.env.REACT_APP_API_KEY
-          }&language=en-US`
+          }/${id}/videos?api_key=${API}&language=en-US`
         );
         const data = await trailerResponse.json();
         // console.log(data);
@@ -140,9 +131,7 @@ const MovieDetail = () => {
         const recommandationsResponse = await fetch(
           `https://api.themoviedb.org/3/${
             type === 'movie' ? 'movie' : 'tv'
-          }/${id}/recommendations?api_key=${
-            process.env.REACT_APP_API_KEY
-          }&language=en-US`
+          }/${id}/recommendations?api_key=${API}&language=en-US`
         );
         const data = await recommandationsResponse.json();
         setRecommandations(data.results);
@@ -157,7 +146,7 @@ const MovieDetail = () => {
         const keywordResponse = await fetch(
           `https://api.themoviedb.org/3/${
             type === 'movie' ? 'movie' : 'tv'
-          }/${id}/keywords?api_key=${process.env.REACT_APP_API_KEY}`
+          }/${id}/keywords?api_key=${API}`
         );
         const data = await keywordResponse.json();
         setKeywords(data.keywords || data.results);
