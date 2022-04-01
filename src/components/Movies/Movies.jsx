@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import './movies.scss';
+import { API } from '../Constants';
 
 import { useParams } from 'react-router-dom';
 
@@ -31,6 +32,39 @@ const Movies = () => {
   const [totalPages, setTotalPages] = useState(null); //total pages of movies
 
   const [sortBy, setSortBy] = useState(null); //Sort by popularity or rating or release date or title
+  const [dropdownTitle, setDropdownTitle] = useState('Popularity Descending'); //Dropdown title
+
+  useEffect(() => {
+    switch (sortBy) {
+      case 'popularity.desc':
+        setDropdownTitle('Popularity Descending');
+        break;
+      case 'popularity.asc':
+        setDropdownTitle('Popularity Ascending');
+        break;
+      case 'vote_average.desc':
+        setDropdownTitle('Rating Descending');
+        break;
+      case 'vote_average.asc':
+        setDropdownTitle('Rating Ascending');
+        break;
+      case 'primary_release_date.desc':
+        setDropdownTitle('Release Date Descending');
+        break;
+      case 'primary_release_date.asc':
+        setDropdownTitle('Release Date Ascending');
+        break;
+      case 'title.asc':
+        setDropdownTitle('Title (A-Z)');
+        break;
+      case 'title.desc':
+        setDropdownTitle('Title (Z-A)');
+        break;
+      default:
+        setDropdownTitle('Popularity Descending');
+        break;
+    }
+  }, [sortBy]);
 
   const [activeCountry, setActiveCountry] = useState(null); //Country filter
 
@@ -126,9 +160,7 @@ const Movies = () => {
     fetch(
       `https://api.themoviedb.org/3/${
         showType === 'tv' ? 'tv/' : 'movie/'
-      }${categoryType}?api_key=${
-        process.env.REACT_APP_API_KEY
-      }&language=en-US&page=1`
+      }${categoryType}?api_key=${API}&language=en-US&page=1`
     )
       .then((response) => response.json())
       .then((data) => {
@@ -176,7 +208,7 @@ const Movies = () => {
         const filterResponse = await fetch(
           `https://api.themoviedb.org/3/genre/${
             showType === 'tv' ? 'tv/' : 'movie/'
-          }list?api_key=${process.env.REACT_APP_API_KEY}&language=en-US`
+          }list?api_key=${API}&language=en-US`
         );
         const data = await filterResponse.json();
         setFilterList(data.genres);
@@ -214,7 +246,7 @@ const Movies = () => {
     const fetchCertification = async () => {
       try {
         const certificationResponse = await fetch(
-          `https://api.themoviedb.org/3/certification/movie/list?api_key=${process.env.REACT_APP_API_KEY}&language=en-US`
+          `https://api.themoviedb.org/3/certification/movie/list?api_key=${API}&language=en-US`
         );
         const data = await certificationResponse.json();
         setCertificationList(data.certifications.IN);
@@ -253,9 +285,7 @@ const Movies = () => {
 
   const handleSearch = () => {
     setDiscoverUrl(
-      `https://api.themoviedb.org/3/discover/${showType}?api_key=${
-        process.env.REACT_APP_API_KEY
-      }&sort_by=${
+      `https://api.themoviedb.org/3/discover/${showType}?api_key=${API}&sort_by=${
         sortBy ? sortBy : 'popularity.desc'
       }&page=${page}&with_ott_monetization_types=${
         isAllAvailabilities ? '' : activeAvalabilitiesArray.join('%7C')
@@ -365,6 +395,7 @@ const Movies = () => {
                               fontSize: '1em',
                               fontWeight: '300',
                               marginBottom: '10px',
+                              color: '#000',
                             }}
                             className='filter-title p-0'
                           >
@@ -372,13 +403,12 @@ const Movies = () => {
                           </h3>
                           <DropdownButton
                             id='dropdown-basic-button'
-                            title={sortBy ? sortBy : 'popularity'}
+                            title={dropdownTitle}
                             variant='secondary'
                             style={{
                               width: '100%',
                               fontSize: '1em',
                               fontWeight: '300',
-                              marginBottom: '10px',
                             }}
                             onSelect={(eventKey) => {
                               console.log(eventKey);
@@ -431,6 +461,8 @@ const Movies = () => {
                               fontSize: '1em',
                               fontWeight: '300',
                               marginBottom: '10px',
+                              color: '#000',
+                              color: '#000',
                             }}
                             className='filter-title p-0'
                           >
@@ -577,6 +609,7 @@ const Movies = () => {
                               fontSize: '1em',
                               fontWeight: '300',
                               marginBottom: '10px',
+                              color: '#000',
                             }}
                             className='filter-title p-0'
                           >
@@ -770,7 +803,7 @@ const Movies = () => {
 
                           <div className='year_column d-flex justify-content-between'>
                             <span className='year_column_title'>from</span>
-                            <span className='date_picker'>
+                            <span className='date_picker w-100'>
                               <span className='date_picker_wrapper'>
                                 <DatePicker
                                   selected={startDate}
@@ -779,9 +812,9 @@ const Movies = () => {
                               </span>
                             </span>
                           </div>
-                          <div className='year_column d-flex justify-content-between'>
+                          <div className='year_column d-flex '>
                             <span className='year_column_title'>to</span>
-                            <span className='date_picker'>
+                            <span className='date_picker w-100'>
                               <span className='date_picker_wrapper'>
                                 <DatePicker
                                   selected={endDate}
@@ -800,6 +833,7 @@ const Movies = () => {
                               fontSize: '1em',
                               fontWeight: '300',
                               marginBottom: '10px',
+                              color: '#000',
                             }}
                             className='filter-title p-0'
                           >
@@ -834,6 +868,7 @@ const Movies = () => {
                               fontSize: '1em',
                               fontWeight: '300',
                               marginBottom: '10px',
+                              color: '#000',
                             }}
                             className='filter-title p-0'
                           >
@@ -883,6 +918,7 @@ const Movies = () => {
                               fontSize: '1em',
                               fontWeight: '300',
                               marginBottom: '10px',
+                              color: '#000',
                             }}
                             className='filter-title m-0 p-0'
                           >
