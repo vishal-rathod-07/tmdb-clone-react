@@ -67,6 +67,7 @@ const Movies = () => {
   }, [sortBy]);
 
   const [activeCountry, setActiveCountry] = useState(null); //Country filter
+  activeCountry && console.log(activeCountry);
   const [activeLanguage, setActiveLanguage] = useState(null); //Language filter
 
   const [filteredMovies, setFilteredMovies] = useState(movies); //Filtered movies
@@ -323,9 +324,9 @@ const Movies = () => {
           `
             )
           : ''
-      }&release_date.gte=${
+      }&${showType === 'movie' ? 'release_date' : 'air_date'}.gte=${
         startDate ? `${startDate.toISOString().split('T')[0]}` : ''
-      }&release_date.lte=${
+      }&${showType === 'movie' ? 'release_date' : 'air_date'}.lte=${
         endDate ? `${endDate.toISOString().split('T')[0]}` : ''
       }&with_genres=${
         activeFiltersArray.length > 0 ? activeFiltersArray.join('%2C') : ''
@@ -707,6 +708,22 @@ const Movies = () => {
                                         key={country.iso_3166_1}
                                         eventKey={country.iso_3166_1}
                                       >
+                                        <img
+                                          // src={`https://countryflagsapi.com/png/${country.iso_3166_1}`}
+                                          src={`https://flagcdn.com/w20/${country.iso_3166_1.toLowerCase()}.png`}
+                                          onError={(e) => {
+                                            e.target.onerror = null;
+                                            e.target.src =
+                                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8wkWFOYkdG7W9Xf0-aheuTMQHTEsySnpXOQ&usqp=CAU';
+                                          }}
+                                          style={{
+                                            width: '24px',
+                                            height: '20px',
+                                            marginRight: '10px',
+                                          }}
+                                          alt={country.iso_3166_1}
+                                        />
+
                                         {country.english_name}
                                       </Dropdown.Item>
                                     ))}
@@ -1000,7 +1017,7 @@ const Movies = () => {
                             }}
                             className='filter-title m-0 p-0'
                           >
-                            Sort Results By
+                            Country
                           </h3>
                         </Accordion.Body>
                       </Accordion.Item>
