@@ -32,23 +32,6 @@ const Header = ({ movie, provider, type }) => {
     (movie.release_date && movie.release_date.split('-')[0]) ||
     (movie.first_air_date && movie.first_air_date.split('-')[0]);
 
-  useEffect(() => {
-    const fetchColors = async () => {
-      <ColorExtractor
-        rgb
-        getColors={(colors) => {
-          setColors(colors);
-        }}
-      >
-        <img
-          src={`https://www.themoviedb.org/t/p/w300_and_h450_bestv2/${movie.poster_path}`}
-          alt=''
-        />
-      </ColorExtractor>;
-    };
-    fetchColors();
-  }, [movie.poster_path]);
-
   return (
     movie && (
       <div
@@ -190,10 +173,19 @@ const Header = ({ movie, provider, type }) => {
                               : '#ff0000'
                           }
                         />
-                        <span className='rating-text'>
-                          {movie.vote_average * 10}
-                          <span className='rating-text-suffix'>%</span>
-                        </span>
+
+                        <span className='rating-text'></span>
+                        <style
+                          dangerouslySetInnerHTML={{
+                            __html: [
+                              '.rating-text:before {',
+                              `  content: "\\e9${(
+                                movie.vote_average * 10
+                              ).toString(16)}";`,
+                              '}',
+                            ].join('\n'),
+                          }}
+                        ></style>
                       </div>
                       <div className='text fw-bold'>
                         User <br />
