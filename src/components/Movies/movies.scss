@@ -179,6 +179,13 @@
         }
       }
 
+      .Language-filter {
+        .dropdown-menu {
+          height: 232.422px;
+          overflow: hidden scroll;
+        }
+      }
+
       .filter-section_wrapper + .filter-section_wrapper {
         margin-top: 12px;
       }
