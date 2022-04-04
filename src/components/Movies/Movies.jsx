@@ -22,6 +22,242 @@ const Movies = () => {
     setMovies([]);
   }, [categoryType]);
 
+  const [urlParams, setUrlParams] = useState({
+    'air_date.gte': '',
+    'air_date.lte': '',
+    certification: '',
+    certification_country: '',
+    debug: '',
+    'first_air_date.gte': '',
+    'first_air_date.lte': '',
+    ott_region: '',
+    page: '',
+    'primary_release_date.gte': '',
+    'primary_release_date.lte': '',
+    region: '',
+    'release_date.gte': '',
+    'release_date.lte': '',
+    show_me: '',
+    sort_by: '',
+    'vote_average.gte': '',
+    'vote_average.lte': '',
+    'vote_count.gte': '',
+    with_genres: '',
+    with_keywords: '',
+    with_networks: '',
+    with_origin_country: '',
+    with_original_language: '',
+    with_ott_monetization_types: '',
+    with_ott_providers: '',
+    with_release_type: '',
+    'with_runtime.gte': '',
+    'with_runtime.lte': '',
+  });
+
+  useEffect(() => {
+    switch (categoryType) {
+      case 'popular':
+        setUrlParams({
+          'air_date.gte': '',
+          //six months from today
+          'air_date.lte': new Date(
+            new Date().setMonth(new Date().getMonth() + 6)
+          )
+            .toISOString()
+            .split('T')[0],
+          certification: '',
+          certification_country: 'IN',
+          debug: '',
+          'first_air_date.gte': '',
+          'first_air_date.lte': '',
+          ott_region: 'IN',
+          page: 1,
+          'primary_release_date.gte': '',
+          'primary_release_date.lte': '',
+          region: '',
+          'release_date.gte': '',
+          'release_date.lte': new Date(
+            new Date().setMonth(new Date().getMonth() + 6)
+          )
+            .toISOString()
+            .split('T')[0],
+          show_me: 0,
+          sort_by: 'popularity.desc',
+          'vote_average.gte': 0,
+          'vote_average.lte': 10,
+          'vote_count.gte': '',
+          with_genres: '',
+          with_keywords: '',
+          with_networks: '',
+          with_origin_country: '',
+          with_original_language: '',
+          with_ott_monetization_types: '',
+          with_ott_providers: '',
+          with_release_type: '',
+          'with_runtime.gte': 0,
+          'with_runtime.lte': 400,
+        });
+        break;
+      case 'now_playing':
+        setUrlParams({
+          'air_date.gte': '',
+          'air_date.lte': new Date(
+            new Date().setMonth(new Date().getMonth() + 6)
+          )
+            .toISOString()
+            .split('T')[0],
+          certification: '',
+          certification_country: 'IN',
+          debug: '',
+          'first_air_date.gte': '',
+          'first_air_date.lte': '',
+          ott_region: 'IN',
+          page: 1,
+          'primary_release_date.gte': '',
+          'primary_release_date.lte': '',
+          region: '',
+          // 40 days before today
+          'release_date.gte': new Date(
+            new Date().setDate(new Date().getDate() - 40)
+          )
+            .toISOString()
+            .split('T')[0],
+          // 2 days after today
+          'release_date.lte': new Date(
+            new Date().setDate(new Date().getDate() + 2)
+          )
+            .toISOString()
+            .split('T')[0],
+          show_me: 0,
+          sort_by: 'popularity.desc',
+          'vote_average.gte': 0,
+          'vote_average.lte': 10,
+          'vote_count.gte': '',
+          with_genres: '',
+          with_keywords: '',
+          with_networks: '',
+          with_origin_country: '',
+          with_original_language: '',
+          with_ott_monetization_types: '',
+          with_ott_providers: '',
+          with_release_type: 3,
+          'with_runtime.gte': 0,
+          'with_runtime.lte': 400,
+        });
+        break;
+      case 'upcoming':
+        setUrlParams({
+          'air_date.gte': '',
+          // 6 months from today
+          'air_date.lte': new Date(
+            new Date().setMonth(new Date().getMonth() + 6)
+          )
+            .toISOString()
+            .split('T')[0],
+          certification: '',
+          certification_country: 'IN',
+          debug: '',
+          'first_air_date.gte': '',
+          'first_air_date.lte': '',
+          ott_region: 'IN',
+          page: 1,
+          'primary_release_date.gte': '',
+          'primary_release_date.lte': '',
+          region: '',
+          // 2 days after today
+          'release_date.gte': new Date(
+            new Date().setDate(new Date().getDate() + 2)
+          )
+            .toISOString()
+            .split('T')[0],
+          // 3 weeks after today
+          'release_date.lte': new Date(
+            new Date().setDate(new Date().getDate() + 23)
+          )
+            .toISOString()
+            .split('T')[0],
+          show_me: 0,
+          sort_by: 'popularity.desc',
+          'vote_average.gte': 0,
+          'vote_average.lte': 10,
+          'vote_count.gte': '',
+          with_genres: '',
+          with_keywords: '',
+          with_networks: '',
+          with_origin_country: '',
+          with_original_language: '',
+          with_ott_monetization_types: '',
+          with_ott_providers: '',
+          with_release_type: 3,
+          'with_runtime.gte': 0,
+          'with_runtime.lte': 400,
+        });
+        break;
+      case 'top_rated':
+        setUrlParams({
+          'air_date.gte': '',
+          'air_date.lte': new Date(
+            new Date().setMonth(new Date().getMonth() + 6)
+          )
+            .toISOString()
+            .split('T')[0],
+          certification: '',
+          certification_country: 'IN',
+          debug: '',
+          'first_air_date.gte': '',
+          'first_air_date.lte': '',
+          ott_region: 'IN',
+          page: 1,
+          'primary_release_date.gte': '',
+          'primary_release_date.lte': '',
+          region: '',
+          'release_date.gte': '',
+          'release_date.lte': new Date(
+            new Date().setMonth(new Date().getMonth() + 6)
+          )
+            .toISOString()
+            .split('T')[0],
+          show_me: 0,
+          sort_by: 'vote_average.desc',
+          'vote_average.gte': 0,
+          'vote_average.lte': 10,
+          'vote_count.gte': 300,
+          with_genres: '',
+          with_keywords: '',
+          with_networks: '',
+          with_origin_country: '',
+          with_original_language: '',
+          with_ott_monetization_types: '',
+          with_ott_providers: '',
+          with_release_type: '',
+          'with_runtime.gte': 0,
+          'with_runtime.lte': 400,
+        });
+        break;
+
+      default:
+        setUrlParams({
+          ...urlParams,
+        });
+    }
+  }, [categoryType]);
+
+  const generateUrl = (urlParams) => {
+    let url = `https://api.themoviedb.org/3/discover/movie?api_key=${API}`;
+    Object.keys(urlParams).forEach((key) => {
+      if (urlParams[key]) {
+        url = `${url}&${key}=${urlParams[key]}`;
+      }
+    });
+    return url;
+  };
+
+  useEffect(() => {
+    const url = generateUrl(urlParams);
+    setDiscoverUrl(url);
+    // console.log(url);
+  }, [urlParams]);
+
   //Fetch movies based on type
   const [loading, setLoading] = useState(true); //Loading
   const [error, setError] = useState(null); //Error handling
@@ -31,7 +267,9 @@ const Movies = () => {
   const [page, setPage] = useState(1); //Page number
   const [totalPages, setTotalPages] = useState(null); //total pages of movies
 
-  const [sortBy, setSortBy] = useState(null); //Sort by popularity or rating or release date or title
+  const [sortBy, setSortBy] = useState(
+    urlParams.sort_by ? urlParams.sort_by : ''
+  ); //Sort by popularity or rating or release date or title
   const [dropdownTitle, setDropdownTitle] = useState('Popularity Descending'); //Dropdown title
 
   useEffect(() => {
@@ -70,8 +308,6 @@ const Movies = () => {
   activeCountry && console.log(activeCountry);
   const [activeLanguage, setActiveLanguage] = useState(null); //Language filter
 
-  const [filteredMovies, setFilteredMovies] = useState(movies); //Filtered movies
-
   const [filterList, setFilterList] = useState(null); //Filter list
   const [activeFiltersArray, setActiveFiltersArray] = useState([]); //Array of filters
 
@@ -86,9 +322,15 @@ const Movies = () => {
 
   const [progress, setProgress] = useState(10); //Progress bar
 
-  const [sortUrl, setSortUrl] = useState(null); //Sort url
-
-  const [startDate, setStartDate] = useState(); //Start date
+  const [startDate, setStartDate] = useState(
+    showType === 'tv'
+      ? urlParams.first_air_date_gte
+        ? urlParams.first_air_date_gte
+        : ''
+      : urlParams.release_date_gte
+      ? urlParams.release_date_gte
+      : ''
+  ); //Start date
   const [endDate, setEndDate] = useState(
     //six months from today
     new Date(new Date().setMonth(new Date().getMonth() + 6))
@@ -154,31 +396,31 @@ const Movies = () => {
     setIsAllCountries(!isAllCountries);
   };
 
-  useEffect(() => {
-    setLoading(true);
-    setError(null);
-    setMovies(null);
-    setHasMore(false);
-    setTotalPages(null);
-    setSortBy(null);
+  // useEffect(() => {
+  //   setLoading(true);
+  //   setError(null);
+  //   setMovies(null);
+  //   setHasMore(false);
+  //   setTotalPages(null);
+  //   setSortBy(null);
 
-    fetch(
-      `https://api.themoviedb.org/3/${
-        showType === 'tv' ? 'tv/' : 'movie/'
-      }${categoryType}?api_key=${API}&language=en-US&page=1`
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        setMovies(data.results);
-        setTotalPages(data.total_pages);
-        setLoading(false);
-        setProgress(100);
-      })
-      .catch((error) => {
-        setError(error);
-        setLoading(false);
-      });
-  }, [showType, categoryType]); //Runs when showType or type changes
+  //   fetch(
+  //     `https://api.themoviedb.org/3/${
+  //       showType === 'tv' ? 'tv/' : 'movie/'
+  //     }${categoryType}?api_key=${API}&language=en-US&page=1`
+  //   )
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       setMovies(data.results);
+  //       setTotalPages(data.total_pages);
+  //       setLoading(false);
+  //       setProgress(100);
+  //     })
+  //     .catch((error) => {
+  //       setError(error);
+  //       setLoading(false);
+  //     });
+  // }, [showType, categoryType]); //Runs when showType or type changes
 
   useEffect(() => {
     setLoading(true);
@@ -201,11 +443,7 @@ const Movies = () => {
         setError(error);
         setLoading(false);
       });
-  }, [page, showType, sortUrl, categoryType, discoverUrl]);
-
-  useEffect(() => {
-    setFilteredMovies(movies);
-  }, [movies]); //Runs when movies changes
+  }, [page, showType, categoryType, discoverUrl]);
 
   useEffect(() => {
     const fetchFilter = async () => {
@@ -336,21 +574,6 @@ const Movies = () => {
     );
   };
 
-  // useEffect(() => {
-  //   if (sortBy) {
-  //     const filtered = movies.filter((movie) => {
-  //       return movie.genre_ids.includes(sortBy);
-  //     });
-  //     setFilteredMovies(filtered);
-  //   } else {
-  //     setFilteredMovies(movies);
-  //   }
-  // }, [sortBy]);
-
-  // console.log(filtersArray);
-
-  // console.log(hasMore);
-
   const toggleFilter = (filter) => {
     if (activeFiltersArray.includes(filter)) {
       setActiveFiltersArray(
@@ -373,16 +596,6 @@ const Movies = () => {
       ]);
     }
   };
-
-  // const getFilteredMovies = () => {
-  //   if (filtersArray.length > 0) {
-  //     return movies.filter((movie) =>
-  //       filtersArray.some((filter) => movie.genre_ids.includes(filter.id))
-  //     );
-  //   } else {
-  //     return movies;
-  //   }
-  // };
 
   return (
     <>
@@ -440,6 +653,10 @@ const Movies = () => {
                             onSelect={(eventKey) => {
                               // console.log(eventKey);
                               setSortBy(eventKey);
+                              setUrlParams({
+                                ...urlParams,
+                                sort_by: eventKey,
+                              });
                             }}
                           >
                             <Dropdown.Item eventKey='popularity.desc'>
@@ -1057,15 +1274,15 @@ const Movies = () => {
                             }
                           >
                             <div className='page_1'>
-                              {filteredMovies ? (
-                                filteredMovies.map((movie, index) => (
+                              {movies ? (
+                                movies.map((movie, index) => (
                                   <FilterMovieCard
                                     key={index}
                                     id={movie.id}
                                     poster={movie.poster_path}
-                                    title={movie.name || movie.title}
+                                    title={movie.name ?? movie.title}
                                     date={
-                                      movie.first_air_date || movie.release_date
+                                      movie.first_air_date ?? movie.release_date
                                     }
                                     rating={movie.vote_average * 10}
                                     onMovieClick={onMovieClick}
