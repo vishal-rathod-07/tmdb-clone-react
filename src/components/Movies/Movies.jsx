@@ -243,12 +243,13 @@ const Movies = () => {
   }, [categoryType]);
 
   const generateUrl = (urlParams) => {
-    let url = `https://api.themoviedb.org/3/discover/movie?api_key=${API}`;
+    let url = `https://api.themoviedb.org/3/discover/${showType}?api_key=${API}`;
     Object.keys(urlParams).forEach((key) => {
       if (urlParams[key]) {
         url = `${url}&${key}=${urlParams[key]}`;
       }
     });
+    console.log(url);
     return url;
   };
 
@@ -267,13 +268,10 @@ const Movies = () => {
   const [page, setPage] = useState(1); //Page number
   const [totalPages, setTotalPages] = useState(null); //total pages of movies
 
-  const [sortBy, setSortBy] = useState(
-    urlParams.sort_by ? urlParams.sort_by : ''
-  ); //Sort by popularity or rating or release date or title
   const [dropdownTitle, setDropdownTitle] = useState('Popularity Descending'); //Dropdown title
 
   useEffect(() => {
-    switch (sortBy) {
+    switch (urlParams.sort_by) {
       case 'popularity.desc':
         setDropdownTitle('Popularity Descending');
         break;
@@ -302,7 +300,7 @@ const Movies = () => {
         setDropdownTitle('Popularity Descending');
         break;
     }
-  }, [sortBy]);
+  }, [urlParams.sort_by]);
 
   const [activeCountry, setActiveCountry] = useState(null); //Country filter
   activeCountry && console.log(activeCountry);
@@ -548,10 +546,35 @@ const Movies = () => {
     // console.log(movie);
   };
 
+  // const handleSearch = () => {
+  //   setDiscoverUrl(
+  //     `https://api.themoviedb.org/3/discover/${showType}?api_key=${API}&sort_by=${
+  //       sortBy ? sortBy : 'popularity.desc'
+  //     }&page=${page}&with_ott_monetization_types=${
+  //       isAllAvailabilities ? '' : activeAvalabilitiesArray.join('%7C')
+  //     }&certification_country=IN&certification=${
+  //       activeCertificationsArray.length > 0
+  //         ? activeCertificationsArray.map(
+  //             (item, index) => `${item}
+  //         ${index === activeCertificationsArray.length - 1 ? '' : '%7C'}
+  //         `
+  //           )
+  //         : ''
+  //     }&${showType === 'movie' ? 'release_date' : 'air_date'}.gte=${
+  //       startDate ? `${startDate.toISOString().split('T')[0]}` : ''
+  //     }&${showType === 'movie' ? 'release_date' : 'air_date'}.lte=${
+  //       endDate ? `${endDate.toISOString().split('T')[0]}` : ''
+  //     }&with_genres=${
+  //       activeFiltersArray.length > 0 ? activeFiltersArray.join('%2C') : ''
+  //     }&region=${activeCountry ? activeCountry : ''}&with_release_type=${
+  //       activeReleasesArray.length > 0 ? activeReleasesArray.join('%7C') : ''
+  //     }&with_original_language=${activeLanguage ? activeLanguage : ''}`
+  //   );
+  // };
   const handleSearch = () => {
     setDiscoverUrl(
       `https://api.themoviedb.org/3/discover/${showType}?api_key=${API}&sort_by=${
-        sortBy ? sortBy : 'popularity.desc'
+        urlParams.sort_by ? urlParams.sort_by : 'popularity.desc'
       }&page=${page}&with_ott_monetization_types=${
         isAllAvailabilities ? '' : activeAvalabilitiesArray.join('%7C')
       }&certification_country=IN&certification=${
@@ -652,7 +675,7 @@ const Movies = () => {
                             }}
                             onSelect={(eventKey) => {
                               // console.log(eventKey);
-                              setSortBy(eventKey);
+                              // setSortBy(eventKey);
                               setUrlParams({
                                 ...urlParams,
                                 sort_by: eventKey,
