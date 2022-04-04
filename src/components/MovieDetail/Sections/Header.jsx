@@ -19,7 +19,7 @@ const Header = ({ movie, provider, type }) => {
   });
   // backDropStyles && console.log(backDropStyles);
   // colors && console.log(colors);
-  let totalMinutes = movie.runtime || movie.episode_run_time[0];
+  let totalMinutes = movie.runtime ?? movie.episode_run_time[0];
   let hours = Math.floor(totalMinutes / 60);
   let minutes = totalMinutes % 60;
   let hoursString = hours > 0 ? hours + 'h ' : '';
@@ -106,7 +106,7 @@ const Header = ({ movie, provider, type }) => {
                   <div className='title-wrapper w-100 d-flex flex-wrap'>
                     <h2 className='title m-0 p-0 w-100'>
                       <Link to='/movie/12'>
-                        {movie.title || movie.name + ' '}
+                        {movie.title ?? movie.name + ' '}
                       </Link>
 
                       {year && (
@@ -122,13 +122,12 @@ const Header = ({ movie, provider, type }) => {
                       {type === 'movie' && (
                         <span className='release-date'>
                           <FormatDate date={movie.release_date} />
-                          {/* {formattedmonth + '/' + dt + '/' + formattedyear} */}
-                          {' ('}
                           {movie.production_countries.iso_3166_1 &&
-                            movie.production_countries[
-                              movie.production_countries.length - 1
-                            ].iso_3166_1}
-                          {')'}
+                            `(${
+                              movie.production_countries[
+                                movie.production_countries.length - 1
+                              ].iso_3166_1
+                            })`}
                         </span>
                       )}
                       {movie.genres.length > 0 && (
@@ -179,9 +178,11 @@ const Header = ({ movie, provider, type }) => {
                           dangerouslySetInnerHTML={{
                             __html: [
                               '.rating-text:before {',
-                              `  content: "\\e9${(
-                                movie.vote_average * 10
-                              ).toString(16)}";`,
+                              `  content: "\\e9${
+                                movie.vote_average
+                                  ? (movie.vote_average * 10).toString(16)
+                                  : '00'
+                              }";`,
                               '}',
                             ].join('\n'),
                           }}
