@@ -149,7 +149,7 @@ const MovieDetail = () => {
           }/${id}/keywords?api_key=${API}`
         );
         const data = await keywordResponse.json();
-        setKeywords(data.keywords || data.results);
+        setKeywords(data.keywords ?? data.results);
         // console.log(data);
         // console.log('KeyWords Fetch Sucess');
       } catch (error) {
@@ -162,7 +162,7 @@ const MovieDetail = () => {
   useEffect(() => {
     if (movie && social && cast && reviews && provider && keywords) {
       setLoading(false);
-      document.title = `${movie.title || movie.name} (${
+      document.title = `${movie.title ?? movie.name} (${
         (type === 'movie' ? '' : 'TV Series ') +
         ((movie.release_date && movie.release_date.split('-')[0]) ||
           (movie.first_air_date && movie.first_air_date.split('-')[0]))
