@@ -6,7 +6,7 @@ const Media = ({ movie, cast, keywords, reviews, recommandations, type }) => {
   // console.log('rec');
   // console.log(recommandations);
   // console.log('type');
-  // console.log(cast);
+  console.log(cast);
   const reviewLength = reviews.length;
   reviews.length > 0 &&
     (reviews = reviews[Math.floor(Math.random() * reviews.length)]);
@@ -50,18 +50,10 @@ const Media = ({ movie, cast, keywords, reviews, recommandations, type }) => {
                                     alt='Cast 1'
                                     loading='lazy'
                                   />
-                                ) : cast.gender === 0 ? (
-                                  <img
-                                    src='https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-4-user-grey-d8fe957375e70239d6abdd549fd7568c89281b2179b5f4470e2e12895792dfa5.svg'
-                                    alt='Cast 1'
-                                    loading='lazy'
-                                  />
+                                ) : cast.gender === 1 ? (
+                                  <div className='no-image female'></div>
                                 ) : (
-                                  <img
-                                    src='https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-36-user-female-grey-d9222f16ec16a33ed5e2c9bbdca07a4c48db14008bbebbabced8f8ed1fa2ad59.svg'
-                                    alt='cast'
-                                    loading='lazy'
-                                  />
+                                  <div className='no-image male'></div>
                                 )}
                               </div>
                               <div className='card-body'>
@@ -249,7 +241,7 @@ const Media = ({ movie, cast, keywords, reviews, recommandations, type }) => {
                       <div className='content-inner d-flex flex-wrap align-items-center w-100'>
                         <p>
                           We don't have any reviews for{' '}
-                          {movie.title || movie.name}. Would you like to write
+                          {movie.title ?? movie.name}. Would you like to write
                           one?
                         </p>
                       </div>
