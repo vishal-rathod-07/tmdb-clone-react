@@ -14,14 +14,18 @@
   color: #fff;
 
   .hero-section__content {
-    padding-left: 40px;
-    padding-right: 40px;
-    padding-top: 30px;
-    padding-bottom: 30px;
+    padding: 20px;
+    @media screen and (min-width: 1400px) {
+      padding: 30px 40px;
+    }
   }
 
   .hero-section__title {
-    margin-bottom: 50px;
+    margin-bottom: 20px;
+
+    @media screen and (min-width: 1400px) {
+      margin-bottom: 50px;
+    }
 
     h2 {
       font-size: 3em;
@@ -38,7 +42,6 @@
 
   .hero-section__search {
     #inner_search_form {
-      margin-top: 30px;
       position: relative;
       top: 0;
       left: 0;
