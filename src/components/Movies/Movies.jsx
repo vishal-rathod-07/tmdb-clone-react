@@ -17,16 +17,11 @@ import 'react-datepicker/dist/react-datepicker.css';
 const Movies = () => {
   const { showType, categoryType } = useParams();
 
-  useEffect(() => {
-    setPage(1);
-    setMovies([]);
-  }, [categoryType]);
-
   const [urlParams, setUrlParams] = useState({
     'air_date.gte': '',
     'air_date.lte': '',
     certification: '',
-    certification_country: '',
+    certification_country: 'IN',
     debug: '',
     'first_air_date.gte': '',
     'first_air_date.lte': '',
@@ -53,6 +48,17 @@ const Movies = () => {
     'with_runtime.gte': '',
     'with_runtime.lte': '',
   });
+
+  console.log(urlParams);
+
+  useEffect(() => {
+    // setPage(1);
+    setUrlParams({
+      ...urlParams,
+      page: 1,
+    });
+    setMovies([]);
+  }, [categoryType]);
 
   useEffect(() => {
     switch (categoryType) {
@@ -265,7 +271,7 @@ const Movies = () => {
 
   const [movies, setMovies] = useState(null); //Array of movies
   const [hasMore, setHasMore] = useState(false); //Infinite scroll
-  const [page, setPage] = useState(1); //Page number
+  // const [page, setPage] = useState(1); //Page number
   const [totalPages, setTotalPages] = useState(null); //total pages of movies
 
   const [dropdownTitle, setDropdownTitle] = useState('Popularity Descending'); //Dropdown title
@@ -441,7 +447,7 @@ const Movies = () => {
         setError(error);
         setLoading(false);
       });
-  }, [page, showType, categoryType, discoverUrl]);
+  }, [urlParams.page, showType, categoryType, discoverUrl]);
 
   useEffect(() => {
     const fetchFilter = async () => {
@@ -521,18 +527,32 @@ const Movies = () => {
     fetchCertification();
   }, []); //Fetch countries and certification list
 
+  useEffect(() => {
+    setUrlParams({
+      ...urlParams,
+      with_ott_monetization_types:
+        (activeAvalabilitiesArray.length > 0 &&
+          activeAvalabilitiesArray.join('%7C')) ||
+        null,
+    });
+  }, [activeAvalabilitiesArray]);
+
   const fetchMoreMovies = () => {
     setLoading(true);
     setError(null);
-    setPage(page + 1);
+    setUrlParams({
+      ...urlParams,
+      page: urlParams.page + 1,
+    });
+    // setPage(page + 1);
 
-    fetch(`${discoverUrl}&page=${page + 1}`)
+    fetch(`${discoverUrl}`)
       .then((response) => response.json())
       .then((data) => {
         // console.log(data.total_pages);
         // console.log('====', data.page);
         setMovies([...movies, ...data.results]);
-        setHasMore(data.total_pages > page);
+        setHasMore(data.total_pages > urlParams.page);
         setLoading(false);
         setProgress(100);
       })
@@ -546,36 +566,11 @@ const Movies = () => {
     // console.log(movie);
   };
 
-  // const handleSearch = () => {
-  //   setDiscoverUrl(
-  //     `https://api.themoviedb.org/3/discover/${showType}?api_key=${API}&sort_by=${
-  //       sortBy ? sortBy : 'popularity.desc'
-  //     }&page=${page}&with_ott_monetization_types=${
-  //       isAllAvailabilities ? '' : activeAvalabilitiesArray.join('%7C')
-  //     }&certification_country=IN&certification=${
-  //       activeCertificationsArray.length > 0
-  //         ? activeCertificationsArray.map(
-  //             (item, index) => `${item}
-  //         ${index === activeCertificationsArray.length - 1 ? '' : '%7C'}
-  //         `
-  //           )
-  //         : ''
-  //     }&${showType === 'movie' ? 'release_date' : 'air_date'}.gte=${
-  //       startDate ? `${startDate.toISOString().split('T')[0]}` : ''
-  //     }&${showType === 'movie' ? 'release_date' : 'air_date'}.lte=${
-  //       endDate ? `${endDate.toISOString().split('T')[0]}` : ''
-  //     }&with_genres=${
-  //       activeFiltersArray.length > 0 ? activeFiltersArray.join('%2C') : ''
-  //     }&region=${activeCountry ? activeCountry : ''}&with_release_type=${
-  //       activeReleasesArray.length > 0 ? activeReleasesArray.join('%7C') : ''
-  //     }&with_original_language=${activeLanguage ? activeLanguage : ''}`
-  //   );
-  // };
   const handleSearch = () => {
     setDiscoverUrl(
       `https://api.themoviedb.org/3/discover/${showType}?api_key=${API}&sort_by=${
         urlParams.sort_by ? urlParams.sort_by : 'popularity.desc'
-      }&page=${page}&with_ott_monetization_types=${
+      }&page=${urlParams.page}&with_ott_monetization_types=${
         isAllAvailabilities ? '' : activeAvalabilitiesArray.join('%7C')
       }&certification_country=IN&certification=${
         activeCertificationsArray.length > 0
@@ -1322,7 +1317,7 @@ const Movies = () => {
                           </InfiniteScroll>
                         )}
 
-                        {page !== totalPages && (
+                        {urlParams.page !== totalPages && (
                           <div className='load_more'>
                             <Link
                               to=''
