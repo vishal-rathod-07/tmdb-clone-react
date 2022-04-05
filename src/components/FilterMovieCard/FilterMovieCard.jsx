@@ -8,7 +8,6 @@ const FilterMovieCard = ({
   title,
   date,
   rating,
-  onMovieClick,
   showType,
   movie,
 }) => {
@@ -27,7 +26,7 @@ const FilterMovieCard = ({
 
   return (
     <div className='F-M-card style_1'>
-      <div className='card-image__wrapper' onClick={() => onMovieClick(id)}>
+      <div className='card-image__wrapper'>
         <div className='card__image'>
           <Link className='image-link' to={detailsPath}>
             {poster ? (
