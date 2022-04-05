@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import './movies.scss';
 import { API } from '../Constants';
 
 import { useParams } from 'react-router-dom';
 
 import FilterMovieCard from '../FilterMovieCard/FilterMovieCard';
-import { Dropdown, Accordion, DropdownButton } from 'react-bootstrap';
+import { Dropdown, Accordion, DropdownButton, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import LoadingBar from 'react-top-loading-bar';
@@ -14,264 +14,49 @@ import DatePicker from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
+import getInitialParams from '../../components/InitialParams';
+
 const Movies = () => {
   const { showType, categoryType } = useParams();
 
-  const [urlParams, setUrlParams] = useState({
-    'air_date.gte': '',
-    'air_date.lte': '',
-    certification: '',
-    certification_country: 'IN',
-    debug: '',
-    'first_air_date.gte': '',
-    'first_air_date.lte': '',
-    ott_region: '',
-    page: '',
-    'primary_release_date.gte': '',
-    'primary_release_date.lte': '',
-    region: '',
-    'release_date.gte': '',
-    'release_date.lte': '',
-    show_me: '',
-    sort_by: '',
-    'vote_average.gte': '',
-    'vote_average.lte': '',
-    'vote_count.gte': '',
-    with_genres: '',
-    with_keywords: '',
-    with_networks: '',
-    with_origin_country: '',
-    with_original_language: '',
-    with_ott_monetization_types: '',
-    with_ott_providers: '',
-    with_release_type: '',
-    'with_runtime.gte': '',
-    'with_runtime.lte': '',
-  });
+  const [defaultParams, setDefaultParams] = useState(
+    getInitialParams(categoryType)
+  );
 
-  console.log(urlParams);
+  const [urlParams, setUrlParams] = useState(getInitialParams(categoryType));
 
   useEffect(() => {
-    // setPage(1);
-    setUrlParams({
-      ...urlParams,
-      page: 1,
-    });
-    setMovies([]);
+    setUrlParams(getInitialParams(categoryType));
+    setDefaultParams(getInitialParams(categoryType));
   }, [categoryType]);
 
-  useEffect(() => {
-    switch (categoryType) {
-      case 'popular':
-        setUrlParams({
-          'air_date.gte': '',
-          //six months from today
-          'air_date.lte': new Date(
-            new Date().setMonth(new Date().getMonth() + 6)
-          )
-            .toISOString()
-            .split('T')[0],
-          certification: '',
-          certification_country: 'IN',
-          debug: '',
-          'first_air_date.gte': '',
-          'first_air_date.lte': '',
-          ott_region: 'IN',
-          page: 1,
-          'primary_release_date.gte': '',
-          'primary_release_date.lte': '',
-          region: '',
-          'release_date.gte': '',
-          'release_date.lte': new Date(
-            new Date().setMonth(new Date().getMonth() + 6)
-          )
-            .toISOString()
-            .split('T')[0],
-          show_me: 0,
-          sort_by: 'popularity.desc',
-          'vote_average.gte': 0,
-          'vote_average.lte': 10,
-          'vote_count.gte': '',
-          with_genres: '',
-          with_keywords: '',
-          with_networks: '',
-          with_origin_country: '',
-          with_original_language: '',
-          with_ott_monetization_types: '',
-          with_ott_providers: '',
-          with_release_type: '',
-          'with_runtime.gte': 0,
-          'with_runtime.lte': 400,
-        });
-        break;
-      case 'now_playing':
-        setUrlParams({
-          'air_date.gte': '',
-          'air_date.lte': new Date(
-            new Date().setMonth(new Date().getMonth() + 6)
-          )
-            .toISOString()
-            .split('T')[0],
-          certification: '',
-          certification_country: 'IN',
-          debug: '',
-          'first_air_date.gte': '',
-          'first_air_date.lte': '',
-          ott_region: 'IN',
-          page: 1,
-          'primary_release_date.gte': '',
-          'primary_release_date.lte': '',
-          region: '',
-          // 40 days before today
-          'release_date.gte': new Date(
-            new Date().setDate(new Date().getDate() - 40)
-          )
-            .toISOString()
-            .split('T')[0],
-          // 2 days after today
-          'release_date.lte': new Date(
-            new Date().setDate(new Date().getDate() + 2)
-          )
-            .toISOString()
-            .split('T')[0],
-          show_me: 0,
-          sort_by: 'popularity.desc',
-          'vote_average.gte': 0,
-          'vote_average.lte': 10,
-          'vote_count.gte': '',
-          with_genres: '',
-          with_keywords: '',
-          with_networks: '',
-          with_origin_country: '',
-          with_original_language: '',
-          with_ott_monetization_types: '',
-          with_ott_providers: '',
-          with_release_type: 3,
-          'with_runtime.gte': 0,
-          'with_runtime.lte': 400,
-        });
-        break;
-      case 'upcoming':
-        setUrlParams({
-          'air_date.gte': '',
-          // 6 months from today
-          'air_date.lte': new Date(
-            new Date().setMonth(new Date().getMonth() + 6)
-          )
-            .toISOString()
-            .split('T')[0],
-          certification: '',
-          certification_country: 'IN',
-          debug: '',
-          'first_air_date.gte': '',
-          'first_air_date.lte': '',
-          ott_region: 'IN',
-          page: 1,
-          'primary_release_date.gte': '',
-          'primary_release_date.lte': '',
-          region: '',
-          // 2 days after today
-          'release_date.gte': new Date(
-            new Date().setDate(new Date().getDate() + 2)
-          )
-            .toISOString()
-            .split('T')[0],
-          // 3 weeks after today
-          'release_date.lte': new Date(
-            new Date().setDate(new Date().getDate() + 23)
-          )
-            .toISOString()
-            .split('T')[0],
-          show_me: 0,
-          sort_by: 'popularity.desc',
-          'vote_average.gte': 0,
-          'vote_average.lte': 10,
-          'vote_count.gte': '',
-          with_genres: '',
-          with_keywords: '',
-          with_networks: '',
-          with_origin_country: '',
-          with_original_language: '',
-          with_ott_monetization_types: '',
-          with_ott_providers: '',
-          with_release_type: 3,
-          'with_runtime.gte': 0,
-          'with_runtime.lte': 400,
-        });
-        break;
-      case 'top_rated':
-        setUrlParams({
-          'air_date.gte': '',
-          'air_date.lte': new Date(
-            new Date().setMonth(new Date().getMonth() + 6)
-          )
-            .toISOString()
-            .split('T')[0],
-          certification: '',
-          certification_country: 'IN',
-          debug: '',
-          'first_air_date.gte': '',
-          'first_air_date.lte': '',
-          ott_region: 'IN',
-          page: 1,
-          'primary_release_date.gte': '',
-          'primary_release_date.lte': '',
-          region: '',
-          'release_date.gte': '',
-          'release_date.lte': new Date(
-            new Date().setMonth(new Date().getMonth() + 6)
-          )
-            .toISOString()
-            .split('T')[0],
-          show_me: 0,
-          sort_by: 'vote_average.desc',
-          'vote_average.gte': 0,
-          'vote_average.lte': 10,
-          'vote_count.gte': 300,
-          with_genres: '',
-          with_keywords: '',
-          with_networks: '',
-          with_origin_country: '',
-          with_original_language: '',
-          with_ott_monetization_types: '',
-          with_ott_providers: '',
-          with_release_type: '',
-          'with_runtime.gte': 0,
-          'with_runtime.lte': 400,
-        });
-        break;
+  const [movies, setMovies] = useState(null); //Array of movies
 
-      default:
-        setUrlParams({
-          ...urlParams,
-        });
-    }
-  }, [categoryType]);
+  const generateUrl = useCallback(
+    (params) => {
+      let url = `https://api.themoviedb.org/3/discover/${showType}?api_key=${API}`;
+      Object.keys(params).forEach((key) => {
+        if (params[key]) {
+          url = `${url}&${key}=${params[key]}`;
+        }
+      });
+      console.log(url);
+      return url;
+    },
+    [showType]
+  );
 
-  const generateUrl = (urlParams) => {
-    let url = `https://api.themoviedb.org/3/discover/${showType}?api_key=${API}`;
-    Object.keys(urlParams).forEach((key) => {
-      if (urlParams[key]) {
-        url = `${url}&${key}=${urlParams[key]}`;
-      }
-    });
-    console.log(url);
-    return url;
-  };
+  const [discoverUrl, setDiscoverUrl] = useState(generateUrl(urlParams));
 
   useEffect(() => {
-    const url = generateUrl(urlParams);
-    setDiscoverUrl(url);
-    // console.log(url);
-  }, [urlParams]);
+    setDiscoverUrl(generateUrl(defaultParams));
+  }, [defaultParams, generateUrl]);
 
   //Fetch movies based on type
   const [loading, setLoading] = useState(true); //Loading
   const [error, setError] = useState(null); //Error handling
 
-  const [movies, setMovies] = useState(null); //Array of movies
   const [hasMore, setHasMore] = useState(false); //Infinite scroll
-  // const [page, setPage] = useState(1); //Page number
   const [totalPages, setTotalPages] = useState(null); //total pages of movies
 
   const [dropdownTitle, setDropdownTitle] = useState('Popularity Descending'); //Dropdown title
@@ -308,12 +93,8 @@ const Movies = () => {
     }
   }, [urlParams.sort_by]);
 
-  const [activeCountry, setActiveCountry] = useState(null); //Country filter
-  activeCountry && console.log(activeCountry);
-  const [activeLanguage, setActiveLanguage] = useState(null); //Language filter
-
   const [filterList, setFilterList] = useState(null); //Filter list
-  const [activeFiltersArray, setActiveFiltersArray] = useState([]); //Array of filters
+  const [activeGenresArray, setActiveGenresArray] = useState([]); //Array of filters
 
   const [CertificationList, setCertificationList] = useState(null); //Certification list
   const [activeCertificationsArray, setActiveCertificationsArray] = useState(
@@ -322,7 +103,7 @@ const Movies = () => {
 
   const [countriesList, setCountriesList] = useState(null); //Countries list
 
-  const [countryIsoList, setCountryIsoList] = useState(null); //Countries list
+  // const [countryIsoList, setCountryIsoList] = useState(null); //Countries list
 
   const [progress, setProgress] = useState(10); //Progress bar
 
@@ -339,8 +120,6 @@ const Movies = () => {
     //six months from today
     new Date(new Date().setMonth(new Date().getMonth() + 6))
   ); //End date
-
-  const [discoverUrl, setDiscoverUrl] = useState(null); //Discover url
 
   const [isAllAvailabilities, setIsAllAvailabilities] = useState(true); //All available
 
@@ -372,7 +151,7 @@ const Movies = () => {
     setIsAllReleases(!isAllReleases);
   };
 
-  const [activeReleasesArray, setActiveReleasesArray] = useState([
+  const [activeReleaseTypesArray, setActiveReleaseTypesArray] = useState([
     '1',
     '2',
     '3',
@@ -382,12 +161,12 @@ const Movies = () => {
   ]); //Array of release dates
 
   const toggleActiveReleases = (release) => {
-    if (activeReleasesArray.includes(release)) {
-      setActiveReleasesArray(
-        activeReleasesArray.filter((item) => item !== release)
+    if (activeReleaseTypesArray.includes(release)) {
+      setActiveReleaseTypesArray(
+        activeReleaseTypesArray.filter((item) => item !== release)
       );
     } else {
-      setActiveReleasesArray([...activeReleasesArray, release]);
+      setActiveReleaseTypesArray([...activeReleaseTypesArray, release]);
     }
   };
 
@@ -502,7 +281,7 @@ const Movies = () => {
             return 0;
           })
         );
-        setCountryIsoList(data.map((item) => item.iso_3166_1));
+        // setCountryIsoList(data.map((item) => item.iso_3166_1));
         // console.log(data);
         // console.log(data.map((item) => item.iso_3166_1));
         // console.log(data.map((country) => country.english_name));
@@ -531,11 +310,51 @@ const Movies = () => {
     setUrlParams({
       ...urlParams,
       with_ott_monetization_types:
-        (activeAvalabilitiesArray.length > 0 &&
-          activeAvalabilitiesArray.join('%7C')) ||
-        null,
+        activeAvalabilitiesArray.length > 0 &&
+        activeAvalabilitiesArray.join('%7C'),
     });
   }, [activeAvalabilitiesArray]);
+
+  useEffect(() => {
+    setUrlParams({
+      ...urlParams,
+      certification:
+        activeCertificationsArray.length > 0 &&
+        activeCertificationsArray.join('%7C'),
+    });
+  }, [activeCertificationsArray]);
+
+  useEffect(() => {
+    showType === 'tv'
+      ? setUrlParams({
+          ...urlParams,
+          'air_date.gte': startDate && startDate.toISOString().split('T')[0],
+          'air_date.lte': endDate && endDate.toISOString().split('T')[0],
+        })
+      : setUrlParams({
+          ...urlParams,
+          'release_date.gte':
+            startDate && startDate.toISOString().split('T')[0],
+          'release_date.lte': endDate && endDate.toISOString().split('T')[0],
+        });
+  }, [startDate, endDate, showType]);
+
+  useEffect(() => {
+    setUrlParams({
+      ...urlParams,
+      with_genres:
+        activeGenresArray.length > 0 && activeGenresArray.join('%2C'),
+    });
+  }, [activeGenresArray]);
+
+  useEffect(() => {
+    setUrlParams({
+      ...urlParams,
+      with_release_type:
+        activeReleaseTypesArray.length > 0 &&
+        activeReleaseTypesArray.join('%7C'),
+    });
+  }, [activeReleaseTypesArray]);
 
   const fetchMoreMovies = () => {
     setLoading(true);
@@ -562,43 +381,16 @@ const Movies = () => {
       });
   }; //Fetch more movies
 
-  const onMovieClick = (movie) => {
-    // console.log(movie);
-  };
-
   const handleSearch = () => {
-    setDiscoverUrl(
-      `https://api.themoviedb.org/3/discover/${showType}?api_key=${API}&sort_by=${
-        urlParams.sort_by ? urlParams.sort_by : 'popularity.desc'
-      }&page=${urlParams.page}&with_ott_monetization_types=${
-        isAllAvailabilities ? '' : activeAvalabilitiesArray.join('%7C')
-      }&certification_country=IN&certification=${
-        activeCertificationsArray.length > 0
-          ? activeCertificationsArray.map(
-              (item, index) => `${item}
-          ${index === activeCertificationsArray.length - 1 ? '' : '%7C'}
-          `
-            )
-          : ''
-      }&${showType === 'movie' ? 'release_date' : 'air_date'}.gte=${
-        startDate ? `${startDate.toISOString().split('T')[0]}` : ''
-      }&${showType === 'movie' ? 'release_date' : 'air_date'}.lte=${
-        endDate ? `${endDate.toISOString().split('T')[0]}` : ''
-      }&with_genres=${
-        activeFiltersArray.length > 0 ? activeFiltersArray.join('%2C') : ''
-      }&region=${activeCountry ? activeCountry : ''}&with_release_type=${
-        activeReleasesArray.length > 0 ? activeReleasesArray.join('%7C') : ''
-      }&with_original_language=${activeLanguage ? activeLanguage : ''}`
-    );
+    const url = generateUrl(urlParams, showType);
+    setDiscoverUrl(url);
   };
 
   const toggleFilter = (filter) => {
-    if (activeFiltersArray.includes(filter)) {
-      setActiveFiltersArray(
-        activeFiltersArray.filter((item) => item !== filter)
-      );
+    if (activeGenresArray.includes(filter)) {
+      setActiveGenresArray(activeGenresArray.filter((item) => item !== filter));
     } else {
-      setActiveFiltersArray([...activeFiltersArray, filter]);
+      setActiveGenresArray([...activeGenresArray, filter]);
     }
   };
 
@@ -702,6 +494,42 @@ const Movies = () => {
                               Title (Z-A)
                             </Dropdown.Item>
                           </DropdownButton>
+                          {/* <Form.Select
+                            aria-label='Default select example'
+                            defaultValue={urlParams.sort_by}
+                            onChange={(event) => {
+                              setUrlParams({
+                                ...urlParams,
+                                sort_by: event.target.value,
+                              });
+                            }}
+                            style={{
+                              width: '100%',
+                              fontSize: '1em',
+                              fontWeight: '300',
+                            }}
+                          >
+                            <option value='popularity.desc'>
+                              Popularity Descending
+                            </option>
+                            <option value='popularity.asc'>
+                              Popularity Ascending
+                            </option>
+                            <option value='vote_average.desc'>
+                              Rating Descending
+                            </option>
+                            <option value='vote_average.asc'>
+                              Rating Ascending
+                            </option>
+                            <option value='primary_release_date.desc'>
+                              Release Date Descending
+                            </option>
+                            <option value='primary_release_date.asc'>
+                              Release Date Ascending
+                            </option>
+                            <option value='title.asc'>Title (A-Z)</option>
+                            <option value='title.desc'>Title (Z-A)</option>
+                          </Form.Select> */}
                         </Accordion.Body>
                       </Accordion.Item>
                     </Accordion>
@@ -918,11 +746,11 @@ const Movies = () => {
                                   <DropdownButton
                                     id='dropdown-basic-button'
                                     title={
-                                      activeCountry
+                                      urlParams.region
                                         ? countriesList.find(
                                             (country) =>
                                               country.iso_3166_1 ===
-                                              activeCountry
+                                              urlParams.region
                                           ).english_name
                                         : 'Countries'
                                     }
@@ -935,7 +763,10 @@ const Movies = () => {
                                     }}
                                     onSelect={(eventKey) => {
                                       // console.log(eventKey);
-                                      setActiveCountry(eventKey);
+                                      setUrlParams({
+                                        ...urlParams,
+                                        region: eventKey,
+                                      });
                                     }}
                                   >
                                     {countriesList.map((country) => (
@@ -976,7 +807,9 @@ const Movies = () => {
                                     id='release_type_1'
                                     value='1'
                                     onChange={() => toggleActiveReleases('1')}
-                                    checked={activeReleasesArray.includes('1')}
+                                    checked={activeReleaseTypesArray.includes(
+                                      '1'
+                                    )}
                                   />
                                   <label
                                     className='form-check-label'
@@ -994,7 +827,9 @@ const Movies = () => {
                                     id='release_type_2'
                                     value='2'
                                     onChange={() => toggleActiveReleases('2')}
-                                    checked={activeReleasesArray.includes('2')}
+                                    checked={activeReleaseTypesArray.includes(
+                                      '2'
+                                    )}
                                   />
                                   <label
                                     className='form-check-label'
@@ -1012,7 +847,9 @@ const Movies = () => {
                                     id='release_type_3'
                                     value='3'
                                     onChange={() => toggleActiveReleases('3')}
-                                    checked={activeReleasesArray.includes('3')}
+                                    checked={activeReleaseTypesArray.includes(
+                                      '3'
+                                    )}
                                   />
                                   <label
                                     className='form-check-label'
@@ -1030,7 +867,9 @@ const Movies = () => {
                                     id='release_type_4'
                                     value='4'
                                     onChange={() => toggleActiveReleases('4')}
-                                    checked={activeReleasesArray.includes('4')}
+                                    checked={activeReleaseTypesArray.includes(
+                                      '4'
+                                    )}
                                   />
                                   <label
                                     className='form-check-label'
@@ -1048,7 +887,9 @@ const Movies = () => {
                                     id='release_type_5'
                                     value='5'
                                     onChange={() => toggleActiveReleases('5')}
-                                    checked={activeReleasesArray.includes('5')}
+                                    checked={activeReleaseTypesArray.includes(
+                                      '5'
+                                    )}
                                   />
                                   <label
                                     className='form-check-label'
@@ -1066,7 +907,9 @@ const Movies = () => {
                                     id='release_type_6'
                                     value='6'
                                     onChange={() => toggleActiveReleases('6')}
-                                    checked={activeReleasesArray.includes('6')}
+                                    checked={activeReleaseTypesArray.includes(
+                                      '6'
+                                    )}
                                   />
                                   <label
                                     className='form-check-label'
@@ -1123,7 +966,7 @@ const Movies = () => {
                                 <li
                                   key={filter.id}
                                   className={`filter-list_item ${
-                                    activeFiltersArray.includes(filter.id)
+                                    activeGenresArray.includes(filter.id)
                                       ? 'filter-list_item-active'
                                       : ''
                                   }`}
@@ -1195,10 +1038,11 @@ const Movies = () => {
                             <DropdownButton
                               id='dropdown-basic-button'
                               title={
-                                activeLanguage
+                                urlParams.with_original_language
                                   ? languagesList.find(
                                       (language) =>
-                                        language.iso_639_1 === activeLanguage
+                                        language.iso_639_1 ===
+                                        urlParams.with_original_language
                                     ).english_name
                                   : 'None Selected'
                               }
@@ -1211,7 +1055,11 @@ const Movies = () => {
                               }}
                               onSelect={(eventKey) => {
                                 // console.log(eventKey);
-                                setActiveLanguage(eventKey);
+                                // setActiveLanguage(eventKey);
+                                setUrlParams({
+                                  ...urlParams,
+                                  with_original_language: eventKey,
+                                });
                               }}
                             >
                               {languagesList.map((language) => (
@@ -1303,7 +1151,6 @@ const Movies = () => {
                                       movie.first_air_date ?? movie.release_date
                                     }
                                     rating={movie.vote_average * 10}
-                                    onMovieClick={onMovieClick}
                                     showType={showType}
                                     movie={movie}
                                   />
