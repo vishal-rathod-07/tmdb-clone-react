@@ -46,11 +46,11 @@ const Navbar = () => {
     <header
       className={
         isNavbarFixed
-          ? 'navbar autohide container-fluid navbar-main d-flex align-items-center scrolled-up sticky-top'
-          : 'navbar autohide container-fluid navbar-main d-flex align-items-center scrolled-down sticky-top'
+          ? 'navbar autohide container-fluid navbar-main d-flex align-items-center scrolled-up sticky-top p-0'
+          : 'navbar autohide container-fluid navbar-main d-flex align-items-center scrolled-down sticky-top p-0'
       }
     >
-      <nav className='container navbar navbar-expand-lg navbar-light'>
+      <nav className='container navbar navbar-expand-lg navbar-light p-0'>
         <div className='container-fluid navbar-inner'>
           <Link to='/' className='navbar-brand'>
             <img
