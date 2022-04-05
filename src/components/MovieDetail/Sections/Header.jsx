@@ -209,7 +209,7 @@ const Header = ({ movie, provider, type }) => {
                           return (
                             <li key={index} className='profile'>
                               <p>
-                                <a href='/person/2009739-domee-shi'>
+                                <a href={`/person/${person.id}`}>
                                   {person.name}
                                 </a>
                               </p>
