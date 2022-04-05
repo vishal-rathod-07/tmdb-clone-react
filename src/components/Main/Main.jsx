@@ -56,7 +56,7 @@ const Main = () => {
   }, [activePopularTab, activeTrendingTab]);
 
   return (
-    <div className='container main p-0 d-flex flex-column'>
+    <div className='container-fluid main p-0 d-flex flex-column'>
       <LoadingBar
         color='#01b4e4'
         progress={progress}
