@@ -1,6 +1,8 @@
-.container {
-  @media (min-width: 1400px) {
-    max-width: 1300px !important;
+.app {
+  .container-fluid {
+    @media (min-width: 1400px) {
+      max-width: 1300px !important;
+    }
   }
 }
 
