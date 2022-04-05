@@ -28,14 +28,14 @@ const CardSection = ({
       className={
         sectionType === 'trending'
           ? 'card-section trending row m-0 w-100'
-          : 'card-section row'
+          : 'card-section row m-0'
       }
     >
-      <div className='card-section__column_wrapper'>
+      <div className='card-section__column_wrapper p-0'>
         <div className='card-section__content_wrapper pb-0 mb-0'>
           <div className='card-section__column'>
             <div className='card-section__column_header'>
-              <h2 className='card-section__column_title'>
+              <h2 className='card-section__column_title my-0'>
                 {sectionType === 'popular' ? `What's Popular` : `Trending`}
               </h2>
               <Tabs tabs={tabs} activeTab={activeTab} onTabClick={onTabClick} />
@@ -66,7 +66,7 @@ const CardSection = ({
                     cardVisiblity={cardVisiblity}
                   />
                 ))}
-                <div className='card spacer'></div>
+                <div className='spacer'></div>
               </div>
             </div>
           </div>

@@ -33,10 +33,14 @@
         width: 100%;
 
         .card-section__column_header {
-          padding: 0 40px;
+          padding: 0 20px;
           display: flex;
           justify-content: flex-start;
           align-items: center;
+
+          @media screen and (min-width: 1400px) {
+            padding: 0 40px;
+          }
         }
         .card-section__column_scroller {
           width: 100%;
@@ -84,7 +88,11 @@
             }
 
             & > div:first-child {
-              margin-left: 40px;
+              margin-left: 20px;
+
+              @media screen and (min-width: 1400px) {
+                margin-left: 40px;
+              }
             }
 
             &::after {
@@ -135,6 +143,7 @@
     align-items: center;
 
     .card-section__column_title {
+      color: #000;
       margin-right: 20px;
       white-space: nowrap;
       font-size: 1.5em;
