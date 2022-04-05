@@ -45,7 +45,7 @@ const Header = ({ movie, provider, type }) => {
           style={backDropStyles}
         >
           <div className='column w-100'>
-            <section className='header-inner d-flex flex-nowrap'>
+            <section className='header-inner d-flex flex-column flex-md-row flex-nowrap justify-content-center align-items-center'>
               <div className='poster-wrapper h-auto overflow-hidden'>
                 <div className='poster'>
                   <div className='image-container w-100 h-100'>
@@ -101,7 +101,7 @@ const Header = ({ movie, provider, type }) => {
                     </div>
                   )}
               </div>
-              <div className='details-wrapper d-flex'>
+              <div className='details-wrapper d-flex mt-4 m-md-0'>
                 <section className='details d-flex flex-wrap align-content-center align-items-start'>
                   <div className='title-wrapper w-100 d-flex flex-wrap'>
                     <h2 className='title m-0 p-0 w-100'>
@@ -115,7 +115,7 @@ const Header = ({ movie, provider, type }) => {
                         </span>
                       )}
                     </h2>
-                    <div className='facts d-flex'>
+                    <div className='facts d-flex flex-column flex-md-row'>
                       {/* <span className='certifications align-items-center align-content-center'>
                         16
                       </span> */}

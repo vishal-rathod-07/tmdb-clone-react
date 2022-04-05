@@ -17,9 +17,9 @@ const Media = ({ movie, cast, keywords, reviews, recommandations, type }) => {
   return (
     <div className='media d-flex justify-content-center flex-wrap align-align-items-start w-100'>
       <div className='column-wrapper w-100 d-flex justify-content-center align-items-start'>
-        <div className='content-wrapper w-100 d-flex align-items-start justify-content-center'>
-          <div className='content-left'>
-            <div className='column d-flex flex-wrap'>
+        <div className='content-wrapper w-100 d-flex align-items-start justify-content-center flex-column flex-xl-row'>
+          <div className='content-left w-100'>
+            <div className='column d-flex flex-wrap flex-column flex-md-row w-100'>
               <section className='top-billed-cast w-100'>
                 <h3 dir='auto'>
                   {type === 'tv' ? 'Series Cast' : 'Top Billed Cast'}

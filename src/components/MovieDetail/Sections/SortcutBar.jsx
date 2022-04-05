@@ -1,6 +1,6 @@
 const SortcutBar = () => {
   return (
-    <div className='sortcut-bar w-100 d-flex justify-content-center'>
+    <div className='sortcut-bar w-100 d-flex justify-content-center d-none d-md-flex'>
       <ul className='d-flex h-100 flex-nowrap'>
         <li>
           <span>
