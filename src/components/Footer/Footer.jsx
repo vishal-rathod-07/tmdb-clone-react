@@ -8,7 +8,7 @@ const Footer = () => {
         <div className='wrapper_inner'>
           <div className='footer__column'>
             <div className='row header m-0'>
-              <h2>Join Today</h2>
+              <h2 className='m-0 p-0'>Join Today</h2>
             </div>
             <div className='row content m-0'>
               <div className='fc1 col-12 col-xl-7 p-0'>
