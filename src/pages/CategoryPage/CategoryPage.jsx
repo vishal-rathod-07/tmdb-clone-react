@@ -1,18 +1,16 @@
 import { useState, useEffect, useCallback } from 'react';
-import './categorypage.scss';
-import { API } from '../../Constants';
-
 import { useParams } from 'react-router-dom';
-
-import FilterMovieCard from '../../components/FilterMovieCard/FilterMovieCard';
 import { Dropdown, Accordion, DropdownButton, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import LoadingBar from 'react-top-loading-bar';
-
 import DatePicker from 'react-datepicker';
 
+import { API } from '../../Constants';
+import FilterMovieCard from '../../components/FilterMovieCard/FilterMovieCard';
+
 import 'react-datepicker/dist/react-datepicker.css';
+import './categorypage.scss';
 
 import getInitialParams from '../../components/util/InitialParams';
 
@@ -20,15 +18,17 @@ const CategoryPage = () => {
   const { showType, categoryType } = useParams();
 
   const [defaultParams, setDefaultParams] = useState(
-    getInitialParams(categoryType)
+    getInitialParams(showType, categoryType)
   );
 
-  const [urlParams, setUrlParams] = useState(getInitialParams(categoryType));
+  const [urlParams, setUrlParams] = useState(
+    getInitialParams(showType, categoryType)
+  );
 
   useEffect(() => {
-    setUrlParams(getInitialParams(categoryType));
-    setDefaultParams(getInitialParams(categoryType));
-  }, [categoryType]);
+    setUrlParams(getInitialParams(showType, categoryType));
+    setDefaultParams(getInitialParams(showType, categoryType));
+  }, [showType, categoryType]);
 
   const [movies, setMovies] = useState(null); //Array of movies
 
@@ -106,20 +106,6 @@ const CategoryPage = () => {
 
   const [progress, setProgress] = useState(10); //Progress bar
 
-  const [startDate, setStartDate] = useState(
-    showType === 'tv'
-      ? urlParams.first_air_date_gte
-        ? urlParams.first_air_date_gte
-        : ''
-      : urlParams.release_date_gte
-      ? urlParams.release_date_gte
-      : ''
-  ); //Start date
-  const [endDate, setEndDate] = useState(
-    //six months from today
-    new Date(new Date().setMonth(new Date().getMonth() + 6))
-  ); //End date
-
   const [isAllAvailabilities, setIsAllAvailabilities] = useState(true); //All available
 
   const toggleAllAvailabilities = () => {
@@ -177,32 +163,6 @@ const CategoryPage = () => {
   const toggleAllCountries = () => {
     setIsAllCountries(!isAllCountries);
   };
-
-  // useEffect(() => {
-  //   setLoading(true);
-  //   setError(null);
-  //   setMovies(null);
-  //   setHasMore(false);
-  //   setTotalPages(null);
-  //   setSortBy(null);
-
-  //   fetch(
-  //     `https://api.themoviedb.org/3/${
-  //       showType === 'tv' ? 'tv/' : 'movie/'
-  //     }${categoryType}?api_key=${API}&language=en-US&page=1`
-  //   )
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       setMovies(data.results);
-  //       setTotalPages(data.total_pages);
-  //       setLoading(false);
-  //       setProgress(100);
-  //     })
-  //     .catch((error) => {
-  //       setError(error);
-  //       setLoading(false);
-  //     });
-  // }, [showType, categoryType]); //Runs when showType or type changes
 
   useEffect(() => {
     setLoading(true);
@@ -315,21 +275,6 @@ const CategoryPage = () => {
         activeCertificationsArray.join('%7C'),
     });
   }, [activeCertificationsArray]);
-
-  useEffect(() => {
-    showType === 'tv'
-      ? setUrlParams({
-          ...urlParams,
-          'air_date.gte': startDate && startDate.toISOString().split('T')[0],
-          'air_date.lte': endDate && endDate.toISOString().split('T')[0],
-        })
-      : setUrlParams({
-          ...urlParams,
-          'release_date.gte':
-            startDate && startDate.toISOString().split('T')[0],
-          'release_date.lte': endDate && endDate.toISOString().split('T')[0],
-        });
-  }, [startDate, endDate, showType]);
 
   useEffect(() => {
     setUrlParams({
@@ -914,8 +859,33 @@ const CategoryPage = () => {
                             <span className='date_picker w-100'>
                               <span className='date_picker_wrapper'>
                                 <DatePicker
-                                  selected={startDate}
-                                  onChange={(date) => setStartDate(date)}
+                                  selected={
+                                    showType === 'tv'
+                                      ? urlParams['air_date.gte']
+                                        ? new Date(urlParams['air_date.gte'])
+                                        : ''
+                                      : urlParams['air_date.gte']
+                                      ? new Date(urlParams['release_date.gte'])
+                                      : ''
+                                  }
+                                  onChange={(date) => {
+                                    if (showType === 'tv') {
+                                      setUrlParams({
+                                        ...urlParams,
+                                        'air_date.gte': date
+                                          .toISOString()
+                                          .split('T')[0],
+                                      });
+                                    }
+                                    if (showType === 'movie') {
+                                      setUrlParams({
+                                        ...urlParams,
+                                        'release_date.gte': date
+                                          .toISOString()
+                                          .split('T')[0],
+                                      });
+                                    }
+                                  }}
                                 />
                               </span>
                             </span>
@@ -925,8 +895,33 @@ const CategoryPage = () => {
                             <span className='date_picker w-100'>
                               <span className='date_picker_wrapper'>
                                 <DatePicker
-                                  selected={endDate}
-                                  onChange={(date) => setEndDate(date)}
+                                  selected={
+                                    showType === 'tv'
+                                      ? urlParams['air_date.lte']
+                                        ? new Date(urlParams['air_date.lte'])
+                                        : ''
+                                      : urlParams['release_date.lte']
+                                      ? new Date(urlParams['release_date.lte'])
+                                      : ''
+                                  }
+                                  onChange={(date) => {
+                                    if (showType === 'tv') {
+                                      setUrlParams({
+                                        ...urlParams,
+                                        'air_date.lte': date
+                                          .toISOString()
+                                          .split('T')[0],
+                                      });
+                                    }
+                                    if (showType === 'movie') {
+                                      setUrlParams({
+                                        ...urlParams,
+                                        'release_date.lte': date
+                                          .toISOString()
+                                          .split('T')[0],
+                                      });
+                                    }
+                                  }}
                                 />
                               </span>
                             </span>
