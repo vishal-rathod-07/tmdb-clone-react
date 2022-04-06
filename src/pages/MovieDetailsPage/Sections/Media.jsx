@@ -2,18 +2,13 @@ import { Link } from 'react-router-dom';
 import FormatDate from '../../../components/util/FormatDate';
 
 const Media = ({ movie, cast, keywords, reviews, recommandations, type }) => {
-  // console.log(reviews);
-  // console.log('rec');
-  // console.log(recommandations);
-  // console.log('type');
-  // console.log(cast);
   const reviewLength = reviews.length;
   reviews.length > 0 &&
     (reviews = reviews[Math.floor(Math.random() * reviews.length)]);
   let date;
   type === 'tv' &&
     (date = new Date(movie.seasons[movie.seasons.length - 1].air_date));
-  // const review = reviews[reviews.length - 1];
+
   return (
     <div className='media d-flex justify-content-center flex-wrap align-align-items-start w-100'>
       <div className='column-wrapper w-100 d-flex justify-content-center align-items-start'>
@@ -163,7 +158,7 @@ const Media = ({ movie, cast, keywords, reviews, recommandations, type }) => {
                         </Link>
                       </li>
                       <li className='menu-item'>
-                        <a href='#'>
+                        <a>
                           <span>Discussions</span>
                         </a>
                       </li>
@@ -385,11 +380,6 @@ const Media = ({ movie, cast, keywords, reviews, recommandations, type }) => {
                             ) : (
                               <span>-</span>
                             )}
-                            {/* <img
-                              src={`https://www.themoviedb.org/t/p/h30/${movie.networks[0].logo_path}`}
-                              alt='Network'
-                              loading='lazy'
-                            /> */}
                           </p>
                           <p>
                             <strong>Type</strong>

@@ -7,28 +7,19 @@ import FormatDate from '../../../components/util/FormatDate';
 import VideoModel from '../../../components/VideoModel/VideoModel';
 
 const Header = ({ movie, provider, type, trailerKey }) => {
-  // console.log(movie);
-  // console.log(provider);
-  // provider.results.IN.buy && console.log(provider.results.IN.buy[0].logo_path);
-
-  // console.log(movie);
   const [videoModalShow, setVideoModalShow] = useState(false);
 
-  const [colors, setColors] = useState();
   const [backDropStyles, setBackDropStyles] = useState({
     background: `linear-gradient(to right, rgba(227, 227, 227, 1) 150px, rgba(227, 227, 227, 0.84) 100%)`,
     color: `#000`,
   });
-  // backDropStyles && console.log(backDropStyles);
-  // colors && console.log(colors);
+
   let totalMinutes = movie.runtime ?? movie.episode_run_time[0];
   let hours = Math.floor(totalMinutes / 60);
   let minutes = totalMinutes % 60;
   let hoursString = hours > 0 ? hours + 'h ' : '';
   let minutesString = minutes > 0 ? minutes + 'm' : '';
   let runtime = hoursString + minutesString;
-
-  // console.log(movie.first_air_date);
 
   let year =
     (movie.release_date && movie.release_date.split('-')[0]) ||
@@ -55,7 +46,6 @@ const Header = ({ movie, provider, type, trailerKey }) => {
                       <ColorExtractor
                         rgb
                         getColors={(colors) => {
-                          setColors(colors);
                           setBackDropStyles({
                             background: `linear-gradient(to right, rgb(${colors[5][0]}, ${colors[5][1]}, ${colors[5][2]}) 150px, rgba(${colors[2][0]}, ${colors[2][0]}, ${colors[2][0]}, 0.84) 100%)`,
                             color: `#fff`,
@@ -118,9 +108,6 @@ const Header = ({ movie, provider, type, trailerKey }) => {
                       )}
                     </h2>
                     <div className='facts d-flex flex-column flex-md-row'>
-                      {/* <span className='certifications align-items-center align-content-center'>
-                        16
-                      </span> */}
                       {type === 'movie' && (
                         <span className='release-date'>
                           <FormatDate date={movie.release_date} />
