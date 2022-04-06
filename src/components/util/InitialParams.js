@@ -6,7 +6,6 @@ const getInitialParams = (showType, category) => {
       case 'popular':
         return {
           'air_date.gte': '',
-          //six months from today
           'air_date.lte': new Date(
             new Date().setMonth(new Date().getMonth() + 6)
           )
