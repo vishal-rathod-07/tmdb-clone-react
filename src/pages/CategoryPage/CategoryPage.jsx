@@ -104,6 +104,8 @@ const CategoryPage = () => {
 
   const [countriesList, setCountriesList] = useState(null); //Countries list
 
+  const [ottRegionsList, setOttRegionsList] = useState(null); //OTT Regions list
+
   const [progress, setProgress] = useState(10); //Progress bar
 
   const [isAllAvailabilities, setIsAllAvailabilities] = useState(true); //All available
@@ -239,6 +241,21 @@ const CategoryPage = () => {
       }
     };
     fetchCountries();
+
+    const fetchOttRegions = async () => {
+      try {
+        const ottRegionsResponse = await fetch(
+          `https://api.themoviedb.org/3/watch/providers/regions?api_key=15d2ea6d0dc1d476efbca3eba2b9bbfb`
+        );
+        const data = await ottRegionsResponse.json();
+        console.log(data);
+        setOttRegionsList(data.results);
+        console.log(ottRegionsList);
+      } catch (error) {
+        setError(error);
+      }
+    };
+    fetchOttRegions();
 
     const fetchCertification = async () => {
       try {
@@ -1062,7 +1079,7 @@ const CategoryPage = () => {
                     >
                       <Accordion.Item eventKey='0'>
                         <Accordion.Header>Where To Watch</Accordion.Header>
-                        <Accordion.Body>
+                        <Accordion.Body className='ott-provider-filter'>
                           <h3
                             style={{
                               display: 'inline-flex',
@@ -1073,10 +1090,76 @@ const CategoryPage = () => {
                               marginBottom: '10px',
                               color: '#000',
                             }}
-                            className='filter-title m-0 p-0'
+                            className='filter-title p-0'
                           >
                             Country
                           </h3>
+                          {ottRegionsList && (
+                            <DropdownButton
+                              id='dropdown-basic-button'
+                              title={
+                                urlParams.ott_region
+                                  ? ottRegionsList.find(
+                                      (country) =>
+                                        country.iso_3166_1 ===
+                                        urlParams.ott_region
+                                    ).english_name
+                                  : 'Countries'
+                              }
+                              variant='secondary'
+                              style={{
+                                width: '100%',
+                                fontSize: '1em',
+                                fontWeight: '300',
+                                marginBottom: '10px',
+                              }}
+                              onSelect={(eventKey) => {
+                                setUrlParams({
+                                  ...urlParams,
+                                  ott_region: eventKey,
+                                });
+                              }}
+                            >
+                              {ottRegionsList.map((country) => (
+                                <Dropdown.Item
+                                  key={country.iso_3166_1}
+                                  eventKey={country.iso_3166_1}
+                                >
+                                  <img
+                                    // src={`https://countryflagsapi.com/png/${country.iso_3166_1}`}
+                                    src={`https://flagcdn.com/w20/${country.iso_3166_1.toLowerCase()}.png`}
+                                    onError={(e) => {
+                                      e.target.onerror = null;
+                                      e.target.src =
+                                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8wkWFOYkdG7W9Xf0-aheuTMQHTEsySnpXOQ&usqp=CAU';
+                                    }}
+                                    style={{
+                                      width: '24px',
+                                      height: '20px',
+                                      marginRight: '10px',
+                                    }}
+                                    alt={country.iso_3166_1}
+                                  />
+
+                                  {country.english_name}
+                                </Dropdown.Item>
+                              ))}
+                            </DropdownButton>
+                          )}
+                          <span className='ott_provider_wrapper'>
+                            <ul className='ott_providers'>
+                              <li>
+                                <Link to=''>
+                                  <img
+                                    src='https://www.themoviedb.org/t/p/original/t2yyOv40HZeVlLjYsCsPHnWLk4W.jpg'
+                                    width='50'
+                                    height='50'
+                                    alt='Netflix'
+                                  />
+                                </Link>
+                              </li>
+                            </ul>
+                          </span>
                         </Accordion.Body>
                       </Accordion.Item>
                     </Accordion>
