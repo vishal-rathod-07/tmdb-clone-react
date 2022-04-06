@@ -88,7 +88,6 @@ const MovieDetailsPage = () => {
         );
         const data = await reviewResponse.json();
         setReviews(data.results);
-        // console.log('Review Fetch Sucess');
       } catch (error) {
         setError(error);
       }
@@ -109,11 +108,9 @@ const MovieDetailsPage = () => {
             item.official === true &&
             item.type === 'Trailer'
           ) {
-            console.log(item.key);
             setTrailerKey(item.key);
           }
         });
-        console.log(data.results);
       } catch (error) {
         setError(error);
       }
@@ -128,7 +125,6 @@ const MovieDetailsPage = () => {
         );
         const data = await recommandationsResponse.json();
         setRecommandations(data.results);
-        // console.log('Recommandations Fetch Sucess');
       } catch (error) {
         setError(error);
       }
@@ -143,8 +139,6 @@ const MovieDetailsPage = () => {
         );
         const data = await keywordResponse.json();
         setKeywords(data.keywords ?? data.results);
-        // console.log(data);
-        // console.log('KeyWords Fetch Sucess');
       } catch (error) {
         setError(error);
       }
@@ -161,7 +155,7 @@ const MovieDetailsPage = () => {
           (movie.first_air_date && movie.first_air_date.split('-')[0]))
       }) — The Movie Database (TMDB)`;
     }
-  }, [movie, social, cast, reviews, provider, keywords]);
+  }, [movie, social, cast, reviews, provider, keywords, type]);
 
   return loading ? (
     <div className='loading d-flex w-100 h-100 align-items-center justify-content-center'>

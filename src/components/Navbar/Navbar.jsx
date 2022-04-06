@@ -17,9 +17,7 @@ const Navbar = () => {
 
   let lastScrollTop = 0;
   var delta = 10;
-  // var navbarHeight = document.querySelector('.navbar').offsetHeight;
   var navbarHeight = 64;
-  // console.log(navbarHeight);
 
   const hasScrolled = () => {
     var st = window.pageYOffset;

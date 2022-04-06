@@ -40,7 +40,6 @@ const CategoryPage = () => {
           url = `${url}&${key}=${params[key]}`;
         }
       });
-      console.log(url);
       return url;
     },
     [showType]
@@ -217,7 +216,6 @@ const CategoryPage = () => {
       .then((response) => response.json())
       .then((data) => {
         setMovies(data.results);
-        // console.log(data.results);
         setTotalPages(data.total_pages);
         setLoading(false);
         setProgress(100);
@@ -261,7 +259,6 @@ const CategoryPage = () => {
         );
 
         setLanguagesIsoList(data.map((item) => item.iso_3166_1));
-        // console.log(data);
       } catch (error) {
         setError(error);
       }
@@ -281,10 +278,6 @@ const CategoryPage = () => {
             return 0;
           })
         );
-        // setCountryIsoList(data.map((item) => item.iso_3166_1));
-        // console.log(data);
-        // console.log(data.map((item) => item.iso_3166_1));
-        // console.log(data.map((country) => country.english_name));
       } catch (error) {
         setError(error);
       }
@@ -298,7 +291,6 @@ const CategoryPage = () => {
         );
         const data = await certificationResponse.json();
         setCertificationList(data.certifications.IN);
-        // console.log(data.certifications.IN);
       } catch (error) {
         setError(error);
       }
@@ -368,8 +360,6 @@ const CategoryPage = () => {
     fetch(`${discoverUrl}`)
       .then((response) => response.json())
       .then((data) => {
-        // console.log(data.total_pages);
-        // console.log('====', data.page);
         setMovies([...movies, ...data.results]);
         setHasMore(data.total_pages > urlParams.page);
         setLoading(false);
@@ -461,8 +451,6 @@ const CategoryPage = () => {
                               fontWeight: '300',
                             }}
                             onSelect={(eventKey) => {
-                              // console.log(eventKey);
-                              // setSortBy(eventKey);
                               setUrlParams({
                                 ...urlParams,
                                 sort_by: eventKey,
@@ -762,7 +750,6 @@ const CategoryPage = () => {
                                       marginBottom: '10px',
                                     }}
                                     onSelect={(eventKey) => {
-                                      // console.log(eventKey);
                                       setUrlParams({
                                         ...urlParams,
                                         region: eventKey,
@@ -972,7 +959,6 @@ const CategoryPage = () => {
                                   }`}
                                   onClick={() => {
                                     toggleFilter(filter.id);
-                                    // console.log(filter.id);
                                   }}
                                 >
                                   {filter.name}
@@ -1011,7 +997,6 @@ const CategoryPage = () => {
                                     toggleCertification(
                                       certification.certification
                                     );
-                                    // console.log(certification.certification);
                                   }}
                                 >
                                   {certification.certification}
@@ -1054,8 +1039,6 @@ const CategoryPage = () => {
                                 marginBottom: '10px',
                               }}
                               onSelect={(eventKey) => {
-                                // console.log(eventKey);
-                                // setActiveLanguage(eventKey);
                                 setUrlParams({
                                   ...urlParams,
                                   with_original_language: eventKey,

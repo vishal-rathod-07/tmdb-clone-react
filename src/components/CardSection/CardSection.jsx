@@ -12,15 +12,9 @@ const CardSection = ({
   cardVisiblity,
   setCardVisiblity,
 }) => {
-  // console.log(movies);
   const onTabClick = (id) => {
-    // console.log(id);
     setCardVisiblity(!cardVisiblity);
     setActiveTab(id);
-  };
-
-  const onMovieClick = (id) => {
-    // console.log(id);
   };
 
   return (
@@ -60,7 +54,6 @@ const CardSection = ({
                     title={movie.name ?? movie.title}
                     date={movie.first_air_date ?? movie.release_date}
                     rating={movie.vote_average * 10}
-                    onMovieClick={onMovieClick}
                     activeTab={activeTab}
                     movie={movie}
                     cardVisiblity={cardVisiblity}
