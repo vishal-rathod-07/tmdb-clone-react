@@ -1,4 +1,3 @@
-import SortcutBar from './Sections/SortcutBar';
 import Header from './Sections/Header';
 import Media from './Sections/Media';
 import { API } from '../../Constants';
@@ -170,7 +169,6 @@ const MovieDetailsPage = () => {
     </div>
   ) : (
     <section className='movie-detail container-fluid p-0'>
-      <SortcutBar />
       {movie && provider && (
         <Header
           movie={movie}
