@@ -250,7 +250,6 @@ const CategoryPage = () => {
         const data = await ottRegionsResponse.json();
         console.log(data);
         setOttRegionsList(data.results);
-        console.log(ottRegionsList);
       } catch (error) {
         setError(error);
       }
@@ -1222,7 +1221,7 @@ const CategoryPage = () => {
                           </InfiniteScroll>
                         )}
 
-                        {urlParams.page !== totalPages && (
+                        {urlParams.page !== totalPages && !loading && (
                           <div className='load_more'>
                             <Link
                               to=''
