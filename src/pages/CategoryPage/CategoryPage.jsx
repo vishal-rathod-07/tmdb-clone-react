@@ -15,12 +15,14 @@ import './categorypage.scss';
 import getInitialParams from '../../components/util/InitialParams';
 
 const CategoryPage = () => {
-  const { showType, categoryType } = useParams();
+  const { showType, categoryType } = useParams(); // Get params from url
 
+  // Default Parameters when categoryType changed
   const [defaultParams, setDefaultParams] = useState(
     getInitialParams(showType, categoryType)
   );
 
+  // Parameters when filter changes
   const [urlParams, setUrlParams] = useState(
     getInitialParams(showType, categoryType)
   );
@@ -92,7 +94,7 @@ const CategoryPage = () => {
     }
   }, [urlParams.sort_by]);
 
-  const [filterList, setFilterList] = useState(null); //Filter list
+  const [genresList, setGenresList] = useState(null); //Filter list
   const [activeGenresArray, setActiveGenresArray] = useState([]); //Array of filters
 
   const [CertificationList, setCertificationList] = useState(null); //Certification list
@@ -101,8 +103,6 @@ const CategoryPage = () => {
   ); //Array of certifications
 
   const [countriesList, setCountriesList] = useState(null); //Countries list
-
-  // const [countryIsoList, setCountryIsoList] = useState(null); //Countries list
 
   const [progress, setProgress] = useState(10); //Progress bar
 
@@ -158,7 +158,6 @@ const CategoryPage = () => {
   const [isAllCountries, setIsAllCountries] = useState(true); //All countries
 
   const [languagesList, setLanguagesList] = useState(null); //Languages list
-  const [languagesIsoList, setLanguagesIsoList] = useState(null); //Languages list
 
   const toggleAllCountries = () => {
     setIsAllCountries(!isAllCountries);
@@ -170,7 +169,6 @@ const CategoryPage = () => {
     setMovies(null);
     setHasMore(false);
     setTotalPages(null);
-    // setSortBy(null);
 
     fetch(discoverUrl)
       .then((response) => response.json())
@@ -195,7 +193,7 @@ const CategoryPage = () => {
           }list?api_key=${API}&language=en-US`
         );
         const data = await filterResponse.json();
-        setFilterList(data.genres);
+        setGenresList(data.genres);
       } catch (error) {
         setError(error);
       }
@@ -217,8 +215,6 @@ const CategoryPage = () => {
             return 0;
           })
         );
-
-        setLanguagesIsoList(data.map((item) => item.iso_3166_1));
       } catch (error) {
         setError(error);
       }
@@ -300,12 +296,13 @@ const CategoryPage = () => {
       ...urlParams,
       page: urlParams.page + 1,
     });
-    // setPage(page + 1);
+    setDiscoverUrl(generateUrl(urlParams));
 
-    fetch(`${discoverUrl}`)
+    fetch(discoverUrl)
       .then((response) => response.json())
       .then((data) => {
         setMovies([...movies, ...data.results]);
+        setTotalPages(data.total_pages);
         setHasMore(data.total_pages > urlParams.page);
         setLoading(false);
         setProgress(100);
@@ -943,8 +940,8 @@ const CategoryPage = () => {
                             Genres
                           </h3>
                           <ul className='filter-list p-0'>
-                            {filterList &&
-                              filterList.map((filter) => (
+                            {genresList &&
+                              genresList.map((filter) => (
                                 <li
                                   key={filter.id}
                                   className={`filter-list_item ${
