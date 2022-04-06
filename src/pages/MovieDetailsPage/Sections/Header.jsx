@@ -1,12 +1,11 @@
-import { toBePartiallyChecked } from '@testing-library/jest-dom/dist/matchers';
-import { Line, Circle } from 'rc-progress';
-import { useEffect, useState } from 'react';
+import { Circle } from 'rc-progress';
+import { useState } from 'react';
 import { ColorExtractor } from 'react-color-extractor';
 import { Link } from 'react-router-dom';
 import FormatDate from '../../../components/util/FormatDate';
 import VideoModel from '../../../components/VideoModel/VideoModel';
 
-const Header = ({ movie, provider, type, trailerKey }) => {
+const Header = ({ movie, provider, type, trailerKey, certificate }) => {
   const [videoModalShow, setVideoModalShow] = useState(false);
 
   const [backDropStyles, setBackDropStyles] = useState({
@@ -107,7 +106,11 @@ const Header = ({ movie, provider, type, trailerKey }) => {
                         </span>
                       )}
                     </h2>
+
                     <div className='facts d-flex flex-column flex-md-row'>
+                      {certificate && (
+                        <span className='certifications'>{certificate}</span>
+                      )}
                       {type === 'movie' && (
                         <span className='release-date'>
                           <FormatDate date={movie.release_date} />
