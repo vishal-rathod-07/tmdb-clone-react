@@ -210,7 +210,7 @@
                     width: 68px;
                     height: 68px;
                     display: inline-block;
-                    background-color: #000;
+                    background-color: #081c22;
                     color: #fff;
                     border-radius: 50%;
                     display: flex;
@@ -219,6 +219,12 @@
                     justify-items: baseline;
                     font-size: 25px;
                     padding: 4px;
+                    transition: transform 0.2s;
+
+                    &:hover {
+                      cursor: pointer;
+                      transform: scale(1.1);
+                    }
 
                     span {
                       font-size: 20px;
@@ -230,9 +236,9 @@
                       -moz-osx-font-smoothing: grayscale;
                       -webkit-font-smoothing: antialiased;
 
-                      // &::before {
-                      //   content: '\e904';
-                      // }
+                      &::before {
+                        font-size: 0.8em;
+                      }
                     }
                   }
                   .text {
