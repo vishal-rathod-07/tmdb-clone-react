@@ -17,6 +17,7 @@ const MovieDetailsPage = () => {
   const [trailerKey, setTrailerKey] = useState(null);
   const [provider, setProvider] = useState(null);
   const [cast, setCast] = useState(null);
+  const [certificate, setCertificate] = useState(null);
   const [keywords, setKeywords] = useState(null);
   const [recommandations, setRecommandations] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -79,6 +80,29 @@ const MovieDetailsPage = () => {
       }
     };
     fetchCast();
+    const fetchCertificate = async () => {
+      try {
+        const certificateResponse = await fetch(
+          `https://api.themoviedb.org/3/movie/${id}/release_dates?api_key=${API}`
+        );
+        const data = await certificateResponse.json();
+        data.results.find((element) => {
+          if (element.iso_3166_1 === 'US') {
+            //
+            if (element.release_dates.length > 0) {
+              element.release_dates.find((element) => {
+                if (element.certification !== '') {
+                  setCertificate(element.certification);
+                }
+              });
+            }
+          }
+        });
+      } catch (error) {
+        setError(error);
+      }
+    };
+    fetchCertificate();
     const fetchReview = async () => {
       try {
         const reviewResponse = await fetch(
@@ -169,6 +193,7 @@ const MovieDetailsPage = () => {
           provider={provider}
           type={type}
           trailerKey={trailerKey}
+          certificate={certificate}
         />
       )}
       {cast && reviews && recommandations && provider && (
