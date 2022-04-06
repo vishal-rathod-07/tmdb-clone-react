@@ -1,36 +1,27 @@
 import SortcutBar from './Sections/SortcutBar';
 import Header from './Sections/Header';
 import Media from './Sections/Media';
-import { API } from '../Constants';
+import { API } from '../../Constants';
 
 import spinner from '../../assets/images/loader.gif';
 
-import './Sections/moviedetail.scss';
+import './Sections/moviedetailspage.scss';
 
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
-const MovieDetail = () => {
+const MovieDetailsPage = () => {
   const { type, id } = useParams();
-  // console.log(id);
   const [movie, setMovie] = useState(null);
   const [social, setSocial] = useState(null);
   const [reviews, setReviews] = useState(null);
+  const [trailerKey, setTrailerKey] = useState(null);
   const [provider, setProvider] = useState(null);
   const [cast, setCast] = useState(null);
   const [keywords, setKeywords] = useState(null);
   const [recommandations, setRecommandations] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  // movie && console.log(movie);
-  // error && console.log(error);
-  // social && console.log(social);
-  //   console.log(provider.results.IN.flatrate[0].logo_path);
-  // cast && console.log(cast.cast);
-  // reviews && console.log(reviews);
-
-  //   const providerLogo = provider.results.IN.flatrate[0].logo_path;
 
   useEffect(() => {
     const fetchMovie = async () => {
@@ -42,7 +33,6 @@ const MovieDetail = () => {
         );
         const data = await movieResponse.json();
         setMovie(data);
-        // console.log('Movie Fetch Sucess');
       } catch (error) {
         setError(error);
       }
@@ -57,7 +47,6 @@ const MovieDetail = () => {
         );
         const data = await socialResponse.json();
         setSocial(data);
-        // console.log('Social Fetch Sucess');
       } catch (error) {
         setError(error);
       }
@@ -72,7 +61,6 @@ const MovieDetail = () => {
         );
         const data = await providerResponse.json();
         setProvider(data);
-        // console.log('Provider Fetch Sucess');
       } catch (error) {
         setError(error);
       }
@@ -87,7 +75,6 @@ const MovieDetail = () => {
         );
         const data = await castResponse.json();
         setCast(data.cast);
-        // console.log('Cast Fetch Sucess');
       } catch (error) {
         setError(error);
       }
@@ -117,12 +104,19 @@ const MovieDetail = () => {
           }/${id}/videos?api_key=${API}&language=en-US`
         );
         const data = await trailerResponse.json();
-        // console.log(data);
-        // setLoading(false);
-        // console.log('Trailer Fetch Sucess');
+        data.results.map((item) => {
+          if (
+            item.name === 'Official Trailer' &&
+            item.official === true &&
+            item.type === 'Trailer'
+          ) {
+            console.log(item.key);
+            setTrailerKey(item.key);
+          }
+        });
+        console.log(data.results);
       } catch (error) {
         setError(error);
-        // setLoading(false);
       }
     };
     fetchTrailer();
@@ -178,7 +172,12 @@ const MovieDetail = () => {
     <section className='movie-detail container-fluid p-0'>
       <SortcutBar />
       {movie && provider && (
-        <Header movie={movie} provider={provider} type={type} />
+        <Header
+          movie={movie}
+          provider={provider}
+          type={type}
+          trailerKey={trailerKey}
+        />
       )}
       {cast && reviews && recommandations && provider && (
         <Media
@@ -194,4 +193,4 @@ const MovieDetail = () => {
   );
 };
 
-export default MovieDetail;
+export default MovieDetailsPage;

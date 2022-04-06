@@ -1,10 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
-import './movies.scss';
-import { API } from '../Constants';
+import './categorypage.scss';
+import { API } from '../../Constants';
 
 import { useParams } from 'react-router-dom';
 
-import FilterMovieCard from '../FilterMovieCard/FilterMovieCard';
+import FilterMovieCard from '../../components/FilterMovieCard/FilterMovieCard';
 import { Dropdown, Accordion, DropdownButton, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -14,9 +14,9 @@ import DatePicker from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
-import getInitialParams from '../../components/InitialParams';
+import getInitialParams from '../../components/util/InitialParams';
 
-const Movies = () => {
+const CategoryPage = () => {
   const { showType, categoryType } = useParams();
 
   const [defaultParams, setDefaultParams] = useState(
@@ -1191,4 +1191,4 @@ const Movies = () => {
   );
 };
 
-export default Movies;
+export default CategoryPage;

@@ -281,6 +281,45 @@
                     white-space: pre-line;
                   }
                 }
+                .play_trailer {
+                  border: none;
+                  background: transparent;
+                  width: auto;
+                  height: auto;
+                  font-weight: 600;
+                  will-change: opacity;
+                  transition: linear 0.1s;
+                  color: inherit;
+                  text-decoration: none;
+                  border-radius: 50%;
+                  display: inline-flex;
+                  align-items: center;
+                  justify-content: center;
+                  align-content: center;
+
+                  span {
+                    margin-right: 5px;
+                    font-size: 1.4em;
+                    background-image: url(https://www.themoviedb.org/assets/2/v4/glyphicons/basic/glyphicons-basic-175-play-806cb05551791b8dedd7f8d38fd3bd806e2d397fcfeaa00a5cc9129f0819fd07.svg);
+                    position: relative;
+                    top: 0;
+                    left: 0;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    min-width: 1em;
+                    min-height: 1em;
+                    width: 1em;
+                    height: 1em;
+                    line-height: inherit;
+                    background-position: center center;
+                    background-repeat: no-repeat;
+                    color: inherit;
+                    box-sizing: border-box;
+                    filter: invert(1);
+                  }
+                }
+
                 .movietooltip {
                   padding: 3px 0;
                   margin-right: 20px;

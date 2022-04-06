@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 
-import Banner from '../Banner/Banner';
-import CardSection from '../CardSection/CardSection';
-import * as url from '../Constants';
-import { popularTabs, trendingTabs } from '../TabList';
+import Banner from '../../components/Banner/Banner';
+import CardSection from '../../components/CardSection/CardSection';
+import * as url from '../../Constants';
+import { popularTabs, trendingTabs } from '../../components/util/TabList';
 import LoadingBar from 'react-top-loading-bar';
 
-import './main.scss';
+import './homepage.scss';
 
-const Main = () => {
+const HomePage = () => {
   const [popularMovies, setPopularMovies] = useState([]);
   const [trendingMovies, setTrendingMovies] = useState([]);
 
@@ -56,7 +56,7 @@ const Main = () => {
   }, [activePopularTab, activeTrendingTab]);
 
   return (
-    <div className='container-fluid main p-0 d-flex flex-column'>
+    <div className='container main p-0 d-flex flex-column'>
       <LoadingBar
         color='#01b4e4'
         progress={progress}
@@ -94,4 +94,4 @@ const Main = () => {
   );
 };
 
-export default Main;
+export default HomePage;

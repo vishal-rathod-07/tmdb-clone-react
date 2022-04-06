@@ -3,14 +3,16 @@ import { Line, Circle } from 'rc-progress';
 import { useEffect, useState } from 'react';
 import { ColorExtractor } from 'react-color-extractor';
 import { Link } from 'react-router-dom';
-import FormatDate from '../../FormatDate';
+import FormatDate from '../../../components/util/FormatDate';
+import VideoModel from '../../../components/VideoModel/VideoModel';
 
-const Header = ({ movie, provider, type }) => {
+const Header = ({ movie, provider, type, trailerKey }) => {
   // console.log(movie);
   // console.log(provider);
   // provider.results.IN.buy && console.log(provider.results.IN.buy[0].logo_path);
 
   // console.log(movie);
+  const [videoModalShow, setVideoModalShow] = useState(false);
 
   const [colors, setColors] = useState();
   const [backDropStyles, setBackDropStyles] = useState({
@@ -193,6 +195,25 @@ const Header = ({ movie, provider, type }) => {
                         Score
                       </div>
                     </li>
+
+                    {trailerKey && (
+                      <li>
+                        <Link
+                          to=''
+                          className='play_trailer'
+                          onClick={() => setVideoModalShow(true)}
+                        >
+                          <span className='play-icon'></span>
+                          Play Trailer
+                        </Link>
+                      </li>
+                    )}
+
+                    <VideoModel
+                      show={videoModalShow}
+                      onHide={() => setVideoModalShow(false)}
+                      trailerKey={trailerKey}
+                    />
                   </ul>
                   <div className='description'>
                     <h3 className='tagline'>

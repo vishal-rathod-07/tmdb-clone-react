@@ -1,5 +1,5 @@
 import './navbar.scss';
-import { LOGO_URL } from '../Constants';
+import { LOGO_URL } from '../../Constants';
 
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';

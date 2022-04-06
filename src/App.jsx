@@ -1,14 +1,14 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import Navbar from './components/Navbar/Navbar';
-import Main from './components/Main/Main';
-import Movies from './components/Movies/Movies';
-import MovieDetail from './components/MovieDetail/MovieDetail';
+import HomePage from './pages/HomePage/HomePage';
+import CategoryPage from './pages/CategoryPage/CategoryPage';
+import MovieDetailsPage from './pages/MovieDetailsPage/MovieDetailsPage';
+import PageNotFound from './pages/404Page/PageNotFound';
 import Footer from './components/Footer/Footer';
 
 import './app.scss';
-import PageNotFound from './components/PageNotFound/PageNotFound';
 
 const App = () => {
   return (
@@ -16,21 +16,12 @@ const App = () => {
       <Navbar />
       <div className='app'>
         <Routes>
-          <Route path='/' element={<Main />} />
-          <Route exact path='/movie' element={<Movies type={'popular'} />} />
-          {/*<Route
-            path='/movie/:now-playing'
-            element={<Movies type={'nowPlaying'} />}
-          />
-          <Route
-            path='/movie/:upcoming'
-            element={<Movies type={'upcoming'} />}
-          /> */}
+          <Route path='/' element={<HomePage />} />
           <Route
             path='/:showType/category/:categoryType'
-            element={<Movies />}
+            element={<CategoryPage />}
           />
-          <Route path='/:type/:id' element={<MovieDetail />} />
+          <Route path='/:type/:id' element={<MovieDetailsPage />} />
           <Route path='*' exact={true} element={<PageNotFound />} />
         </Routes>
       </div>

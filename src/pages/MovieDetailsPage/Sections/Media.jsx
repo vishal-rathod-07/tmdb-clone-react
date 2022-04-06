@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
-import FormatDate from '../../FormatDate';
+import FormatDate from '../../../components/util/FormatDate';
 
 const Media = ({ movie, cast, keywords, reviews, recommandations, type }) => {
   // console.log(reviews);
   // console.log('rec');
   // console.log(recommandations);
   // console.log('type');
-  console.log(cast);
+  // console.log(cast);
   const reviewLength = reviews.length;
   reviews.length > 0 &&
     (reviews = reviews[Math.floor(Math.random() * reviews.length)]);
@@ -17,7 +17,7 @@ const Media = ({ movie, cast, keywords, reviews, recommandations, type }) => {
   return (
     <div className='media d-flex justify-content-center flex-wrap align-align-items-start w-100'>
       <div className='column-wrapper w-100 d-flex justify-content-center align-items-start'>
-        <div className='content-wrapper w-100 d-flex align-items-start justify-content-center flex-column flex-xl-row'>
+        <div className='content-wrapper d-flex align-items-start justify-content-center flex-column flex-xl-row'>
           <div className='content-left w-100'>
             <div className='column d-flex flex-wrap flex-column flex-md-row w-100'>
               <section className='top-billed-cast w-100'>
