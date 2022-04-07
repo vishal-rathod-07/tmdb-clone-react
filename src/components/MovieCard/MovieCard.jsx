@@ -39,10 +39,7 @@ const MovieCard = ({
   }
 
   return (
-    <div
-      className={`m-card style_1
-      ${cardVisiblity ? 'fade-in' : 'fade-out'}`}
-    >
+    <div className='m-card style_1'>
       <div className='card-image__wrapper'>
         <div className='card__image'>
           <Link className='image-link' to={detailsPath}>
