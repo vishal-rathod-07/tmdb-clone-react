@@ -1067,6 +1067,17 @@ const CategoryPage = () => {
     }
   };
 
+  // function to get nearest next value which is multiple of 4
+  // eg. if value is 5, it will return 8
+
+  const getNearestNextMultipleOfFour = (value) => {
+    let nearestNextMultipleOfFour = value;
+    if (value % 4 !== 0) {
+      nearestNextMultipleOfFour = value + ((4 - (value % 4)) % 4); // if value is 5, it will return 8
+    }
+    return nearestNextMultipleOfFour;
+  };
+
   return (
     <>
       <LoadingBar
@@ -1191,8 +1202,9 @@ const CategoryPage = () => {
                           <span className='ott_provider_wrapper'>
                             <ul className='ott_providers'>
                               {ottProvidersList &&
-                                ottProvidersList.map((provider) => (
+                                ottProvidersList.map((provider, index) => (
                                   <OverlayTrigger
+                                    key={index}
                                     placement='top'
                                     overlay={
                                       <Tooltip id={`tooltip`}>
