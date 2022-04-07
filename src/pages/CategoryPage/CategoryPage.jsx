@@ -757,6 +757,9 @@ const CategoryPage = () => {
   const [countriesList, setCountriesList] = useState(null); //Countries list
 
   const [ottRegionsList, setOttRegionsList] = useState(null); //OTT Regions list
+  const [activeOttRegion, setActiveOttRegion] = useState(null); //Active OTT Region
+  const [ottProvidersList, setOttProvidersList] = useState(null); //OTT Providers list
+  const [activeOttProviders, setActiveOttProviders] = useState([]); //Array of active OTT Providers
 
   const [progress, setProgress] = useState(10); //Progress bar
 
@@ -856,6 +859,21 @@ const CategoryPage = () => {
   }, [showType]); //Fetch filter list when show type changes
 
   useEffect(() => {
+    const fetchOttProviders = async () => {
+      try {
+        const ottProvidersResponse = await fetch(
+          `https://api.themoviedb.org/3/watch/providers/movie?api_key=15d2ea6d0dc1d476efbca3eba2b9bbfb&language=en-US&watch_region=${urlParams.ott_region}`
+        );
+        const data = await ottProvidersResponse.json();
+        setOttProvidersList(data.results);
+      } catch (error) {
+        setError(error);
+      }
+    };
+    fetchOttProviders();
+  }, [urlParams.ott_region]); //Fetch filter list when show type changes
+
+  useEffect(() => {
     const fetchLanguages = async () => {
       try {
         const languagesResponse = await fetch(
@@ -900,7 +918,13 @@ const CategoryPage = () => {
           `https://api.themoviedb.org/3/watch/providers/regions?api_key=15d2ea6d0dc1d476efbca3eba2b9bbfb`
         );
         const data = await ottRegionsResponse.json();
-        setOttRegionsList(data.results);
+        setOttRegionsList(
+          data.results.sort((a, b) => {
+            if (a.english_name < b.english_name) return -1;
+            if (a.english_name > b.english_name) return 1;
+            return 0;
+          })
+        );
       } catch (error) {
         setError(error);
       }
@@ -929,6 +953,23 @@ const CategoryPage = () => {
         activeAvalabilitiesArray.join('%7C'),
     });
   }, [activeAvalabilitiesArray]);
+
+  useEffect(() => {
+    setUrlParams({
+      ...urlParams,
+      with_ott_providers:
+        activeOttProviders.length > 0 && activeOttProviders.join('%7C'),
+    });
+    console.log(urlParams.with_ott_providers);
+  }, [activeOttProviders]);
+
+  useEffect(() => {
+    setActiveOttProviders([]);
+    setUrlParams({
+      ...urlParams,
+      with_ott_providers: '',
+    });
+  }, [urlParams.ott_region]);
 
   useEffect(() => {
     setUrlParams({
@@ -1004,6 +1045,18 @@ const CategoryPage = () => {
         ...activeCertificationsArray,
         certification,
       ]);
+    }
+  };
+
+  const toggleOttProviders = (providerId) => {
+    if (activeOttProviders.includes(providerId)) {
+      setActiveOttProviders(
+        activeOttProviders.filter((item) => item !== providerId)
+      );
+      console.log(activeOttProviders);
+    } else {
+      setActiveOttProviders([...activeOttProviders, providerId]);
+      console.log(activeOttProviders);
     }
   };
 
@@ -1130,16 +1183,24 @@ const CategoryPage = () => {
                           )}
                           <span className='ott_provider_wrapper'>
                             <ul className='ott_providers'>
-                              <li>
-                                <Link to=''>
-                                  <img
-                                    src='https://www.themoviedb.org/t/p/original/t2yyOv40HZeVlLjYsCsPHnWLk4W.jpg'
-                                    width='50'
-                                    height='50'
-                                    alt='Netflix'
-                                  />
-                                </Link>
-                              </li>
+                              {ottProvidersList &&
+                                ottProvidersList.map((provider) => (
+                                  <li
+                                    key={provider.provider_id}
+                                    onClick={() =>
+                                      toggleOttProviders(provider.provider_id)
+                                    }
+                                  >
+                                    <span>
+                                      <img
+                                        src={`https://www.themoviedb.org/t/p/original${provider.logo_path}`}
+                                        width='50'
+                                        height='50'
+                                        alt={provider.name}
+                                      />
+                                    </span>
+                                  </li>
+                                ))}
                             </ul>
                           </span>
                         </Accordion.Body>
