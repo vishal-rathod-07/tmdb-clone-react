@@ -14,6 +14,654 @@ import './categorypage.scss';
 
 import getInitialParams from '../../components/util/InitialParams';
 
+function SortSectionAccordian(props) {
+  return (
+    <div className='filter-section_wrapper'>
+      <Accordion
+        defaultActiveKey='0'
+        style={{
+          width: '100%',
+          borderRadius: '8px',
+        }}
+      >
+        <Accordion.Item eventKey='0'>
+          <Accordion.Header>Sort</Accordion.Header>
+          <Accordion.Body>
+            <h3
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                width: '100%',
+                fontSize: '1em',
+                fontWeight: '300',
+                marginBottom: '10px',
+                color: '#000',
+              }}
+              className='filter-title p-0'
+            >
+              Sort Results By
+            </h3>
+            <DropdownButton
+              id='dropdown-basic-button'
+              title={props.dropdownTitle}
+              variant='secondary'
+              style={{
+                width: '100%',
+                fontSize: '1em',
+                fontWeight: '300',
+              }}
+              onSelect={(eventKey) => {
+                props.setUrlParams({ ...props.urlParams, sort_by: eventKey });
+              }}
+            >
+              <Dropdown.Item eventKey='popularity.desc'>
+                Popularity Descending
+              </Dropdown.Item>
+              <Dropdown.Item eventKey='popularity.asc'>
+                Popularity Ascending
+              </Dropdown.Item>
+              <Dropdown.Item eventKey='vote_average.desc'>
+                Rating Descending
+              </Dropdown.Item>
+              <Dropdown.Item eventKey='vote_average.asc'>
+                Rating Ascending
+              </Dropdown.Item>
+              <Dropdown.Item eventKey='primary_release_date.desc'>
+                Release Date Descending
+              </Dropdown.Item>
+              <Dropdown.Item eventKey='primary_release_date.asc'>
+                Release Date Ascending
+              </Dropdown.Item>
+              <Dropdown.Item eventKey='title.asc'>Title (A-Z)</Dropdown.Item>
+              <Dropdown.Item eventKey='title.desc'>Title (Z-A)</Dropdown.Item>
+            </DropdownButton>
+            {/* <Form.Select
+           aria-label='Default select example'
+           defaultValue={urlParams.sort_by}
+           onChange={(event) => {
+             setUrlParams({
+               ...urlParams,
+               sort_by: event.target.value,
+             });
+           }}
+           style={{
+             width: '100%',
+             fontSize: '1em',
+             fontWeight: '300',
+           }}
+          >
+           <option value='popularity.desc'>
+             Popularity Descending
+           </option>
+           <option value='popularity.asc'>
+             Popularity Ascending
+           </option>
+           <option value='vote_average.desc'>
+             Rating Descending
+           </option>
+           <option value='vote_average.asc'>
+             Rating Ascending
+           </option>
+           <option value='primary_release_date.desc'>
+             Release Date Descending
+           </option>
+           <option value='primary_release_date.asc'>
+             Release Date Ascending
+           </option>
+           <option value='title.asc'>Title (A-Z)</option>
+           <option value='title.desc'>Title (Z-A)</option>
+          </Form.Select> */}
+          </Accordion.Body>
+        </Accordion.Item>
+      </Accordion>
+    </div>
+  );
+}
+
+function FilterSectionAccordian(props) {
+  return (
+    <div className='filter-section_wrapper'>
+      <Accordion
+        style={{
+          width: '100%',
+        }}
+      >
+        <Accordion.Item eventKey='0'>
+          <Accordion.Header>Filters</Accordion.Header>
+          <Accordion.Body>
+            <h3
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                width: '100%',
+                fontSize: '1em',
+                fontWeight: '300',
+                marginBottom: '10px',
+                color: '#000',
+                color: '#000',
+              }}
+              className='filter-title p-0'
+            >
+              Availabilities
+            </h3>
+            <label className='all_availablities'>
+              <div className='form-check'>
+                <input
+                  type='checkbox'
+                  className='form-check-input'
+                  id='exampleCheck1'
+                  onChange={props.toggleAllAvailabilities}
+                  checked={props.isAllAvailabilities}
+                />
+                <label className='form-check-label' htmlFor='exampleCheck1'>
+                  Search all availabilities?
+                </label>
+              </div>
+            </label>
+            {!props.isAllAvailabilities && (
+              <div className='availabilities_wrapper d-flex flex-column'>
+                <label className='all_availablities'>
+                  <div className='form-check'>
+                    <input
+                      type='checkbox'
+                      className='form-check-input'
+                      id='monetization_type_flatrate'
+                      value='flatrate'
+                      onChange={() =>
+                        props.toggleActiveAvalabilities('flatrate')
+                      }
+                      checked={props.activeAvalabilitiesArray.includes(
+                        'flatrate'
+                      )}
+                    />
+                    <label
+                      className='form-check-label'
+                      htmlFor='monetization_type_flatrate'
+                    >
+                      Stream
+                    </label>
+                  </div>
+                </label>
+                <label className='all_availablities'>
+                  <div className='form-check'>
+                    <input
+                      type='checkbox'
+                      className='form-check-input'
+                      id='monetization_type_free'
+                      value='free'
+                      onChange={() => props.toggleActiveAvalabilities('free')}
+                      checked={props.activeAvalabilitiesArray.includes('free')}
+                    />
+                    <label
+                      className='form-check-label'
+                      htmlFor='monetization_type_free'
+                    >
+                      Free
+                    </label>
+                  </div>
+                </label>
+                <label className='all_availablities'>
+                  <div className='form-check'>
+                    <input
+                      type='checkbox'
+                      className='form-check-input'
+                      id='monetization_type_ads'
+                      value='ads'
+                      onChange={() => props.toggleActiveAvalabilities('ads')}
+                      checked={props.activeAvalabilitiesArray.includes('ads')}
+                    />
+                    <label
+                      className='form-check-label'
+                      htmlFor='monetization_type_ads'
+                    >
+                      Ads
+                    </label>
+                  </div>
+                </label>
+                <label className='all_availablities'>
+                  <div className='form-check'>
+                    <input
+                      type='checkbox'
+                      className='form-check-input'
+                      id='monetization_type_rent'
+                      value='rent'
+                      onChange={() => props.toggleActiveAvalabilities('rent')}
+                      checked={props.activeAvalabilitiesArray.includes('rent')}
+                    />
+                    <label
+                      className='form-check-label'
+                      htmlFor='monetization_type_rent'
+                    >
+                      Rent
+                    </label>
+                  </div>
+                </label>
+                <label className='all_availablities'>
+                  <div className='form-check'>
+                    <input
+                      type='checkbox'
+                      className='form-check-input'
+                      id='monetization_type_buy'
+                      value='buy'
+                      onChange={() => props.toggleActiveAvalabilities('buy')}
+                      checked={props.activeAvalabilitiesArray.includes('buy')}
+                    />
+                    <label
+                      className='form-check-label'
+                      htmlFor='monetization_type_buy'
+                    >
+                      Buy
+                    </label>
+                  </div>
+                </label>
+              </div>
+            )}
+          </Accordion.Body>
+          <Accordion.Body>
+            <h3
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                width: '100%',
+                fontSize: '1em',
+                fontWeight: '300',
+                marginBottom: '10px',
+                color: '#000',
+              }}
+              className='filter-title p-0'
+            >
+              Release Dates
+            </h3>
+            <label className='release_type'>
+              <div className='form-check'>
+                <input
+                  type='checkbox'
+                  className='form-check-input'
+                  id='exampleCheck1'
+                  onChange={props.toggleAllReleaseDates}
+                  checked={props.isAllReleases}
+                />
+                <label className='form-check-label' htmlFor='exampleCheck1'>
+                  Search all releases?
+                </label>
+              </div>
+            </label>
+            {!props.isAllReleases && (
+              <div className='release_type_wrapper d-flex flex-column'>
+                <label className='all_countries'>
+                  <div className='form-check'>
+                    <input
+                      type='checkbox'
+                      className='form-check-input'
+                      id='exampleCheck1'
+                      onChange={props.toggleAllCountries}
+                      checked={props.isAllCountries}
+                    />
+                    <label className='form-check-label' htmlFor='exampleCheck1'>
+                      Search all countries?
+                    </label>
+                  </div>
+                </label>
+                {!props.isAllCountries && (
+                  <div className='all_countries_wrapper'>
+                    <DropdownButton
+                      id='dropdown-basic-button'
+                      title={
+                        props.urlParams.region
+                          ? props.countriesList.find(
+                              (country) =>
+                                country.iso_3166_1 === props.urlParams.region
+                            ).english_name
+                          : 'Countries'
+                      }
+                      variant='secondary'
+                      style={{
+                        width: '100%',
+                        fontSize: '1em',
+                        fontWeight: '300',
+                        marginBottom: '10px',
+                      }}
+                      onSelect={(eventKey) => {
+                        props.setUrlParams({
+                          ...props.urlParams,
+                          region: eventKey,
+                        });
+                      }}
+                    >
+                      {props.countriesList.map((country) => (
+                        <Dropdown.Item
+                          key={country.iso_3166_1}
+                          eventKey={country.iso_3166_1}
+                        >
+                          <img // src={`https://countryflagsapi.com/png/${country.iso_3166_1}`}
+                            src={`https://flagcdn.com/w20/${country.iso_3166_1.toLowerCase()}.png`}
+                            onError={(e) => {
+                              e.target.onerror = null;
+                              e.target.src =
+                                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8wkWFOYkdG7W9Xf0-aheuTMQHTEsySnpXOQ&usqp=CAU';
+                            }}
+                            style={{
+                              width: '24px',
+                              height: '20px',
+                              marginRight: '10px',
+                            }}
+                            alt={country.iso_3166_1}
+                          />
+
+                          {country.english_name}
+                        </Dropdown.Item>
+                      ))}
+
+                      {/* .map((country) => country.english_name)
+                .sort((a, b) => a.localeCompare(b) */}
+                    </DropdownButton>
+                  </div>
+                )}
+                <label className='all_release_type'>
+                  <div className='form-check'>
+                    <input
+                      type='checkbox'
+                      className='form-check-input'
+                      id='release_type_1'
+                      value='1'
+                      onChange={() => props.toggleActiveReleases('1')}
+                      checked={props.activeReleaseTypesArray.includes('1')}
+                    />
+                    <label
+                      className='form-check-label'
+                      htmlFor='release_type_1'
+                    >
+                      Premiere
+                    </label>
+                  </div>
+                </label>
+                <label className='all_release_type'>
+                  <div className='form-check'>
+                    <input
+                      type='checkbox'
+                      className='form-check-input'
+                      id='release_type_2'
+                      value='2'
+                      onChange={() => props.toggleActiveReleases('2')}
+                      checked={props.activeReleaseTypesArray.includes('2')}
+                    />
+                    <label
+                      className='form-check-label'
+                      htmlFor='release_type_2'
+                    >
+                      Theatrical (limited)
+                    </label>
+                  </div>
+                </label>
+                <label className='all_release_type'>
+                  <div className='form-check'>
+                    <input
+                      type='checkbox'
+                      className='form-check-input'
+                      id='release_type_3'
+                      value='3'
+                      onChange={() => props.toggleActiveReleases('3')}
+                      checked={props.activeReleaseTypesArray.includes('3')}
+                    />
+                    <label
+                      className='form-check-label'
+                      htmlFor='release_type_3'
+                    >
+                      Theatrical
+                    </label>
+                  </div>
+                </label>
+                <label className='all_release_type'>
+                  <div className='form-check'>
+                    <input
+                      type='checkbox'
+                      className='form-check-input'
+                      id='release_type_4'
+                      value='4'
+                      onChange={() => props.toggleActiveReleases('4')}
+                      checked={props.activeReleaseTypesArray.includes('4')}
+                    />
+                    <label
+                      className='form-check-label'
+                      htmlFor='release_type_4'
+                    >
+                      Digital
+                    </label>
+                  </div>
+                </label>
+                <label className='all_release_type'>
+                  <div className='form-check'>
+                    <input
+                      type='checkbox'
+                      className='form-check-input'
+                      id='release_type_5'
+                      value='5'
+                      onChange={() => props.toggleActiveReleases('5')}
+                      checked={props.activeReleaseTypesArray.includes('5')}
+                    />
+                    <label
+                      className='form-check-label'
+                      htmlFor='release_type_5'
+                    >
+                      Physical
+                    </label>
+                  </div>
+                </label>
+                <label className='all_release_type'>
+                  <div className='form-check'>
+                    <input
+                      type='checkbox'
+                      className='form-check-input'
+                      id='release_type_6'
+                      value='6'
+                      onChange={() => props.toggleActiveReleases('6')}
+                      checked={props.activeReleaseTypesArray.includes('6')}
+                    />
+                    <label
+                      className='form-check-label'
+                      htmlFor='release_type_6'
+                    >
+                      TV
+                    </label>
+                  </div>
+                </label>
+              </div>
+            )}
+
+            <div className='year_column d-flex justify-content-between'>
+              <span className='year_column_title'>from</span>
+              <span className='date_picker w-100'>
+                <span className='date_picker_wrapper'>
+                  <DatePicker
+                    selected={
+                      props.showType === 'tv'
+                        ? props.urlParams['air_date.gte']
+                          ? new Date(props.urlParams['air_date.gte'])
+                          : ''
+                        : props.urlParams['air_date.gte']
+                        ? new Date(props.urlParams['release_date.gte'])
+                        : ''
+                    }
+                    onChange={(date) => {
+                      if (props.showType === 'tv') {
+                        props.setUrlParams({
+                          ...props.urlParams,
+                          'air_date.gte': date.toISOString().split('T')[0],
+                        });
+                      }
+
+                      if (props.showType === 'movie') {
+                        props.setUrlParams({
+                          ...props.urlParams,
+                          'release_date.gte': date.toISOString().split('T')[0],
+                        });
+                      }
+                    }}
+                  />
+                </span>
+              </span>
+            </div>
+            <div className='year_column d-flex '>
+              <span className='year_column_title'>to</span>
+              <span className='date_picker w-100'>
+                <span className='date_picker_wrapper'>
+                  <DatePicker
+                    selected={
+                      props.showType === 'tv'
+                        ? props.urlParams['air_date.lte']
+                          ? new Date(props.urlParams['air_date.lte'])
+                          : ''
+                        : props.urlParams['release_date.lte']
+                        ? new Date(props.urlParams['release_date.lte'])
+                        : ''
+                    }
+                    onChange={(date) => {
+                      if (props.showType === 'tv') {
+                        props.setUrlParams({
+                          ...props.urlParams,
+                          'air_date.lte': date.toISOString().split('T')[0],
+                        });
+                      }
+
+                      if (props.showType === 'movie') {
+                        props.setUrlParams({
+                          ...props.urlParams,
+                          'release_date.lte': date.toISOString().split('T')[0],
+                        });
+                      }
+                    }}
+                  />
+                </span>
+              </span>
+            </div>
+          </Accordion.Body>
+          <Accordion.Body>
+            <h3
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                width: '100%',
+                fontSize: '1em',
+                fontWeight: '300',
+                marginBottom: '10px',
+                color: '#000',
+              }}
+              className='filter-title p-0'
+            >
+              Genres
+            </h3>
+            <ul className='filter-list p-0'>
+              {props.genresList &&
+                props.genresList.map((filter) => (
+                  <li
+                    key={filter.id}
+                    className={`filter-list_item ${
+                      props.includes(filter.id) ? 'filter-list_item-active' : ''
+                    }`}
+                    onClick={() => {
+                      props.toggleFilter(filter.id);
+                    }}
+                  >
+                    {filter.name}
+                  </li>
+                ))}
+            </ul>
+          </Accordion.Body>
+          <Accordion.Body>
+            <h3
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                width: '100%',
+                fontSize: '1em',
+                fontWeight: '300',
+                marginBottom: '10px',
+                color: '#000',
+              }}
+              className='filter-title p-0'
+            >
+              Certification
+            </h3>
+            <ul className='filter-list p-0'>
+              {props.CertificationList &&
+                props.CertificationList.map((certification, index) => (
+                  <li
+                    key={index}
+                    className={`filter-list_item ${
+                      props._includes(certification.certification)
+                        ? 'filter-list_item-active'
+                        : ''
+                    }`}
+                    onClick={() => {
+                      props.toggleCertification(certification.certification);
+                    }}
+                  >
+                    {certification.certification}
+                  </li>
+                ))}
+            </ul>
+          </Accordion.Body>
+          <Accordion.Body className='Language-filter'>
+            <h3
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                width: '100%',
+                fontSize: '1em',
+                fontWeight: '300',
+                marginBottom: '10px',
+                color: '#000',
+              }}
+              className='filter-title p-0'
+            >
+              Language
+            </h3>
+            {props.languagesList && (
+              <DropdownButton
+                id='dropdown-basic-button'
+                title={
+                  props.urlParams.with_original_language
+                    ? props.languagesList.find(
+                        (language) =>
+                          language.iso_639_1 ===
+                          props.urlParams.with_original_language
+                      ).english_name
+                    : 'None Selected'
+                }
+                variant='secondary'
+                style={{
+                  width: '100%',
+                  fontSize: '1em',
+                  fontWeight: '300',
+                  marginBottom: '10px',
+                }}
+                onSelect={(eventKey) => {
+                  props.setUrlParams({
+                    ...props.urlParams,
+                    with_original_language: eventKey,
+                  });
+                }}
+              >
+                {props.languagesList.map((language) => (
+                  <Dropdown.Item
+                    key={language.iso_639_1}
+                    eventKey={language.iso_639_1}
+                  >
+                    {language.english_name}
+                  </Dropdown.Item>
+                ))}
+
+                {/* .map((country) => country.english_name)
+            .sort((a, b) => a.localeCompare(b) */}
+              </DropdownButton>
+            )}
+          </Accordion.Body>
+        </Accordion.Item>
+      </Accordion>
+    </div>
+  );
+}
+
 const CategoryPage = () => {
   const { showType, categoryType } = useParams(); // Get params from url
 
@@ -374,702 +1022,34 @@ const CategoryPage = () => {
               </div>
               <div className='content d-flex align-items-start w-100'>
                 <div className='filter-section'>
-                  <div className='filter-section_wrapper'>
-                    <Accordion
-                      defaultActiveKey='0'
-                      style={{
-                        width: '100%',
-                        borderRadius: '8px',
-                      }}
-                    >
-                      <Accordion.Item eventKey='0'>
-                        <Accordion.Header>Sort</Accordion.Header>
-                        <Accordion.Body>
-                          <h3
-                            style={{
-                              display: 'inline-flex',
-                              alignItems: 'center',
-                              width: '100%',
-                              fontSize: '1em',
-                              fontWeight: '300',
-                              marginBottom: '10px',
-                              color: '#000',
-                            }}
-                            className='filter-title p-0'
-                          >
-                            Sort Results By
-                          </h3>
-                          <DropdownButton
-                            id='dropdown-basic-button'
-                            title={dropdownTitle}
-                            variant='secondary'
-                            style={{
-                              width: '100%',
-                              fontSize: '1em',
-                              fontWeight: '300',
-                            }}
-                            onSelect={(eventKey) => {
-                              setUrlParams({
-                                ...urlParams,
-                                sort_by: eventKey,
-                              });
-                            }}
-                          >
-                            <Dropdown.Item eventKey='popularity.desc'>
-                              Popularity Descending
-                            </Dropdown.Item>
-                            <Dropdown.Item eventKey='popularity.asc'>
-                              Popularity Ascending
-                            </Dropdown.Item>
-                            <Dropdown.Item eventKey='vote_average.desc'>
-                              Rating Descending
-                            </Dropdown.Item>
-                            <Dropdown.Item eventKey='vote_average.asc'>
-                              Rating Ascending
-                            </Dropdown.Item>
-                            <Dropdown.Item eventKey='primary_release_date.desc'>
-                              Release Date Descending
-                            </Dropdown.Item>
-                            <Dropdown.Item eventKey='primary_release_date.asc'>
-                              Release Date Ascending
-                            </Dropdown.Item>
-                            <Dropdown.Item eventKey='title.asc'>
-                              Title (A-Z)
-                            </Dropdown.Item>
-                            <Dropdown.Item eventKey='title.desc'>
-                              Title (Z-A)
-                            </Dropdown.Item>
-                          </DropdownButton>
-                          {/* <Form.Select
-                            aria-label='Default select example'
-                            defaultValue={urlParams.sort_by}
-                            onChange={(event) => {
-                              setUrlParams({
-                                ...urlParams,
-                                sort_by: event.target.value,
-                              });
-                            }}
-                            style={{
-                              width: '100%',
-                              fontSize: '1em',
-                              fontWeight: '300',
-                            }}
-                          >
-                            <option value='popularity.desc'>
-                              Popularity Descending
-                            </option>
-                            <option value='popularity.asc'>
-                              Popularity Ascending
-                            </option>
-                            <option value='vote_average.desc'>
-                              Rating Descending
-                            </option>
-                            <option value='vote_average.asc'>
-                              Rating Ascending
-                            </option>
-                            <option value='primary_release_date.desc'>
-                              Release Date Descending
-                            </option>
-                            <option value='primary_release_date.asc'>
-                              Release Date Ascending
-                            </option>
-                            <option value='title.asc'>Title (A-Z)</option>
-                            <option value='title.desc'>Title (Z-A)</option>
-                          </Form.Select> */}
-                        </Accordion.Body>
-                      </Accordion.Item>
-                    </Accordion>
-                  </div>
-                  <div className='filter-section_wrapper'>
-                    <Accordion
-                      style={{
-                        width: '100%',
-                      }}
-                    >
-                      <Accordion.Item eventKey='0'>
-                        <Accordion.Header>Filters</Accordion.Header>
-                        <Accordion.Body>
-                          <h3
-                            style={{
-                              display: 'inline-flex',
-                              alignItems: 'center',
-                              width: '100%',
-                              fontSize: '1em',
-                              fontWeight: '300',
-                              marginBottom: '10px',
-                              color: '#000',
-                              color: '#000',
-                            }}
-                            className='filter-title p-0'
-                          >
-                            Availabilities
-                          </h3>
-                          <label className='all_availablities'>
-                            <div className='form-check'>
-                              <input
-                                type='checkbox'
-                                className='form-check-input'
-                                id='exampleCheck1'
-                                onChange={toggleAllAvailabilities}
-                                checked={isAllAvailabilities}
-                              />
-                              <label
-                                className='form-check-label'
-                                htmlFor='exampleCheck1'
-                              >
-                                Search all availabilities?
-                              </label>
-                            </div>
-                          </label>
-                          {!isAllAvailabilities && (
-                            <div className='availabilities_wrapper d-flex flex-column'>
-                              <label className='all_availablities'>
-                                <div className='form-check'>
-                                  <input
-                                    type='checkbox'
-                                    className='form-check-input'
-                                    id='monetization_type_flatrate'
-                                    value='flatrate'
-                                    onChange={() =>
-                                      toggleActiveAvalabilities('flatrate')
-                                    }
-                                    checked={activeAvalabilitiesArray.includes(
-                                      'flatrate'
-                                    )}
-                                  />
-                                  <label
-                                    className='form-check-label'
-                                    htmlFor='monetization_type_flatrate'
-                                  >
-                                    Stream
-                                  </label>
-                                </div>
-                              </label>
-                              <label className='all_availablities'>
-                                <div className='form-check'>
-                                  <input
-                                    type='checkbox'
-                                    className='form-check-input'
-                                    id='monetization_type_free'
-                                    value='free'
-                                    onChange={() =>
-                                      toggleActiveAvalabilities('free')
-                                    }
-                                    checked={activeAvalabilitiesArray.includes(
-                                      'free'
-                                    )}
-                                  />
-                                  <label
-                                    className='form-check-label'
-                                    htmlFor='monetization_type_free'
-                                  >
-                                    Free
-                                  </label>
-                                </div>
-                              </label>
-                              <label className='all_availablities'>
-                                <div className='form-check'>
-                                  <input
-                                    type='checkbox'
-                                    className='form-check-input'
-                                    id='monetization_type_ads'
-                                    value='ads'
-                                    onChange={() =>
-                                      toggleActiveAvalabilities('ads')
-                                    }
-                                    checked={activeAvalabilitiesArray.includes(
-                                      'ads'
-                                    )}
-                                  />
-                                  <label
-                                    className='form-check-label'
-                                    htmlFor='monetization_type_ads'
-                                  >
-                                    Ads
-                                  </label>
-                                </div>
-                              </label>
-                              <label className='all_availablities'>
-                                <div className='form-check'>
-                                  <input
-                                    type='checkbox'
-                                    className='form-check-input'
-                                    id='monetization_type_rent'
-                                    value='rent'
-                                    onChange={() =>
-                                      toggleActiveAvalabilities('rent')
-                                    }
-                                    checked={activeAvalabilitiesArray.includes(
-                                      'rent'
-                                    )}
-                                  />
-                                  <label
-                                    className='form-check-label'
-                                    htmlFor='monetization_type_rent'
-                                  >
-                                    Rent
-                                  </label>
-                                </div>
-                              </label>
-                              <label className='all_availablities'>
-                                <div className='form-check'>
-                                  <input
-                                    type='checkbox'
-                                    className='form-check-input'
-                                    id='monetization_type_buy'
-                                    value='buy'
-                                    onChange={() =>
-                                      toggleActiveAvalabilities('buy')
-                                    }
-                                    checked={activeAvalabilitiesArray.includes(
-                                      'buy'
-                                    )}
-                                  />
-                                  <label
-                                    className='form-check-label'
-                                    htmlFor='monetization_type_buy'
-                                  >
-                                    Buy
-                                  </label>
-                                </div>
-                              </label>
-                            </div>
-                          )}
-                        </Accordion.Body>
-                        <Accordion.Body>
-                          <h3
-                            style={{
-                              display: 'inline-flex',
-                              alignItems: 'center',
-                              width: '100%',
-                              fontSize: '1em',
-                              fontWeight: '300',
-                              marginBottom: '10px',
-                              color: '#000',
-                            }}
-                            className='filter-title p-0'
-                          >
-                            Release Dates
-                          </h3>
-                          <label className='release_type'>
-                            <div className='form-check'>
-                              <input
-                                type='checkbox'
-                                className='form-check-input'
-                                id='exampleCheck1'
-                                onChange={toggleAllReleaseDates}
-                                checked={isAllReleases}
-                              />
-                              <label
-                                className='form-check-label'
-                                htmlFor='exampleCheck1'
-                              >
-                                Search all releases?
-                              </label>
-                            </div>
-                          </label>
-                          {!isAllReleases && (
-                            <div className='release_type_wrapper d-flex flex-column'>
-                              <label className='all_countries'>
-                                <div className='form-check'>
-                                  <input
-                                    type='checkbox'
-                                    className='form-check-input'
-                                    id='exampleCheck1'
-                                    onChange={toggleAllCountries}
-                                    checked={isAllCountries}
-                                  />
-                                  <label
-                                    className='form-check-label'
-                                    htmlFor='exampleCheck1'
-                                  >
-                                    Search all countries?
-                                  </label>
-                                </div>
-                              </label>
-                              {!isAllCountries && (
-                                <div className='all_countries_wrapper'>
-                                  <DropdownButton
-                                    id='dropdown-basic-button'
-                                    title={
-                                      urlParams.region
-                                        ? countriesList.find(
-                                            (country) =>
-                                              country.iso_3166_1 ===
-                                              urlParams.region
-                                          ).english_name
-                                        : 'Countries'
-                                    }
-                                    variant='secondary'
-                                    style={{
-                                      width: '100%',
-                                      fontSize: '1em',
-                                      fontWeight: '300',
-                                      marginBottom: '10px',
-                                    }}
-                                    onSelect={(eventKey) => {
-                                      setUrlParams({
-                                        ...urlParams,
-                                        region: eventKey,
-                                      });
-                                    }}
-                                  >
-                                    {countriesList.map((country) => (
-                                      <Dropdown.Item
-                                        key={country.iso_3166_1}
-                                        eventKey={country.iso_3166_1}
-                                      >
-                                        <img
-                                          // src={`https://countryflagsapi.com/png/${country.iso_3166_1}`}
-                                          src={`https://flagcdn.com/w20/${country.iso_3166_1.toLowerCase()}.png`}
-                                          onError={(e) => {
-                                            e.target.onerror = null;
-                                            e.target.src =
-                                              'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8wkWFOYkdG7W9Xf0-aheuTMQHTEsySnpXOQ&usqp=CAU';
-                                          }}
-                                          style={{
-                                            width: '24px',
-                                            height: '20px',
-                                            marginRight: '10px',
-                                          }}
-                                          alt={country.iso_3166_1}
-                                        />
-
-                                        {country.english_name}
-                                      </Dropdown.Item>
-                                    ))}
-
-                                    {/* .map((country) => country.english_name)
-            .sort((a, b) => a.localeCompare(b) */}
-                                  </DropdownButton>
-                                </div>
-                              )}
-                              <label className='all_release_type'>
-                                <div className='form-check'>
-                                  <input
-                                    type='checkbox'
-                                    className='form-check-input'
-                                    id='release_type_1'
-                                    value='1'
-                                    onChange={() => toggleActiveReleases('1')}
-                                    checked={activeReleaseTypesArray.includes(
-                                      '1'
-                                    )}
-                                  />
-                                  <label
-                                    className='form-check-label'
-                                    htmlFor='release_type_1'
-                                  >
-                                    Premiere
-                                  </label>
-                                </div>
-                              </label>
-                              <label className='all_release_type'>
-                                <div className='form-check'>
-                                  <input
-                                    type='checkbox'
-                                    className='form-check-input'
-                                    id='release_type_2'
-                                    value='2'
-                                    onChange={() => toggleActiveReleases('2')}
-                                    checked={activeReleaseTypesArray.includes(
-                                      '2'
-                                    )}
-                                  />
-                                  <label
-                                    className='form-check-label'
-                                    htmlFor='release_type_2'
-                                  >
-                                    Theatrical (limited)
-                                  </label>
-                                </div>
-                              </label>
-                              <label className='all_release_type'>
-                                <div className='form-check'>
-                                  <input
-                                    type='checkbox'
-                                    className='form-check-input'
-                                    id='release_type_3'
-                                    value='3'
-                                    onChange={() => toggleActiveReleases('3')}
-                                    checked={activeReleaseTypesArray.includes(
-                                      '3'
-                                    )}
-                                  />
-                                  <label
-                                    className='form-check-label'
-                                    htmlFor='release_type_3'
-                                  >
-                                    Theatrical
-                                  </label>
-                                </div>
-                              </label>
-                              <label className='all_release_type'>
-                                <div className='form-check'>
-                                  <input
-                                    type='checkbox'
-                                    className='form-check-input'
-                                    id='release_type_4'
-                                    value='4'
-                                    onChange={() => toggleActiveReleases('4')}
-                                    checked={activeReleaseTypesArray.includes(
-                                      '4'
-                                    )}
-                                  />
-                                  <label
-                                    className='form-check-label'
-                                    htmlFor='release_type_4'
-                                  >
-                                    Digital
-                                  </label>
-                                </div>
-                              </label>
-                              <label className='all_release_type'>
-                                <div className='form-check'>
-                                  <input
-                                    type='checkbox'
-                                    className='form-check-input'
-                                    id='release_type_5'
-                                    value='5'
-                                    onChange={() => toggleActiveReleases('5')}
-                                    checked={activeReleaseTypesArray.includes(
-                                      '5'
-                                    )}
-                                  />
-                                  <label
-                                    className='form-check-label'
-                                    htmlFor='release_type_5'
-                                  >
-                                    Physical
-                                  </label>
-                                </div>
-                              </label>
-                              <label className='all_release_type'>
-                                <div className='form-check'>
-                                  <input
-                                    type='checkbox'
-                                    className='form-check-input'
-                                    id='release_type_6'
-                                    value='6'
-                                    onChange={() => toggleActiveReleases('6')}
-                                    checked={activeReleaseTypesArray.includes(
-                                      '6'
-                                    )}
-                                  />
-                                  <label
-                                    className='form-check-label'
-                                    htmlFor='release_type_6'
-                                  >
-                                    TV
-                                  </label>
-                                </div>
-                              </label>
-                            </div>
-                          )}
-
-                          <div className='year_column d-flex justify-content-between'>
-                            <span className='year_column_title'>from</span>
-                            <span className='date_picker w-100'>
-                              <span className='date_picker_wrapper'>
-                                <DatePicker
-                                  selected={
-                                    showType === 'tv'
-                                      ? urlParams['air_date.gte']
-                                        ? new Date(urlParams['air_date.gte'])
-                                        : ''
-                                      : urlParams['air_date.gte']
-                                      ? new Date(urlParams['release_date.gte'])
-                                      : ''
-                                  }
-                                  onChange={(date) => {
-                                    if (showType === 'tv') {
-                                      setUrlParams({
-                                        ...urlParams,
-                                        'air_date.gte': date
-                                          .toISOString()
-                                          .split('T')[0],
-                                      });
-                                    }
-                                    if (showType === 'movie') {
-                                      setUrlParams({
-                                        ...urlParams,
-                                        'release_date.gte': date
-                                          .toISOString()
-                                          .split('T')[0],
-                                      });
-                                    }
-                                  }}
-                                />
-                              </span>
-                            </span>
-                          </div>
-                          <div className='year_column d-flex '>
-                            <span className='year_column_title'>to</span>
-                            <span className='date_picker w-100'>
-                              <span className='date_picker_wrapper'>
-                                <DatePicker
-                                  selected={
-                                    showType === 'tv'
-                                      ? urlParams['air_date.lte']
-                                        ? new Date(urlParams['air_date.lte'])
-                                        : ''
-                                      : urlParams['release_date.lte']
-                                      ? new Date(urlParams['release_date.lte'])
-                                      : ''
-                                  }
-                                  onChange={(date) => {
-                                    if (showType === 'tv') {
-                                      setUrlParams({
-                                        ...urlParams,
-                                        'air_date.lte': date
-                                          .toISOString()
-                                          .split('T')[0],
-                                      });
-                                    }
-                                    if (showType === 'movie') {
-                                      setUrlParams({
-                                        ...urlParams,
-                                        'release_date.lte': date
-                                          .toISOString()
-                                          .split('T')[0],
-                                      });
-                                    }
-                                  }}
-                                />
-                              </span>
-                            </span>
-                          </div>
-                        </Accordion.Body>
-                        <Accordion.Body>
-                          <h3
-                            style={{
-                              display: 'inline-flex',
-                              alignItems: 'center',
-                              width: '100%',
-                              fontSize: '1em',
-                              fontWeight: '300',
-                              marginBottom: '10px',
-                              color: '#000',
-                            }}
-                            className='filter-title p-0'
-                          >
-                            Genres
-                          </h3>
-                          <ul className='filter-list p-0'>
-                            {genresList &&
-                              genresList.map((filter) => (
-                                <li
-                                  key={filter.id}
-                                  className={`filter-list_item ${
-                                    activeGenresArray.includes(filter.id)
-                                      ? 'filter-list_item-active'
-                                      : ''
-                                  }`}
-                                  onClick={() => {
-                                    toggleFilter(filter.id);
-                                  }}
-                                >
-                                  {filter.name}
-                                </li>
-                              ))}
-                          </ul>
-                        </Accordion.Body>
-                        <Accordion.Body>
-                          <h3
-                            style={{
-                              display: 'inline-flex',
-                              alignItems: 'center',
-                              width: '100%',
-                              fontSize: '1em',
-                              fontWeight: '300',
-                              marginBottom: '10px',
-                              color: '#000',
-                            }}
-                            className='filter-title p-0'
-                          >
-                            Certification
-                          </h3>
-                          <ul className='filter-list p-0'>
-                            {CertificationList &&
-                              CertificationList.map((certification, index) => (
-                                <li
-                                  key={index}
-                                  className={`filter-list_item ${
-                                    activeCertificationsArray.includes(
-                                      certification.certification
-                                    )
-                                      ? 'filter-list_item-active'
-                                      : ''
-                                  }`}
-                                  onClick={() => {
-                                    toggleCertification(
-                                      certification.certification
-                                    );
-                                  }}
-                                >
-                                  {certification.certification}
-                                </li>
-                              ))}
-                          </ul>
-                        </Accordion.Body>
-                        <Accordion.Body className='Language-filter'>
-                          <h3
-                            style={{
-                              display: 'inline-flex',
-                              alignItems: 'center',
-                              width: '100%',
-                              fontSize: '1em',
-                              fontWeight: '300',
-                              marginBottom: '10px',
-                              color: '#000',
-                            }}
-                            className='filter-title p-0'
-                          >
-                            Language
-                          </h3>
-                          {languagesList && (
-                            <DropdownButton
-                              id='dropdown-basic-button'
-                              title={
-                                urlParams.with_original_language
-                                  ? languagesList.find(
-                                      (language) =>
-                                        language.iso_639_1 ===
-                                        urlParams.with_original_language
-                                    ).english_name
-                                  : 'None Selected'
-                              }
-                              variant='secondary'
-                              style={{
-                                width: '100%',
-                                fontSize: '1em',
-                                fontWeight: '300',
-                                marginBottom: '10px',
-                              }}
-                              onSelect={(eventKey) => {
-                                setUrlParams({
-                                  ...urlParams,
-                                  with_original_language: eventKey,
-                                });
-                              }}
-                            >
-                              {languagesList.map((language) => (
-                                <Dropdown.Item
-                                  key={language.iso_639_1}
-                                  eventKey={language.iso_639_1}
-                                >
-                                  {language.english_name}
-                                </Dropdown.Item>
-                              ))}
-
-                              {/* .map((country) => country.english_name)
-            .sort((a, b) => a.localeCompare(b) */}
-                            </DropdownButton>
-                          )}
-                        </Accordion.Body>
-                      </Accordion.Item>
-                    </Accordion>
-                  </div>
+                  <SortSectionAccordian
+                    urlParams={urlParams}
+                    setUrlParams={setUrlParams}
+                    dropdownTitle={dropdownTitle}
+                  ></SortSectionAccordian>
+                  <FilterSectionAccordian
+                    showType={showType}
+                    urlParams={urlParams}
+                    setUrlParams={setUrlParams}
+                    genresList={genresList}
+                    includes={activeGenresArray.includes}
+                    CertificationList={CertificationList}
+                    _includes={activeCertificationsArray.includes}
+                    countriesList={countriesList}
+                    isAllAvailabilities={isAllAvailabilities}
+                    toggleAllAvailabilities={toggleAllAvailabilities}
+                    activeAvalabilitiesArray={activeAvalabilitiesArray}
+                    toggleActiveAvalabilities={toggleActiveAvalabilities}
+                    isAllReleases={isAllReleases}
+                    toggleAllReleaseDates={toggleAllReleaseDates}
+                    activeReleaseTypesArray={activeReleaseTypesArray}
+                    toggleActiveReleases={toggleActiveReleases}
+                    isAllCountries={isAllCountries}
+                    languagesList={languagesList}
+                    toggleAllCountries={toggleAllCountries}
+                    toggleFilter={toggleFilter}
+                    toggleCertification={toggleCertification}
+                  ></FilterSectionAccordian>
                   <div className='filter-section_wrapper'>
                     <Accordion
                       style={{
@@ -1125,7 +1105,6 @@ const CategoryPage = () => {
                                   eventKey={country.iso_3166_1}
                                 >
                                   <img
-                                    // src={`https://countryflagsapi.com/png/${country.iso_3166_1}`}
                                     src={`https://flagcdn.com/w20/${country.iso_3166_1.toLowerCase()}.png`}
                                     onError={(e) => {
                                       e.target.onerror = null;
@@ -1140,7 +1119,7 @@ const CategoryPage = () => {
                                     alt={country.iso_3166_1}
                                   />
 
-                                  {country.english_name}
+                                  {country.native_name}
                                 </Dropdown.Item>
                               ))}
                             </DropdownButton>
