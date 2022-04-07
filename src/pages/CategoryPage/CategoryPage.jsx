@@ -556,7 +556,9 @@ function FilterSectionAccordian(props) {
                   <li
                     key={filter.id}
                     className={`filter-list_item ${
-                      props.includes(filter.id) ? 'filter-list_item-active' : ''
+                      props.activeGenresArray.includes(filter.id)
+                        ? 'filter-list_item-active'
+                        : ''
                     }`}
                     onClick={() => {
                       props.toggleFilter(filter.id);
@@ -584,19 +586,21 @@ function FilterSectionAccordian(props) {
             </h3>
             <ul className='filter-list p-0'>
               {props.CertificationList &&
-                props.CertificationList.map((certification, index) => (
+                props.CertificationList.map((item, index) => (
                   <li
                     key={index}
                     className={`filter-list_item ${
-                      props._includes(certification.certification)
+                      props.activeCertificationsArray.includes(
+                        item.certification
+                      )
                         ? 'filter-list_item-active'
                         : ''
                     }`}
                     onClick={() => {
-                      props.toggleCertification(certification.certification);
+                      props.toggleCertification(item.certification);
                     }}
                   >
-                    {certification.certification}
+                    {item.certification}
                   </li>
                 ))}
             </ul>
@@ -896,7 +900,6 @@ const CategoryPage = () => {
           `https://api.themoviedb.org/3/watch/providers/regions?api_key=15d2ea6d0dc1d476efbca3eba2b9bbfb`
         );
         const data = await ottRegionsResponse.json();
-        console.log(data);
         setOttRegionsList(data.results);
       } catch (error) {
         setError(error);
@@ -934,6 +937,7 @@ const CategoryPage = () => {
         activeCertificationsArray.length > 0 &&
         activeCertificationsArray.join('%7C'),
     });
+    console.log(urlParams.certification);
   }, [activeCertificationsArray]);
 
   useEffect(() => {
@@ -1032,9 +1036,9 @@ const CategoryPage = () => {
                     urlParams={urlParams}
                     setUrlParams={setUrlParams}
                     genresList={genresList}
-                    includes={activeGenresArray.includes}
+                    activeGenresArray={activeGenresArray}
                     CertificationList={CertificationList}
-                    _includes={activeCertificationsArray.includes}
+                    activeCertificationsArray={activeCertificationsArray}
                     countriesList={countriesList}
                     isAllAvailabilities={isAllAvailabilities}
                     toggleAllAvailabilities={toggleAllAvailabilities}
