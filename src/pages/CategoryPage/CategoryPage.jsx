@@ -1,6 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import { Dropdown, Accordion, DropdownButton, Form } from 'react-bootstrap';
+import {
+  Dropdown,
+  Accordion,
+  DropdownButton,
+  Form,
+  OverlayTrigger,
+  Tooltip,
+} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import LoadingBar from 'react-top-loading-bar';
@@ -1185,21 +1192,46 @@ const CategoryPage = () => {
                             <ul className='ott_providers'>
                               {ottProvidersList &&
                                 ottProvidersList.map((provider) => (
-                                  <li
-                                    key={provider.provider_id}
-                                    onClick={() =>
-                                      toggleOttProviders(provider.provider_id)
+                                  <OverlayTrigger
+                                    placement='top'
+                                    overlay={
+                                      <Tooltip id={`tooltip`}>
+                                        {provider.provider_name}
+                                      </Tooltip>
                                     }
                                   >
-                                    <span>
-                                      <img
-                                        src={`https://www.themoviedb.org/t/p/original${provider.logo_path}`}
-                                        width='50'
-                                        height='50'
-                                        alt={provider.name}
-                                      />
-                                    </span>
-                                  </li>
+                                    <li
+                                      key={provider.provider_id}
+                                      onClick={() =>
+                                        toggleOttProviders(provider.provider_id)
+                                      }
+                                      data-bs-toggle='tooltip'
+                                      data-bs-placement='top'
+                                      data-original-title={
+                                        provider.provider_name
+                                      }
+                                    >
+                                      <span>
+                                        <img
+                                          src={`https://www.themoviedb.org/t/p/original${provider.logo_path}`}
+                                          width='50'
+                                          height='50'
+                                          alt={provider.name}
+                                        />
+                                        <div
+                                          className={
+                                            activeOttProviders.includes(
+                                              provider.provider_id
+                                            )
+                                              ? 'ott_provider_checkbox_wrapper active'
+                                              : 'ott_provider_checkbox_wrapper'
+                                          }
+                                        >
+                                          <span className='check-icon'></span>
+                                        </div>
+                                      </span>
+                                    </li>
+                                  </OverlayTrigger>
                                 ))}
                             </ul>
                           </span>
