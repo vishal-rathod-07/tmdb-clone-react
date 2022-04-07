@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
-import './moviecard.scss';
 import { Circle } from 'rc-progress';
+import './moviecard.scss';
+import './ratingicons.scss';
 
 const MovieCard = ({
   id,
@@ -74,27 +75,24 @@ const MovieCard = ({
                       : movie.vote_average >= 4
                       ? '#423d0f'
                       : movie.vote_average !== 0
-                      ? '#ff000054'
-                      : '#565a5b'
+                      ? '#571435'
+                      : '#666'
                   }
                   strokeColor={
                     movie.vote_average >= 7
                       ? '#21d07a'
                       : movie.vote_average >= 4
                       ? '#d2d531'
-                      : '#ff0000'
+                      : '#db2360'
                   }
                 />
-                <span className='rating-text'>
-                  {movie.vote_average > 0 ? (
-                    <>
-                      {movie.vote_average * 10}
-                      <span className='rating-text-suffix'>%</span>
-                    </>
-                  ) : (
-                    'NR'
-                  )}
-                </span>
+                <span
+                  className={`rating-text icon-r${
+                    movie.vote_average * 10 !== 0
+                      ? movie.vote_average * 10
+                      : 'NR'
+                  }`}
+                ></span>
               </div>
             </div>
           </div>

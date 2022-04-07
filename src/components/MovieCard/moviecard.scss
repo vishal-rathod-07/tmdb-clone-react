@@ -1,3 +1,11 @@
+@font-face {
+  font-family: 'Consensus';
+  src: url('../../assets/Fonts/Consensus.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 .m-card {
   border: none !important;
   min-width: 150px !important;
@@ -91,11 +99,8 @@
             .rating-text {
               position: absolute;
               color: #fff;
-              font-size: 0.8rem;
-
-              .rating-text-suffix {
-                font-size: 0.5rem;
-              }
+              font-size: 0.6rem;
+              font-family: 'Consensus' !important;
             }
 
             .icon-per {
