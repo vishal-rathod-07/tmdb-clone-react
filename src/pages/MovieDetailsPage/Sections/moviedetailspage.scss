@@ -142,9 +142,7 @@
                     display: inline-flex;
                     align-content: center;
                     align-items: center;
-                  }
-                  .genres {
-                    padding-left: 20px;
+                    padding-right: 20px;
                     position: relative;
                     top: 0;
                     left: 0;
@@ -157,12 +155,18 @@
                       height: 100%;
                       position: absolute;
                       top: 0;
-                      left: 7px;
+                      left: 89%;
                       display: inline-flex;
                       align-content: center;
                       align-items: center;
                       z-index: -1;
+                      color: #fff;
                     }
+                  }
+                  .genres {
+                    position: relative;
+                    top: 0;
+                    left: 0;
 
                     span {
                       a {
