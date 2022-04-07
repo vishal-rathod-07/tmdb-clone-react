@@ -86,11 +86,10 @@ const MovieDetailsPage = () => {
           `https://api.themoviedb.org/3/movie/${id}/release_dates?api_key=${API}`
         );
         const data = await certificateResponse.json();
-        data.results.find((element) => {
+        data.results.forEach((element) => {
           if (element.iso_3166_1 === 'US') {
-            //
             if (element.release_dates.length > 0) {
-              element.release_dates.find((element) => {
+              element.release_dates.forEach((element) => {
                 if (element.certification !== '') {
                   setCertificate(element.certification);
                 }
@@ -102,7 +101,7 @@ const MovieDetailsPage = () => {
         setError(error);
       }
     };
-    fetchCertificate();
+    type === 'movie' && fetchCertificate();
     const fetchReview = async () => {
       try {
         const reviewResponse = await fetch(
