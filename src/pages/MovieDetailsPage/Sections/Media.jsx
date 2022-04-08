@@ -305,9 +305,9 @@ const Media = ({ movie, cast, keywords, reviews, recommandations, type }) => {
                       <div className='content'>
                         <div>
                           <h2>
-                            <link to='/tv/52814-halo/season/1'>
+                            <Link to='/tv/52814-halo/season/1'>
                               {movie.seasons[movie.seasons.length - 1].name}
-                            </link>
+                            </Link>
                           </h2>
                           <h4>
                             {movie.seasons[movie.seasons.length - 1]
