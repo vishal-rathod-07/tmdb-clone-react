@@ -61,8 +61,18 @@
         .accordion-item {
           .all_countries_wrapper {
             .dropdown-menu {
-              height: 232.422px;
+              height: 318px;
+              width: 362.672px;
               overflow: hidden scroll;
+              border-radius: 4px;
+              font-size: 14.4px;
+              font-weight: 400;
+              padding: 8px 0;
+              border-color: rgba($color: #000, $alpha: 0.15);
+
+              a {
+                padding: 3px 24px;
+              }
             }
           }
           .accordion-button {
@@ -181,14 +191,34 @@
 
       .Language-filter {
         .dropdown-menu {
-          height: 232.422px;
+          height: 318px;
+          width: 362.672px;
           overflow: hidden scroll;
+          border-radius: 4px;
+          font-size: 14.4px;
+          font-weight: 400;
+          padding: 8px 0;
+          border-color: rgba($color: #000, $alpha: 0.15);
+
+          a {
+            padding: 3px 24px;
+          }
         }
       }
       .ott-provider-filter {
         .dropdown-menu {
-          height: 232.422px;
+          height: 318px;
+          width: 362.672px;
           overflow: hidden scroll;
+          border-radius: 4px;
+          font-size: 14.4px;
+          font-weight: 400;
+          padding: 8px 0;
+          border-color: rgba($color: #000, $alpha: 0.15);
+
+          a {
+            padding: 3px 24px;
+          }
         }
         .ott_providers {
           display: flex;
