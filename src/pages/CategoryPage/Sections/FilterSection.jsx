@@ -356,12 +356,13 @@ function FilterSectionAccordian(props) {
               <span className='date_picker w-100'>
                 <span className='date_picker_wrapper'>
                   <DatePicker
+                    dateFormat='MM/dd/yyyy'
                     selected={
                       props.showType === 'tv'
                         ? props.urlParams['air_date.gte']
                           ? new Date(props.urlParams['air_date.gte'])
                           : ''
-                        : props.urlParams['air_date.gte']
+                        : props.urlParams['release_date.gte']
                         ? new Date(props.urlParams['release_date.gte'])
                         : ''
                     }
@@ -389,6 +390,7 @@ function FilterSectionAccordian(props) {
               <span className='date_picker w-100'>
                 <span className='date_picker_wrapper'>
                   <DatePicker
+                    dateFormat='MM/dd/yyyy'
                     selected={
                       props.showType === 'tv'
                         ? props.urlParams['air_date.lte']
