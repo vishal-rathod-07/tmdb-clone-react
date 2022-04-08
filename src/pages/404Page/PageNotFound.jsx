@@ -10,7 +10,7 @@ const PageNotFound = () => {
         <div className='page-not-found__text col-12'>
           <p>
             You tried to request a page that doesn't exist. If you believe this
-            to be in error, let us know <a href='/talk'>on the forums</a>.
+            to be in error, let us know <link to='/talk'>on the forums</link>.
           </p>
         </div>
       </div>

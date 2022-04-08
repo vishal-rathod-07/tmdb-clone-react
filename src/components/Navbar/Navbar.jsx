@@ -117,14 +117,18 @@ const Navbar = () => {
             <div className='nav-right'>
               <ul className='navbar-nav me-auto mb-2 mb-lg-0'>
                 <li className='nav-item'>
-                  <a className='nav-link active' aria-current='page' href='#'>
+                  <Link
+                    className='nav-link active'
+                    aria-current='page'
+                    to='/login'
+                  >
                     Login
-                  </a>
+                  </Link>
                 </li>
                 <li className='nav-item'>
-                  <a className='nav-link' href='#'>
+                  <Link className='nav-link' to='/signup'>
                     Join TMDB
-                  </a>
+                  </Link>
                 </li>
               </ul>
 
