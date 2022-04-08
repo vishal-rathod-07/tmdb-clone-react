@@ -1,6 +1,6 @@
 import Header from './Sections/Header';
 import Media from './Sections/Media';
-import { API } from '../../Constants';
+import { API, API_URL } from '../../Constants';
 
 import spinner from '../../assets/images/loader.gif';
 
@@ -27,7 +27,7 @@ const MovieDetailsPage = () => {
     const fetchMovie = async () => {
       try {
         const movieResponse = await fetch(
-          `https://api.themoviedb.org/3/${
+          `${API_URL}/${
             type === 'movie' ? 'movie' : 'tv'
           }/${id}?api_key=${API}&language=en-US`
         );
@@ -41,7 +41,7 @@ const MovieDetailsPage = () => {
     const fetchSocial = async () => {
       try {
         const socialResponse = await fetch(
-          `https://api.themoviedb.org/3/${
+          `${API_URL}/${
             type === 'movie' ? 'movie' : 'tv'
           }/${id}/external_ids?api_key=${API}&language=en-US`
         );
@@ -55,7 +55,7 @@ const MovieDetailsPage = () => {
     const fetchProvider = async () => {
       try {
         const providerResponse = await fetch(
-          `https://api.themoviedb.org/3/${
+          `${API_URL}/${
             type === 'movie' ? 'movie' : 'tv'
           }/${id}/watch/providers?api_key=${API}&language=en-US`
         );
@@ -69,7 +69,7 @@ const MovieDetailsPage = () => {
     const fetchCast = async () => {
       try {
         const castResponse = await fetch(
-          `https://api.themoviedb.org/3/${
+          `${API_URL}/${
             type === 'movie' ? 'movie' : 'tv'
           }/${id}/credits?api_key=${API}&language=en-US`
         );
@@ -83,7 +83,7 @@ const MovieDetailsPage = () => {
     const fetchCertificate = async () => {
       try {
         const certificateResponse = await fetch(
-          `https://api.themoviedb.org/3/movie/${id}/release_dates?api_key=${API}`
+          `${API_URL}/movie/${id}/release_dates?api_key=${API}`
         );
         const data = await certificateResponse.json();
         data.results.forEach((element) => {
@@ -105,7 +105,7 @@ const MovieDetailsPage = () => {
     const fetchReview = async () => {
       try {
         const reviewResponse = await fetch(
-          `https://api.themoviedb.org/3/${
+          `${API_URL}/${
             type === 'movie' ? 'movie' : 'tv'
           }/${id}/reviews?api_key=${API}&language=en-US`
         );
@@ -120,7 +120,7 @@ const MovieDetailsPage = () => {
     const fetchTrailer = async () => {
       try {
         const trailerResponse = await fetch(
-          `https://api.themoviedb.org/3/${
+          `${API_URL}/${
             type === 'movie' ? 'movie' : 'tv'
           }/${id}/videos?api_key=${API}&language=en-US`
         );
@@ -142,7 +142,7 @@ const MovieDetailsPage = () => {
     const fetchRecommandations = async () => {
       try {
         const recommandationsResponse = await fetch(
-          `https://api.themoviedb.org/3/${
+          `${API_URL}/${
             type === 'movie' ? 'movie' : 'tv'
           }/${id}/recommendations?api_key=${API}&language=en-US`
         );
@@ -156,7 +156,7 @@ const MovieDetailsPage = () => {
     const fetchKeyword = async () => {
       try {
         const keywordResponse = await fetch(
-          `https://api.themoviedb.org/3/${
+          `${API_URL}/${
             type === 'movie' ? 'movie' : 'tv'
           }/${id}/keywords?api_key=${API}`
         );
