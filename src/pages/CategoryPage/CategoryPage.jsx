@@ -316,7 +316,6 @@ const CategoryPage = () => {
       with_ott_providers:
         activeOttProviders.length > 0 && activeOttProviders.join('%7C'),
     });
-    console.log(urlParams.with_ott_providers);
   }, [activeOttProviders]);
 
   useEffect(() => {
@@ -334,7 +333,6 @@ const CategoryPage = () => {
         activeCertificationsArray.length > 0 &&
         activeCertificationsArray.join('%7C'),
     });
-    console.log(urlParams.certification);
   }, [activeCertificationsArray]);
 
   useEffect(() => {
@@ -409,10 +407,8 @@ const CategoryPage = () => {
       setActiveOttProviders(
         activeOttProviders.filter((item) => item !== providerId)
       );
-      console.log(activeOttProviders);
     } else {
       setActiveOttProviders([...activeOttProviders, providerId]);
-      console.log(activeOttProviders);
     }
   };
 
