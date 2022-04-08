@@ -181,7 +181,7 @@ function DetailsSection(props) {
                 return (
                   <li key={index} className='profile'>
                     <p>
-                      <a href={`/person/${person.id}`}>{person.name}</a>
+                      <Link to={`/person/${person.id}`}>{person.name}</Link>
                     </p>
                     <p className='character'>Creator</p>
                   </li>

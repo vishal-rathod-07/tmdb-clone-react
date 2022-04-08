@@ -167,9 +167,9 @@ function SocialSection(props) {
               </Link>
             </li>
             <li className='menu-item'>
-              <a>
+              <Link to='/discussions'>
                 <span>Discussions</span>
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
@@ -305,9 +305,9 @@ const Media = ({ movie, cast, keywords, reviews, recommandations, type }) => {
                       <div className='content'>
                         <div>
                           <h2>
-                            <a href='/tv/52814-halo/season/1'>
+                            <link to='/tv/52814-halo/season/1'>
                               {movie.seasons[movie.seasons.length - 1].name}
-                            </a>
+                            </link>
                           </h2>
                           <h4>
                             {movie.seasons[movie.seasons.length - 1]
