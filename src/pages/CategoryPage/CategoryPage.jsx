@@ -511,7 +511,8 @@ const CategoryPage = () => {
                                   <span>
                                     {urlParams.ott_region && (
                                       <img
-                                        src={`https://flagcdn.com/w20/${urlParams.ott_region.toLowerCase()}.png`}
+                                        // src={`https://flagcdn.com/w20/${urlParams.ott_region.toLowerCase()}.png`}
+                                        src={`https://raw.githubusercontent.com/SujalShah3234/All-Country-Flags/master/${urlParams.ott_region}.png`}
                                         onError={(e) => {
                                           e.target.onerror = null;
                                           e.target.src =
@@ -541,7 +542,7 @@ const CategoryPage = () => {
                                       eventKey={country.iso_3166_1}
                                     >
                                       <img
-                                        src={`https://flagcdn.com/w20/${country.iso_3166_1.toLowerCase()}.png`}
+                                        src={`https://raw.githubusercontent.com/SujalShah3234/All-Country-Flags/master/${country.iso_3166_1}.png`}
                                         onError={(e) => {
                                           e.target.onerror = null;
                                           e.target.src =
