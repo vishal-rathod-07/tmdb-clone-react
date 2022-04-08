@@ -6,6 +6,7 @@ import {
   DropdownButton,
   OverlayTrigger,
   Tooltip,
+  Form,
 } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -494,55 +495,71 @@ const CategoryPage = () => {
                             Country
                           </h3>
                           {ottRegionsList && (
-                            <DropdownButton
-                              id='dropdown-basic-button'
-                              title={
-                                urlParams.ott_region
-                                  ? ottRegionsList.find(
-                                      (country) =>
-                                        country.iso_3166_1 ===
-                                        urlParams.ott_region
-                                    ).english_name
-                                  : 'Countries'
-                              }
-                              variant='secondary'
-                              style={{
-                                width: '100%',
-                                fontSize: '1em',
-                                fontWeight: '300',
-                                marginBottom: '10px',
-                              }}
-                              onSelect={(eventKey) => {
-                                setUrlParams({
-                                  ...urlParams,
-                                  ott_region: eventKey,
-                                });
-                              }}
-                            >
-                              {ottRegionsList.map((country) => (
-                                <Dropdown.Item
-                                  key={country.iso_3166_1}
-                                  eventKey={country.iso_3166_1}
+                            <Form>
+                              <Dropdown
+                                onSelect={(eventKey) => {
+                                  setUrlParams({
+                                    ...urlParams,
+                                    ott_region: eventKey,
+                                  });
+                                }}
+                              >
+                                <Dropdown.Toggle
+                                  variant='secondary'
+                                  id='dropdown-basic'
                                 >
-                                  <img
-                                    src={`https://flagcdn.com/w20/${country.iso_3166_1.toLowerCase()}.png`}
-                                    onError={(e) => {
-                                      e.target.onerror = null;
-                                      e.target.src =
-                                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8wkWFOYkdG7W9Xf0-aheuTMQHTEsySnpXOQ&usqp=CAU';
-                                    }}
-                                    style={{
-                                      width: '24px',
-                                      height: '20px',
-                                      marginRight: '10px',
-                                    }}
-                                    alt={country.iso_3166_1}
-                                  />
-
-                                  {country.native_name}
-                                </Dropdown.Item>
-                              ))}
-                            </DropdownButton>
+                                  <span>
+                                    {urlParams.ott_region && (
+                                      <img
+                                        src={`https://flagcdn.com/w20/${urlParams.ott_region.toLowerCase()}.png`}
+                                        onError={(e) => {
+                                          e.target.onerror = null;
+                                          e.target.src =
+                                            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8wkWFOYkdG7W9Xf0-aheuTMQHTEsySnpXOQ&usqp=CAU';
+                                        }}
+                                        style={{
+                                          width: '24px',
+                                          height: '20px',
+                                          marginRight: '10px',
+                                        }}
+                                        alt={urlParams.ott_region}
+                                      />
+                                    )}
+                                    {urlParams.ott_region
+                                      ? ottRegionsList.find(
+                                          (country) =>
+                                            country.iso_3166_1 ===
+                                            urlParams.ott_region
+                                        ).native_name
+                                      : 'Select Country'}
+                                  </span>
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu>
+                                  {ottRegionsList.map((country) => (
+                                    <Dropdown.Item
+                                      key={country.iso_3166_1}
+                                      eventKey={country.iso_3166_1}
+                                    >
+                                      <img
+                                        src={`https://flagcdn.com/w20/${country.iso_3166_1.toLowerCase()}.png`}
+                                        onError={(e) => {
+                                          e.target.onerror = null;
+                                          e.target.src =
+                                            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8wkWFOYkdG7W9Xf0-aheuTMQHTEsySnpXOQ&usqp=CAU';
+                                        }}
+                                        style={{
+                                          width: '24px',
+                                          height: '20px',
+                                          marginRight: '10px',
+                                        }}
+                                        alt={country.iso_3166_1}
+                                      />
+                                      {country.native_name}
+                                    </Dropdown.Item>
+                                  ))}
+                                </Dropdown.Menu>
+                              </Dropdown>
+                            </Form>
                           )}
                           <span className='ott_provider_wrapper'>
                             <ul className='ott_providers'>
