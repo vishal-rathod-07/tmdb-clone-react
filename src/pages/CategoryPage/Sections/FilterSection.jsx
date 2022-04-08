@@ -1,4 +1,4 @@
-import { Accordion, Dropdown, DropdownButton } from 'react-bootstrap';
+import { Accordion, Dropdown, DropdownButton, Form } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
 
 function FilterSectionAccordian(props) {
@@ -187,57 +187,71 @@ function FilterSectionAccordian(props) {
                 </label>
                 {!props.isAllCountries && (
                   <div className='all_countries_wrapper'>
-                    <DropdownButton
-                      id='dropdown-basic-button'
-                      title={
-                        props.urlParams.region
-                          ? props.countriesList.find(
-                              (country) =>
-                                country.iso_3166_1 === props.urlParams.region
-                            ).english_name
-                          : 'Countries'
-                      }
-                      variant='secondary'
-                      style={{
-                        width: '100%',
-                        fontSize: '1em',
-                        fontWeight: '300',
-                        marginBottom: '10px',
-                      }}
-                      onSelect={(eventKey) => {
-                        props.setUrlParams({
-                          ...props.urlParams,
-                          region: eventKey,
-                        });
-                      }}
-                    >
-                      {props.countriesList.map((country) => (
-                        <Dropdown.Item
-                          key={country.iso_3166_1}
-                          eventKey={country.iso_3166_1}
+                    <Form>
+                      <Dropdown
+                        onSelect={(eventKey) => {
+                          props.setUrlParams({
+                            ...props.urlParams,
+                            region: eventKey,
+                          });
+                        }}
+                      >
+                        <Dropdown.Toggle
+                          variant='secondary'
+                          id='dropdown-basic'
                         >
-                          <img // src={`https://countryflagsapi.com/png/${country.iso_3166_1}`}
-                            src={`https://flagcdn.com/w20/${country.iso_3166_1.toLowerCase()}.png`}
-                            onError={(e) => {
-                              e.target.onerror = null;
-                              e.target.src =
-                                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8wkWFOYkdG7W9Xf0-aheuTMQHTEsySnpXOQ&usqp=CAU';
-                            }}
-                            style={{
-                              width: '24px',
-                              height: '20px',
-                              marginRight: '10px',
-                            }}
-                            alt={country.iso_3166_1}
-                          />
-
-                          {country.english_name}
-                        </Dropdown.Item>
-                      ))}
-
-                      {/* .map((country) => country.english_name)
-                  .sort((a, b) => a.localeCompare(b) */}
-                    </DropdownButton>
+                          <span>
+                            {props.urlParams.region && (
+                              <img
+                                src={`https://flagcdn.com/w20/${props.urlParams.region.toLowerCase()}.png`}
+                                onError={(e) => {
+                                  e.target.onerror = null;
+                                  e.target.src =
+                                    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8wkWFOYkdG7W9Xf0-aheuTMQHTEsySnpXOQ&usqp=CAU';
+                                }}
+                                style={{
+                                  width: '24px',
+                                  height: '20px',
+                                  marginRight: '10px',
+                                }}
+                                alt={props.urlParams.region}
+                              />
+                            )}
+                            {props.urlParams.region
+                              ? props.countriesList.find(
+                                  (country) =>
+                                    country.iso_3166_1 ===
+                                    props.urlParams.region
+                                ).english_name
+                              : 'Select Country'}
+                          </span>
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                          {props.countriesList.map((country) => (
+                            <Dropdown.Item
+                              key={country.iso_3166_1}
+                              eventKey={country.iso_3166_1}
+                            >
+                              <img
+                                src={`https://flagcdn.com/w20/${country.iso_3166_1.toLowerCase()}.png`}
+                                onError={(e) => {
+                                  e.target.onerror = null;
+                                  e.target.src =
+                                    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8wkWFOYkdG7W9Xf0-aheuTMQHTEsySnpXOQ&usqp=CAU';
+                                }}
+                                style={{
+                                  width: '24px',
+                                  height: '20px',
+                                  marginRight: '10px',
+                                }}
+                                alt={country.iso_3166_1}
+                              />
+                              {country.english_name}
+                            </Dropdown.Item>
+                          ))}
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    </Form>
                   </div>
                 )}
                 <label className='all_release_type'>
