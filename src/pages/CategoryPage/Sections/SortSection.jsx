@@ -1,5 +1,4 @@
 import { Accordion, Dropdown, DropdownButton } from 'react-bootstrap';
-import DatePicker from 'react-datepicker';
 
 function SortSectionAccordian(props) {
   return (
