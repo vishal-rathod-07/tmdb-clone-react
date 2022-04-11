@@ -75,6 +75,7 @@ function FilterSectionAccordian(props) {
       'vote_average.lte': newValue[1],
     });
   };
+
   const handleRunTimeChange = (event, newValue) => {
     setRunTime(newValue);
     props.setUrlParams({
@@ -84,15 +85,13 @@ function FilterSectionAccordian(props) {
     });
   };
 
+  // console.log(props);
+
   const [startDate, setStartDate] = useState(
-    props.urlParams['air_date.gte']
-      ? new Date(props.urlParams['air_date.gte'])
-      : ''
+    props.urlParams['air_date.gte'] ? props.urlParams['air_date.gte'] : ''
   );
   const [endDate, setEndDate] = useState(
-    props.urlParams['air_date.lte']
-      ? new Date(props.urlParams['air_date.lte'])
-      : ''
+    props.urlParams['air_date.lte'] ? props.urlParams['air_date.lte'] : ''
   );
 
   const [isAllEpisodes, setIsAllEpisodes] = useState(true);
@@ -106,19 +105,23 @@ function FilterSectionAccordian(props) {
     setIsFirstDate(!isFirstDate);
   };
 
-  useEffect(() => {
-    isAllEpisodes
-      ? props.setUrlParams({
-          ...props.urlParams,
-          'air_date.gte': startDate,
-          'first_air_date.gte': '',
-        })
-      : props.setUrlParams({
-          ...props.urlParams,
-          'air_date.gte': '',
-          'first_air_date.gte': startDate,
-        });
-  }, [isAllEpisodes, startDate]);
+  // useEffect(() => {
+  //   isAllEpisodes
+  //     ? props.setUrlParams({
+  //         ...props.urlParams,
+  //         'air_date.lte': endDate,
+  //         'first_air_date.lte': '',
+  //         'air_date.gte': startDate,
+  //         'first_air_date.gte': '',
+  //       })
+  //     : props.setUrlParams({
+  //         ...props.urlParams,
+  //         'air_date.lte': '',
+  //         'first_air_date.lte': endDate,
+  //         'air_date.gte': '',
+  //         'first_air_date.gte': startDate,
+  //       });
+  // }, [isAllEpisodes, endDate]);
 
   return (
     <div className='filter-section_wrapper'>
@@ -499,22 +502,11 @@ function FilterSectionAccordian(props) {
                     <DatePicker
                       dateFormat='MM/dd/yyyy'
                       selected={
-                        props.showType === 'tv'
-                          ? props.urlParams['air_date.gte']
-                            ? new Date(props.urlParams['air_date.gte'])
-                            : ''
-                          : props.urlParams['release_date.gte']
+                        props.urlParams['release_date.gte']
                           ? new Date(props.urlParams['release_date.gte'])
                           : ''
                       }
                       onChange={(date) => {
-                        if (props.showType === 'tv') {
-                          props.setUrlParams({
-                            ...props.urlParams,
-                            'air_date.gte': date.toISOString().split('T')[0],
-                          });
-                        }
-
                         if (props.showType === 'movie') {
                           props.setUrlParams({
                             ...props.urlParams,
@@ -535,22 +527,11 @@ function FilterSectionAccordian(props) {
                     <DatePicker
                       dateFormat='MM/dd/yyyy'
                       selected={
-                        props.showType === 'tv'
-                          ? props.urlParams['air_date.lte']
-                            ? new Date(props.urlParams['air_date.lte'])
-                            : ''
-                          : props.urlParams['release_date.lte']
+                        props.urlParams['release_date.lte']
                           ? new Date(props.urlParams['release_date.lte'])
                           : ''
                       }
                       onChange={(date) => {
-                        if (props.showType === 'tv') {
-                          props.setUrlParams({
-                            ...props.urlParams,
-                            'air_date.lte': date.toISOString().split('T')[0],
-                          });
-                        }
-
                         if (props.showType === 'movie') {
                           props.setUrlParams({
                             ...props.urlParams,
@@ -623,9 +604,31 @@ function FilterSectionAccordian(props) {
                   <span className='date_picker_wrapper'>
                     <DatePicker
                       dateFormat='MM/dd/yyyy'
-                      selected={startDate}
+                      // selected={new Date(startDate)}
+                      selected={
+                        !isAllEpisodes
+                          ? props.urlParams['first_air_date.gte'] !== ''
+                            ? new Date(props.urlParams['first_air_date.gte'])
+                            : ''
+                          : props.urlParams['air_date.gte'] !== ''
+                          ? new Date(props.urlParams['air_date.gte'])
+                          : ''
+                      }
                       onChange={(date) => {
-                        setStartDate(date.toISOString().split('T')[0]);
+                        // setStartDate(date.toISOString().split('T')[0]);
+                        isAllEpisodes
+                          ? props.setUrlParams({
+                              ...props.urlParams,
+                              'air_date.gte': date.toISOString().split('T')[0],
+                              'first_air_date.gte': '',
+                            })
+                          : props.setUrlParams({
+                              ...props.urlParams,
+                              'air_date.gte': '',
+                              'first_air_date.gte': date
+                                .toISOString()
+                                .split('T')[0],
+                            });
                       }}
                     />
                   </span>
@@ -637,9 +640,31 @@ function FilterSectionAccordian(props) {
                   <span className='date_picker_wrapper'>
                     <DatePicker
                       dateFormat='MM/dd/yyyy'
-                      selected={endDate}
+                      // selected={new Date(endDate)}
+                      selected={
+                        !isAllEpisodes
+                          ? props.urlParams['first_air_date.lte'] !== ''
+                            ? new Date(props.urlParams['first_air_date.lte'])
+                            : ''
+                          : props.urlParams['air_date.lte'] !== ''
+                          ? new Date(props.urlParams['air_date.lte'])
+                          : ''
+                      }
                       onChange={(date) => {
-                        setEndDate(date.toISOString().split('T')[0]);
+                        // setEndDate(date.toISOString().split('T')[0]);
+                        isAllEpisodes
+                          ? props.setUrlParams({
+                              ...props.urlParams,
+                              'air_date.lte': date.toISOString().split('T')[0],
+                              'first_air_date.lte': '',
+                            })
+                          : props.setUrlParams({
+                              ...props.urlParams,
+                              'air_date.lte': '',
+                              'first_air_date.lte': date
+                                .toISOString()
+                                .split('T')[0],
+                            });
                       }}
                     />
                   </span>
