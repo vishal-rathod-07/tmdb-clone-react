@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 
-import { Slider } from '@mui/material';
+import { Slider, styled } from '@mui/material';
 import { Accordion, Dropdown, DropdownButton, Form } from 'react-bootstrap';
 import DatePicker from 'react-datepicker';
+
+import CustomizedHook from './SearchInput';
 
 function FilterSectionAccordian(props) {
   const userScoreMarks = [
@@ -99,6 +101,13 @@ function FilterSectionAccordian(props) {
 
   const toggleAllEpisodes = () => {
     setIsAllEpisodes(!isAllEpisodes);
+    if (!isAllEpisodes) {
+      props.setUrlParams({
+        ...props.urlParams,
+        'first_air_date.gte': props.urlParams['air_date.gte'],
+        'air_date.lte': '',
+      });
+    }
   };
 
   const toggleFirstDate = () => {
@@ -797,7 +806,7 @@ function FilterSectionAccordian(props) {
               </DropdownButton>
             )}
           </Accordion.Body>
-          <Accordion.Body className='Language-filter'>
+          <Accordion.Body className='userScore-filter'>
             <h3
               style={{
                 display: 'inline-flex',
@@ -823,7 +832,7 @@ function FilterSectionAccordian(props) {
               valueLabelDisplay='auto'
             />
           </Accordion.Body>
-          <Accordion.Body className='Language-filter'>
+          <Accordion.Body className='userVotes-filter'>
             <h3
               style={{
                 display: 'inline-flex',
@@ -854,7 +863,7 @@ function FilterSectionAccordian(props) {
               }}
             />
           </Accordion.Body>
-          <Accordion.Body className='Language-filter'>
+          <Accordion.Body className='runTime-filter'>
             <h3
               style={{
                 display: 'inline-flex',
@@ -880,6 +889,23 @@ function FilterSectionAccordian(props) {
               onChange={handleRunTimeChange}
               valueLabelDisplay='auto'
             />
+          </Accordion.Body>
+          <Accordion.Body className='Keywords-filter'>
+            <h3
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                width: '100%',
+                fontSize: '1em',
+                fontWeight: '300',
+                marginBottom: '10px',
+                color: '#000',
+              }}
+              className='filter-title p-0'
+            >
+              Keywords
+            </h3>
+            <CustomizedHook />
           </Accordion.Body>
         </Accordion.Item>
       </Accordion>

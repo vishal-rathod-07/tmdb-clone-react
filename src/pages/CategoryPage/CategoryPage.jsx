@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import {
   Dropdown,
   Accordion,
-  DropdownButton,
   OverlayTrigger,
   Tooltip,
   Form,
@@ -146,18 +145,25 @@ const CategoryPage = () => {
 
   const [isAllReleases, setIsAllReleases] = useState(true); //All release dates
 
+  useEffect(() => {
+    if (urlParams.with_release_type !== '') {
+      setIsAllReleases(false);
+    } else {
+      setIsAllReleases(true);
+    }
+  }, [defaultParams.with_release_type, urlParams.with_release_type]);
+
   const toggleAllReleaseDates = () => {
     setIsAllReleases(!isAllReleases);
   };
 
-  const [activeReleaseTypesArray, setActiveReleaseTypesArray] = useState([
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-  ]); //Array of release dates
+  const [activeReleaseTypesArray, setActiveReleaseTypesArray] = useState(
+    urlParams.with_release_type
+      ? urlParams?.with_release_type.split('|')
+      : ['1', '2', '3', '4', '5', '6']
+  ); //Array of release dates
+
+  // activeReleaseTypesArray changes when urlParams.with_release_type changes
 
   const toggleActiveReleases = (release) => {
     if (activeReleaseTypesArray.includes(release)) {
