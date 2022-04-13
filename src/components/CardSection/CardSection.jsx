@@ -18,13 +18,7 @@ const CardSection = ({
   };
 
   return (
-    <section
-      className={
-        sectionType === 'trending'
-          ? 'card-section trending row m-0 w-100'
-          : 'card-section row m-0'
-      }
-    >
+    <section className={`card-section ${sectionType} row m-0 w-100`}>
       <div className='card-section__column_wrapper p-0'>
         <div className='card-section__content_wrapper pb-0 mb-0'>
           <div className='card-section__column'>

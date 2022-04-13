@@ -85,7 +85,7 @@ const getInitialParams = (showType, category) => {
           with_original_language: '',
           with_ott_monetization_types: '',
           with_ott_providers: '',
-          with_release_type: 3,
+          with_release_type: '3',
           'with_runtime.gte': 0,
           'with_runtime.lte': 400,
         };
@@ -132,7 +132,7 @@ const getInitialParams = (showType, category) => {
           with_original_language: '',
           with_ott_monetization_types: '',
           with_ott_providers: '',
-          with_release_type: 3,
+          with_release_type: '3',
           'with_runtime.gte': 0,
           'with_runtime.lte': 400,
         };
