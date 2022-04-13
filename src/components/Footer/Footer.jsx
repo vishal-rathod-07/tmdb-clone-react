@@ -21,7 +21,7 @@ const Footer = () => {
                 </p>
                 <p className='button m-0'>
                   <Link
-                    to='/signup'
+                    to=''
                     className='rounded background_color border_color purple btn'
                   >
                     Sign Up

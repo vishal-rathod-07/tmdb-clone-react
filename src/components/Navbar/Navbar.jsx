@@ -120,13 +120,13 @@ const Navbar = () => {
                   <Link
                     className='nav-link active'
                     aria-current='page'
-                    to='/login'
+                    to='/'
                   >
                     Login
                   </Link>
                 </li>
                 <li className='nav-item'>
-                  <Link className='nav-link' to='/signup'>
+                  <Link className='nav-link' to='/'>
                     Join TMDB
                   </Link>
                 </li>
