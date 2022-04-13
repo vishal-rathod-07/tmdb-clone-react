@@ -161,13 +161,13 @@ function SocialSection(props) {
           <h3 className=' d-inline-block'>Social</h3>
           <ul className='menu-list'>
             <li className='menu-item active'>
-              <Link to={`/movie/${props.movie.id}/reviews`}>
+              <Link to="">
                 <span>Reviews</span>
                 <span className='text-secondary'> {props.reviewLength}</span>
               </Link>
             </li>
             <li className='menu-item'>
-              <Link to='/discussions'>
+              <Link to=''>
                 <span>Discussions</span>
               </Link>
             </li>
@@ -204,7 +204,7 @@ function SocialSection(props) {
                   <div className='user-info-wrapper w-100'>
                     <div className='rating-wrapper w-100 d-flex flex-wrap align-items-baseline justify-content-start'>
                       <h3>
-                        <Link to={`/review/${props.reviews.id}`}>
+                        <Link to="">
                           A review by {props.reviews.author}
                         </Link>
                       </h3>
@@ -215,7 +215,7 @@ function SocialSection(props) {
                     </div>
                     <h5>
                       Written by &nbsp;
-                      <Link to={`/u/${props.reviews.author}`}>
+                      <Link to="">
                         <strong>{props.reviews.author}</strong>
                       </Link>
                       &nbsp; on &nbsp;
@@ -305,7 +305,7 @@ const Media = ({ movie, cast, keywords, reviews, recommandations, type }) => {
                       <div className='content'>
                         <div>
                           <h2>
-                            <Link to='/tv/52814-halo/season/1'>
+                            <Link to=''>
                               {movie.seasons[movie.seasons.length - 1].name}
                             </Link>
                           </h2>
@@ -345,7 +345,7 @@ const Media = ({ movie, cast, keywords, reviews, recommandations, type }) => {
                     </div>
                   </div>
                   <p className='button d-inline-block'>
-                    <Link to={`/tv/${movie.id}/seasons`}>View All Seasons</Link>
+                    <Link to=''>View All Seasons</Link>
                   </p>
                 </section>
               )}
@@ -441,7 +441,7 @@ const Media = ({ movie, cast, keywords, reviews, recommandations, type }) => {
                           keywords.map((keyword, index) => {
                             return (
                               <li key={index}>
-                                <Link to={`/search/${keyword.name}`}>
+                                <Link to=''>
                                   {keyword.name}
                                 </Link>
                               </li>
