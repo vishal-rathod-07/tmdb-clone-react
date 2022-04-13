@@ -68,7 +68,7 @@ function DetailsSection(props) {
       <section className='details d-flex flex-wrap align-content-center align-items-start'>
         <div className='title-wrapper w-100 d-flex flex-wrap'>
           <h2 className='title m-0 p-0 w-100'>
-            <Link to='/movie/12'>
+            <Link to=''>
               {props.movie.title ?? props.movie.name + ' '}
             </Link>
 
@@ -97,7 +97,7 @@ function DetailsSection(props) {
                 {props.movie.genres.map((genre, index) => {
                   return (
                     <span key={index}>
-                      <Link to={'/genre/' + genre.id}>{genre.name}</Link>
+                      <Link to="">{genre.name}</Link>
                       {index === props.movie.genres.length - 1 ? '' : ', '}
                     </span>
                   );
@@ -181,7 +181,7 @@ function DetailsSection(props) {
                 return (
                   <li key={index} className='profile'>
                     <p>
-                      <Link to={`/person/${person.id}`}>{person.name}</Link>
+                      <Link to="">{person.name}</Link>
                     </p>
                     <p className='character'>Creator</p>
                   </li>
