@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import Navbar from './components/Navbar/Navbar';
-import HomePage from './components/HomePage/HomePage';
-import CategoryPage from './components/CategoryPage/CategoryPage';
-import MovieDetailsPage from './components/MovieDetailsPage/MovieDetailsPage';
+import HomePage from './pages/HomePage/HomePage';
+import CategoryPage from './pages/CategoryPage/CategoryPage';
+import MovieDetailsPage from './pages/MovieDetailsPage/MovieDetailsPage';
 import PageNotFound from './pages/404Page/PageNotFound';
 import Footer from './components/Footer/Footer';
 
