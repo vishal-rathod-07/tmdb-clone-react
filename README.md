@@ -2,6 +2,13 @@
 
 TMDB Clone made in react js. 
 
+[Live Preview](https://tmdb-clone-react.netlify.app/)
+
+## Preview
+
+![image](https://github.com/vishal-rathod-07/tmdb-clone-react/assets/70106102/dc128436-1c89-4458-be0f-d91c8d67be89)
+
+
 ## Table of Contents
 
 - [Installation](#installation)
